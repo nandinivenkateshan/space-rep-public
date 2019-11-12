@@ -1,16 +1,22 @@
 import React, { useState } from 'react'
 import 'bulma/css/bulma.css'
-import MarkDown from './MarkDown'
+import showdown from 'showdown'
+import ContentEditable from 'react-contenteditable'
 
 function App () {
   const [cards, setCard] = useState([])
-  const [question, setQuestion] = useState('')
+  const [question, setQuestion] = useState()
   const [answer, setAnswer] = useState('')
-  const [markDown, setMark] = useState('')
+  // const contentEditable = React.createRef()
 
   const textarea = {
     padding: '20px 100px 20px 100px',
     margin: '0px'
+  }
+
+  const questionBox = {
+    border: '1px solid black',
+    padding: '20px'
   }
 
   const container = {
@@ -20,12 +26,15 @@ function App () {
     justifyContent: 'center'
   }
 
-  const handleQuestion = event => setQuestion(event.target.value)
+  const handleQuestion = e => {
+    console.log('onChange Event')
+    setQuestion(e.target.innerText) 
+  }
 
-  const handleAnswer = event => setAnswer(event.target.value)
+  const handleAnswer = e => setAnswer(e.target.value)
 
-  function handleSubmit (event) {
-    event.preventDefault()
+  function handleSubmit (e) {
+    e.preventDefault()
     const card = {
       id: Date.now(),
       ques: question,
@@ -37,24 +46,31 @@ function App () {
     setQuestion('')
   }
 
+  function createMarkUp () {
+    console.log('Question', question)
+    const converter = new showdown.Converter()
+    const html = converter.makeHtml(question)
+    console.log(html)
+    return html
+  }
+
   return (
     <div>
-      <form onSubmit={(event) => handleSubmit(event)}>
+      <form onSubmit={e => handleSubmit(e)}>
         <div className='field' style={container}>
-          <div className='control'>
-            <textarea
-              className='textarea is-danger has-fixed-size'
-              placeholder='Enter the Question'
-              value={question}
-              onChange={(event) => handleQuestion(event)}
-              style={textarea}
+        <ContentEditable
+         style={questionBox}
+              // innerRef={contentEditable}
+              html={createMarkUp()} // innerHTML of the editable div
+              disabled={false}       // use true to disable editing
+              onKeyUp={e => handleQuestion(e)} // handle innerHTML change
             />
-          </div>
+
           <div className='control'>
             <textarea
               className='textarea is-focused has-fixed-size'
               placeholder='Enter the Answer'
-              value={answer} onChange={(event) => handleAnswer(event)}
+              value={answer} onChange={e => handleAnswer(e)}
               style={textarea}
             />
           </div>
@@ -63,7 +79,6 @@ function App () {
           <button className='button is-success is-rounded is-center'>Save</button>
         </div>
       </form>
-      <MarkDown props={markDown} />
     </div>
   )
 }
