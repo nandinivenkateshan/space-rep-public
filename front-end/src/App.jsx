@@ -33,6 +33,19 @@ function App () {
 
   const handleAnswer = e => setAnswer(e.target.value)
 
+
+  async function addToDb (url, data) {
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    await response.json()
+  }
+
+
   function handleSubmit (e) {
     e.preventDefault()
     const card = {
@@ -40,6 +53,7 @@ function App () {
       ques: question,
       ans: answer
     }
+    addToDb('http://localhost:3001/card', card)
     setCard([card, ...cards])
     setMark(card.ques)
     setAnswer('')
