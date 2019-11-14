@@ -5,7 +5,7 @@ import showdown from 'showdown'
 import ContentEditable from 'react-contenteditable'
 import 'regenerator-runtime/runtime'
 
-function App () {
+function Cards () {
   const [cards, setCard] = useState([])
   const [question, setQuestion] = useState()
   const [answer, setAnswer] = useState('')
@@ -16,13 +16,13 @@ function App () {
 
   const handleAnswer = e => setAnswer(e.target.innerText)
 
-  useEffect(() => {
-    async function getCards () {
-      const response = await fetch('http://localhost:3000/cards')
-      const data = await response.json()
-    }
-    getCards()
-  }, [])
+  // useEffect(() => {
+  //   async function getCards () {
+  //     const response = await fetch('http://localhost:3000/cards')
+  //     const data = await response.json()
+  //   }
+  //   getCards()
+  // }, [])
 
   async function addToDb (url, data) {
     const response = await fetch(url, {
@@ -87,4 +87,4 @@ function App () {
   )
 }
 
-export default App
+export default Cards
