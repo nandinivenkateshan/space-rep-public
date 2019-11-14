@@ -9,15 +9,8 @@ function App () {
   const [cards, setCard] = useState([])
   const [question, setQuestion] = useState()
   const [answer, setAnswer] = useState('')
-  // const contentEditable = React.createRef()
-
-  // const textarea = {
-  //   padding: '20px 100px 20px 100px',
-  //   margin: '0px'
-  // }
 
   const handleQuestion = e => {
-  //  console.log('onChange Event')
     setQuestion(e.target.innerText)
   }
 
@@ -25,9 +18,8 @@ function App () {
 
   useEffect(() => {
     async function getCards () {
-      const response = await fetch('http://localhost:3000/card')
+      const response = await fetch('http://localhost:3000/cards')
       const data = await response.json()
-      console.log(data)
     }
     getCards()
   }, [])
@@ -51,16 +43,13 @@ function App () {
     }
     addToDb('http://localhost:3000/card', card)
     setCard([card, ...cards])
-    // setMark(card.ques)
     setAnswer('')
     setQuestion('')
   }
 
   function handleMarkUpQues () {
-  //  console.log('Question', question)
     const converter = new showdown.Converter()
     const html = converter.makeHtml(question)
-    // console.log(html)
     return html
   }
 
@@ -76,19 +65,15 @@ function App () {
         <div className='field'>
           <ContentEditable
             html={handleMarkUpQues()}
-            // innerRef={contentEditable}
-            // innerHTML of the editable div
-            disabled={false} // use true to disable editing
+            disabled={false}
             onKeyUp={e => handleQuestion(e)}
             className='question'
             data-placeholder='Enter the Question'
           />
 
           <ContentEditable
-            // innerRef={contentEditable}
-            // innerHTML of the editable div
             html={handleMarkUpAns()}
-            disabled={false} // use true to disable editing
+            disabled={false}
             onKeyUp={e => handleAnswer(e)}
             className='answer'
             data-placeholder='Enter the Answer'
