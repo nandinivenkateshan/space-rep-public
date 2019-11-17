@@ -6,6 +6,7 @@ import ContentEditable from 'react-contenteditable'
 import 'regenerator-runtime/runtime'
 
 function Cards () {
+  const [cards, setCards] = useState([])
   const [question, setQuestion] = useState('')
   const [answer, setAnswer] = useState('')
   const [deck, setDeck] = useState('')
@@ -42,11 +43,12 @@ function Cards () {
   const handleSubmit = e => {
     e.preventDefault()
     const card = {
-      deck: deck,
+      deck: deck.toLowerCase(),
       question: question,
       answer: answer
     }
     addToDb('http://localhost:3000/card', card)
+    setCards(card, ...cards)
     setAnswer('')
     setQuestion('')
     setDeck('')

@@ -8,7 +8,7 @@ function NavBar () {
   return (
     <nav className='navbar' role='navigation' aria-label='main navigation'>
       <div className='navbar-brand'>
-        <Link className='navbar-item'>
+        <Link className='navbar-item' to='/'>
           <label className='logo-text'>SpaceRep</label>
           <img src={logo} alt='logo' width='70' height='30' className='logo' />
         </Link>
@@ -24,12 +24,12 @@ function NavBar () {
         <div className='navbar-start'>
           <Link className='navbar-item' to='/decks'> Decks</Link>
           <Link className='navbar-item' to='/add'> Add</Link>
-          <Link className='navbar-item' href=''> Search</Link>
+          <Link className='navbar-item' to=''> Search</Link>
         </div>
 
         <div className='navbar-end'>
-          <Link className='navbar-item' href=''> Account</Link>
-          <Link className='navbar-item' href=''> Log Out</Link>
+          <Link className='navbar-item' to=''> Account</Link>
+          <Link className='navbar-item' to=''> Log Out</Link>
         </div>
       </div>
     </nav>

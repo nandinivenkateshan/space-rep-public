@@ -11,8 +11,8 @@ function App () {
     <Router>
       <NavBar />
       <Switch>
-        <Route path='/add' component={AddCard} />
-        <Route path='/decks' component={Decks} />
+        <Route exact path='/add' component={AddCard} />
+        <Route exact path='/decks' component={Decks} />
       </Switch>
     </Router>
   )
