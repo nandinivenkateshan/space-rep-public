@@ -1,11 +1,17 @@
 import React from 'react'
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
 import './App.css'
+import JsDeck from './JsDeck'
 
 function Decks () {
+  const { path, url } = useRouteMatch()
   return (
     <div className='decks'>
       <h1 className='decks-heading'>Decks</h1>
-      <a href=''>JavaScript</a>
+      <Link to={`${url}/javascript`}>JavaScript</Link>
+      <Switch>
+        <Route exact path={`${path}/javascript`} component={JsDeck} />
+      </Switch>
     </div>
   )
 }

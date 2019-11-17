@@ -6,12 +6,16 @@ import ContentEditable from 'react-contenteditable'
 import 'regenerator-runtime/runtime'
 
 function Cards () {
-  const [cards, setCard] = useState([])
-  const [question, setQuestion] = useState()
+  const [question, setQuestion] = useState('')
   const [answer, setAnswer] = useState('')
+  const [deck, setDeck] = useState('')
+
+  const handleDeck = e => {
+    return setDeck(e.target.value)
+  }
 
   const handleQuestion = e => {
-    setQuestion(e.target.innerText)
+    return setQuestion(e.target.innerText)
   }
 
   const handleAnswer = e => setAnswer(e.target.innerText)
@@ -35,25 +39,26 @@ function Cards () {
     await response.json()
   }
 
-  function handleSubmit (e) {
+  const handleSubmit = e => {
     e.preventDefault()
     const card = {
+      deck: deck,
       question: question,
       answer: answer
     }
     addToDb('http://localhost:3000/card', card)
-    setCard([card, ...cards])
     setAnswer('')
     setQuestion('')
+    setDeck('')
   }
 
-  function handleMarkUpQues () {
+  const handleMarkUpQues = () => {
     const converter = new showdown.Converter()
     const html = converter.makeHtml(question)
     return html
   }
 
-  function handleMarkUpAns () {
+  const handleMarkUpAns = () => {
     const converter = new showdown.Converter()
     const html = converter.makeHtml(answer)
     return html
@@ -63,6 +68,13 @@ function Cards () {
     <div>
       <form onSubmit={e => handleSubmit(e)}>
         <div className='field'>
+          <input
+            className='input-tag'
+            type='text'
+            placeholder='Enter the Deck'
+            onChange={(e) => handleDeck(e)}
+            value={deck}
+          />
           <ContentEditable
             html={handleMarkUpQues()}
             disabled={false}
