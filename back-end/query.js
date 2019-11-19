@@ -1,15 +1,17 @@
+require('dotenv').config()
 const Pool = require('pg').Pool
+
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'spacerep',
-  password: 'nandini123',
-  port: 5432
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT
 })
 
 const getCards = (req,res) => {
   pool.query('SELECT * FROM cards ORDER BY id ASC', (error, result) => {
-    if (error) console.log("Error while tetching data")
+    if (error) console.log("Error while fetching data")
     res.json(result.rows)
   }
   )

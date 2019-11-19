@@ -2,10 +2,24 @@ import React from 'react'
 import { useParams, Switch, Route, Link, useRouteMatch } from 'react-router-dom'
 
 function StudyNow (props) {
-  console.log(props)
-  // const {showid} = useParams
+  const { props: array } = props
+  const { id: deckName } = useParams()
+  function handleShow () {
+    
+  }
   return (
-    <div>Show QA</div>
+    <div className='study-box'>
+      <table className='study-table'>
+        <tr>
+          <th className='deck-name'>{deckName.toUpperCase()}</th>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>{array.length}</td>
+        </tr>
+      </table>
+      <button onClick={() => handleShow()}>Study Now</button>
+    </div>
   )
 }
 
