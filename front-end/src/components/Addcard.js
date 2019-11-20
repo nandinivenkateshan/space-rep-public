@@ -48,7 +48,7 @@ function Cards () {
       answer: answer
     }
     addToDb('http://localhost:3000/card', card)
-    setCards(card, ...cards)
+    setCards([card, ...cards])
     setAnswer('')
     setQuestion('')
     setDeck('')

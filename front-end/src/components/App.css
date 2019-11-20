@@ -64,9 +64,13 @@
 .deck-name {
     font-size: 20px;
     color: green;
-    margin-bottom: 10px;
+    padding: 10px;
 }
 
 .study-table {
     margin:0px auto 20px auto;
+}
+.study-table td {
+    padding: 10px;
+    text-align: center;
 }

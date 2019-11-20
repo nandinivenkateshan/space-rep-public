@@ -2,7 +2,7 @@ import React from 'react'
 import 'bulma/css/bulma.css'
 import './App.css'
 import logo from '../img/logo.jpeg'
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function NavBar () {
   return (
