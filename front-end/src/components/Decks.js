@@ -5,9 +5,11 @@ import StudyNow from './StudyNow'
 
 function Decks () {
   let array
+  const [curTime, setCurTime] = useState('')
   const [display, setDisplay] = useState(true)
   const [decks, setDecks] = useState([])
   const [studyDeck, setStudy] = useState('')
+
   useEffect(() => {
     async function getDataFromDb () {
       let data = await fetch('http://localhost:3000/cards')
@@ -24,6 +26,7 @@ function Decks () {
 
   function handleTotalDeck (e) {
     const deck = e.target.innerText.toLowerCase()
+    setCurTime(Date.now())
     setStudy(decks.filter(item => item.deck === deck))
     setDisplay(false)
   }
@@ -45,7 +48,7 @@ function Decks () {
             </ul>
           </div>}
         <Route exact path='/decks/:id'>
-          <StudyNow props={studyDeck} />
+          <StudyNow props={studyDeck} curTime={curTime} />
         </Route>
       </div>
     </Router>
