@@ -76,6 +76,14 @@
     text-align: center;
 }
 .study-btn {
-    margin-top: 300px;
+    margin-top:200px;
     font-size: 15px;
+}
+
+.answer-btns {
+    margin-top: 200px;
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    justify-content: center;
 }
