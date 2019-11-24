@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import parse from 'html-react-parser'
 
 function StudyNow (props) {
   let answerDiv, studyDiv, questionDiv
-  const { props: data, curTime } = props
+  const { props: data, deckClickTime } = props
   const [items, setItems] = useState(data)
   const [showQuestion, setShowQuestion] = useState(false)
   const [showStudy, setStudy] = useState(true)
@@ -12,7 +13,7 @@ function StudyNow (props) {
 
   useEffect(() => {
     const array = items.reduce((acc, cv) => {
-      if (curTime >= Number(cv.timestamp)) {
+      if (deckClickTime >= Number(cv.timestamp)) {
         acc.push(cv)
       }
       return acc
@@ -22,7 +23,7 @@ function StudyNow (props) {
   }, [])
 
   async function modifyUrl (url, data) {
-    const response = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -87,7 +88,7 @@ function StudyNow (props) {
   if (showQuestion && items.length) {
     questionDiv = (
       <div>
-        <h3>{items[0].question}</h3>
+        <h3>{parse(items[0].question)}</h3>
         <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>
       </div>
     )
@@ -96,7 +97,8 @@ function StudyNow (props) {
   if (showAnswer && items.length) {
     answerDiv = (
       <div>
-        <h3>{items[0].answer}</h3>
+        {/*aria attributes */}
+        <div>{parse(items[0].answer)}</div>
         <div className='answer-btns'>
           <label>&lt; 1 min</label>
           <label>&lt; 15 min</label>

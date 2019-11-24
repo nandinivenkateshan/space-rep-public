@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Switch, Route, Link, useRouteMatch, BrowserRouter as Router } from 'react-router-dom'
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import './App.css'
 import StudyNow from './StudyNow'
 
 function Decks () {
   let array
-  const [curTime, setCurTime] = useState('')
+  const [deckClickTime, setDeckClickTime] = useState('')
   const [display, setDisplay] = useState(true)
   const [decks, setDecks] = useState([])
   const [studyDeck, setStudy] = useState('')
@@ -26,10 +26,11 @@ function Decks () {
 
   function handleTotalDeck (e) {
     const deck = e.target.innerText.toLowerCase()
-    setCurTime(Date.now())
+    setDeckClickTime(Date.now())
     setStudy(decks.filter(item => item.deck === deck))
     setDisplay(false)
   }
+  // console.log('rendering')
 
   return (
     <Router>
@@ -48,7 +49,7 @@ function Decks () {
             </ul>
           </div>}
         <Route exact path='/decks/:id'>
-          <StudyNow props={studyDeck} curTime={curTime} />
+          <StudyNow props={studyDeck} deckClickTime={deckClickTime} />
         </Route>
       </div>
     </Router>
