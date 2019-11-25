@@ -102,6 +102,7 @@
 }
 .logo-items {
   display: flex;
+  text-decoration: none;
 }
 .signup-page .heading {
   text-align: center;
@@ -139,4 +140,9 @@
   grid-column: 2 / 3;
   margin-top:20px;
   justify-self: start;
+}
+.signup-nav .signIn {
+  text-decoration: none;
+  align-self: center;
+  font-weight: bold;
 }
