@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import logo from '../img/logo.jpeg'
 import './App.css'
 import useForm from './useForm'
-import validate from './LoginFormValidation'
+import validate from './SignUPFormValidation'
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
 function SignUp () {
@@ -27,7 +27,6 @@ function SignUp () {
           <p className='sub-heading'>It's free and always will be.</p>
           <form className='signup-form' onSubmit={(e) => handleSubmit(e)}>
             <label htmlFor='username' className='label'>Username</label>
-            {console.log(errors.user_name)}
             <input
               type='text' placeholder='Enter your name' id='username'
               name='user_name' className={`input${errors.user_name && 'invalid'}`} required

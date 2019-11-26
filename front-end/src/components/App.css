@@ -159,3 +159,8 @@
   color: red;
   grid-column: 2 / 4;
 }
+
+.reset-pswd {
+  display: block;
+  text-align: center;
+}
