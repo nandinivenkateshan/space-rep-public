@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-function useForm (callback) {
+function useForm (callback, validate) {
   const [values, setValues] = useState({})
+  const [errors, setErrors] = useState({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      callback()
+    }
+  }, [errors])
 
   const handleSubmit = e => {
     if (e) e.preventDefault()
-    callback()
+    setIsSubmitting(true)
+    setErrors(validate(values))
   }
 
   const handleChange = (event) => {
@@ -16,7 +25,8 @@ function useForm (callback) {
   return {
     handleChange,
     handleSubmit,
-    values
+    values,
+    errors
   }
 }
 
