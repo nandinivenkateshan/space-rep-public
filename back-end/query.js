@@ -9,43 +9,63 @@ const pool = new Pool({
   port: process.env.DB_PORT
 })
 
+/* User Details */
+
+const getUserDetails = (req, res) => {
+  pool.query ('SELECT * FROM signup', (error,result) => {
+    if (error) console.log("Error while fetching the user details")
+    else res.send('Successfull')
+  })
+}
+
+const addUserDetails = (req,res) => {
+const {user_name, user_email,pswd} = req.body
+  pool.query ('INSERT INTO signup (user_name, user_email, pswd) VALUES ($1,$2,$3)', [user_name,user_email,pswd], (error,result) => {
+    if (error) {
+      console.log(error)
+    throw error
+    } else{
+     res.send('Created data successfully')
+    }
+  })
+}
+
+1
+
+ /* cards details */
 const getCards = (req,res) => {
   pool.query('SELECT * FROM cards ORDER BY id ASC', (error, result) => {
     if (error) console.log("Error while fetching data")
-    res.json(result.rows)
-  }
-  )
-}
-
-const updateDate = (req, res) => {
-  const id = parseInt(req.body.id)
-  const displayDate = req.body.displayDate
-  const date = req.body.date
-  pool.query('UPDATE todo SET displayDate = $1, date = $2 WHERE id = $3', [displayDate, date, id], (error, result) => {
-    if (error) throw error
-    res.status(200).send('User modified date')
+    else res.json('Success')
   })
 }
+
+const addCard = (req, res) => {
+  const { deck,question, answer } = req.body
+  pool.query('INSERT INTO cards (deck, question, answer) VALUES ($1,$2,$3) RETURNING id', [deck, question, answer ], (error, result) => {
+    if (error) console.log('Error while adding card')
+    else {
+       res.send(result.rows)
+      }
+  })
+}
+
+
 
 const updateTimeStamp = (req,res) => {
   const id = req.body.id
   const timeStamp = req.body.timeStamp
   pool.query('UPDATE cards SET timestamp=$1 WHERE id=$2',[timeStamp, id],(error,result) => {
     if(error) console.log('Error while updating timeStamp')
-    res.send('Updated timeStamp successfully')
+    else res.send('Updated timeStamp successfully')
   })
 } 
 
-const addCard = (req, res) => {
-    const { deck,question, answer } = req.body
-    pool.query('INSERT INTO cards (deck, question, answer) VALUES ($1,$2,$3) RETURNING id', [deck, question, answer ], (error, result) => {
-      if (error) console.log('Error while adding card')
-      res.send(result.rows)
-    })
-  }
 
   module.exports = {
       addCard,
       getCards,
-      updateTimeStamp
+      updateTimeStamp,
+      getUserDetails,
+      addUserDetails
   }

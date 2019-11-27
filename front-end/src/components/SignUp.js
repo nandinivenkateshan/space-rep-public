@@ -6,10 +6,28 @@ import validate from './SignUPFormValidation'
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
 function SignUp () {
+  const [userDetails, setUserDetails] = useState([])
   const { handleChange, handleSubmit, values, errors } = useForm(login, validate)
 
+  const modifyUrl = async (url, data) => {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const response = await res
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   function login () {
-    console.log(values)
+    setUserDetails([...userDetails, values])
+    modifyUrl('http://localhost:3000/addUserDetails', values)
   }
 
   return (

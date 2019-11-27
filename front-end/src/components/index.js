@@ -9,4 +9,4 @@ import Login from './Login'
 if (module.hot) {
   module.hot.accept()
 }
-ReactDOM.render(<Login />, document.getElementById('root'))
+ReactDOM.render(<SignUp />, document.getElementById('root'))

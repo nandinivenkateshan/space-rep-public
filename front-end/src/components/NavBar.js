@@ -13,7 +13,7 @@ function NavBar () {
           <img src={logo} alt='logo' width='70' height='30' className='logo' />
         </Link>
 
-        <Link role='button' className='navbar-burger' aria-label='menu' aria-expanded='false'>
+        <Link role='button' className='navbar-burger' aria-label='menu' aria-expanded='false' to=''>
           <span aria-hidden='true' />
           <span aria-hidden='true' />
           <span aria-hidden='true' />
