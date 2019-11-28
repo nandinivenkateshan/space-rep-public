@@ -20,6 +20,7 @@ const getUserDetails = (req, res) => {
 
 const addUserDetails = (req,res) => {
 const {user_name, user_email,pswd} = req.body
+console.log(req.body)
   pool.query ('INSERT INTO signup (user_name, user_email, pswd) VALUES ($1,$2,$3)', [user_name,user_email,pswd], (error,result) => {
     if (error) {
       res.send({error: "Email already exist"})

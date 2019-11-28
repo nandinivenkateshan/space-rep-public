@@ -1,0 +1,61 @@
+* {
+  margin: 0px;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  border-radius: 50%;
+}
+.logo-text {
+  font-weight: bold;
+  font-size: 20px;
+  align-self: center;
+  color: rgb(20, 20, 90);
+  text-shadow: 3px 3px 3px rgb(201, 129, 129);
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(189, 178, 178);
+  padding: 0px 10px 0px 20px;
+  margin-bottom: 40px;
+}
+.logos {
+  display: flex;
+  text-decoration: none;
+  padding: 10px;
+}
+.btns {
+  margin: 20px 40px 0px 0px;
+}
+.signup-btn,.login-btn {
+  text-decoration: none;
+  background-color: rgb(20, 20, 90);
+  color: rgb(235, 228, 228);
+  padding: 8px;
+  font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 5px 5px 2px rgb(179, 125, 125);
+  text-align: center;
+  margin: 0px 20px 0px 0px 
+}
+
+.login-btn:hover, .signup-btn:hover {
+    color:rgb(36, 73, 36);
+    background-color: rgb(134, 134, 184);
+    box-shadow: 5px 5px 2px green;  
+  }
+.about {
+    margin:10px 100px 0px 100px;
+    
+}
+.about .first-para {
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+.about .second-para {
+    font-size: 18px;
+    line-height: 1.5;
+}

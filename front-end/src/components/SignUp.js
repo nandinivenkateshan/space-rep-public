@@ -27,6 +27,7 @@ function SignUp () {
 
   function login () {
     modifyUrl('http://localhost:3000/addUserDetails', values)
+    console.log(values)
     setUserDetails([...userDetails, values])
   }
 
@@ -75,7 +76,7 @@ function SignUp () {
             {errors.pswd && (
               <p className='invalid-para'>{errors.pswd}</p>
             )}
-            <Link className='signup-btn' to='/createdecks'>Sign Up </Link>
+            <button className='signup-btn'>Sign Up </button>
           </form>
           {status && resMsg.success &&
             <p className='acc-success'>Account Created Successfully...</p>}
