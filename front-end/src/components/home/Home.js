@@ -13,8 +13,8 @@ function SignUp () {
             <img src={logo} alt='logo' className='logo' />
           </Link>
           <aside className='btns'>
-            <Link to='/register' className='signup-btn'> Sign Up </Link>
-            <Link to='/register' className='login-btn'> Log In </Link>
+            <Link to='/signup' className='signup-btn'> Sign Up </Link>
+            <Link to='/login' className='login-btn'> Log In </Link>
           </aside>
         </nav>
         <section className='about'>

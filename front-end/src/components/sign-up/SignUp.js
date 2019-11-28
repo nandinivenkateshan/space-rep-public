@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import logo from '../img/logo.jpeg'
-import './App.css'
+import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
-// import createdecks from './App.jsx'
 import {Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
 function SignUp () {
@@ -39,7 +38,7 @@ function SignUp () {
             <label className='logo-text'>SpaceRep</label>
             <img src={logo} alt='logo' width='70' height='30' className='logo' />
           </Link>
-          <Link to='/register' className='signIn'>Log In</Link>
+          <Link to='/login' className='login-btn'>Log In</Link>
         </nav>
         <section className='signup-box'>
           <h1 className='heading'>Create a new account</h1>
