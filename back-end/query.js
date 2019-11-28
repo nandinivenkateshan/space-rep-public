@@ -14,7 +14,7 @@ const pool = new Pool({
 const getUserDetails = (req, res) => {
   pool.query ('SELECT * FROM signup', (error,result) => {
     if (error) console.log("Error while fetching the user details")
-    else res.send('Successfull')
+    else res.json(result.rows)
   })
 }
 
@@ -22,10 +22,9 @@ const addUserDetails = (req,res) => {
 const {user_name, user_email,pswd} = req.body
   pool.query ('INSERT INTO signup (user_name, user_email, pswd) VALUES ($1,$2,$3)', [user_name,user_email,pswd], (error,result) => {
     if (error) {
-      console.log(error)
-    throw error
+      res.send({error: "Email already exist"})
     } else{
-     res.send('Created data successfully')
+      res.send({success:"Added user details successfully"})
     }
   })
 }
@@ -36,7 +35,7 @@ const {user_name, user_email,pswd} = req.body
 const getCards = (req,res) => {
   pool.query('SELECT * FROM cards ORDER BY id ASC', (error, result) => {
     if (error) console.log("Error while fetching data")
-    else res.json('Success')
+    else res.json(result.rows)
   })
 }
 
@@ -49,6 +48,7 @@ const addCard = (req, res) => {
       }
   })
 }
+
 
 
 

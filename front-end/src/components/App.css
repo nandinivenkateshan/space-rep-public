@@ -142,6 +142,17 @@
   grid-column: 2 / 3;
   margin-top:20px;
   justify-self: start;
+  background-color:rgb(20, 20, 90);
+  color: rgb(235, 228, 228);
+  font-weight: bold;
+  padding:6px;
+  border-radius: 6px;
+  box-shadow: 5px 5px 2px grey;
+}
+.signup-btn:hover {
+  color:rgb(36, 73, 36);
+  background-color: rgb(134, 134, 184);
+  box-shadow: 5px 5px 2px green;  
 }
 .signup-nav .signIn {
   text-decoration: none;
@@ -158,9 +169,20 @@
 .invalid-para {
   color: red;
   grid-column: 2 / 4;
+  font-size: 14px;
 }
 
 .reset-pswd {
   display: block;
   text-align: center;
+}
+.signup-box .acc-success {
+text-align: center;
+font-size:16px;
+color: green;
+}
+.signup-box .acc-exist-already {
+  text-align: center;
+  font-size:16px;
+  color: red; 
 }

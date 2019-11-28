@@ -1,33 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import logo from '../img/logo.jpeg'
 import './App.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+// import createdecks from './App.jsx'
+import {Route, Link, BrowserRouter as Router } from 'react-router-dom'
 
 function SignUp () {
+  const [status, setStatus] = useState('')
+  const [resMsg, setResMsg] = useState({})
   const [userDetails, setUserDetails] = useState([])
   const { handleChange, handleSubmit, values, errors } = useForm(login, validate)
 
   const modifyUrl = async (url, data) => {
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      const response = await res
-      console.log(response)
-    } catch (error) {
-      console.log(error)
-    }
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const response = await res.json()
+    setStatus(res.ok)
+    setResMsg(response)
   }
 
   function login () {
-    setUserDetails([...userDetails, values])
     modifyUrl('http://localhost:3000/addUserDetails', values)
+    setUserDetails([...userDetails, values])
   }
 
   return (
@@ -38,7 +38,7 @@ function SignUp () {
             <label className='logo-text'>SpaceRep</label>
             <img src={logo} alt='logo' width='70' height='30' className='logo' />
           </Link>
-          <Link to='/register' className='signIn'>Sign In</Link>
+          <Link to='/register' className='signIn'>Log In</Link>
         </nav>
         <section className='signup-box'>
           <h1 className='heading'>Create a new account</h1>
@@ -47,7 +47,7 @@ function SignUp () {
             <label htmlFor='username' className='label'>Username</label>
             <input
               type='text' placeholder='Enter your name' id='username'
-              name='user_name' className={`input${errors.user_name && 'invalid'}`} required
+              name='user_name' className={`input${errors.user_name && 'invalid'}`}
               onChange={(e) => handleChange(e)}
               value={values.user_name || ''}
             />
@@ -70,13 +70,17 @@ function SignUp () {
               className={`input${errors.pswd && 'invalid'}`} placeholder='Enter the password'
               onChange={(e) => handleChange(e)}
               value={values.pswd || ''}
-              required
+              minLength='6'
             />
             {errors.pswd && (
               <p className='invalid-para'>{errors.pswd}</p>
             )}
-            <button className='signup-btn'>Sign Up </button>
+            <Link className='signup-btn' to='/createdecks'>Sign Up </Link>
           </form>
+          {status && resMsg.success &&
+            <p className='acc-success'>Account Created Successfully...</p>}
+          {status && resMsg.error &&
+              (<p className='acc-exist-already'>Sorry, an account with this email address already exists.</p>)}
         </section>
       </main>
     </Router>
