@@ -30,6 +30,18 @@
   font-size: 15px;
 }
 
+
+.signup-btn {
+  grid-column: 2 / 3;
+  margin-top: 20px;
+  justify-self: start;
+  background-color: rgb(20, 20, 90);
+  color: rgb(235, 228, 228);
+  font-weight: bold;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 5px 5px 2px grey;
+}
 .signup-nav {
   display: flex;
   justify-content: space-between;
@@ -73,18 +85,7 @@
   align-self: start;
   border: 1px solid black;
 }
-.signup-btn {
-  grid-column: 2 / 3;
-  margin-top: 20px;
-  justify-self: start;
-  background-color: rgb(20, 20, 90);
-  color: rgb(235, 228, 228);
-  font-weight: bold;
-  padding: 6px;
-  border-radius: 6px;
-  box-shadow: 5px 5px 2px grey;
-}
-.login-btn {
+.login-btn-nav {
   text-decoration: none;
   background-color: rgb(20, 20, 90);
   color: rgb(235, 228, 228);
@@ -97,7 +98,7 @@
   margin: auto 40px;
 }
 .signup-btn:hover,
-.login-btn:hover {
+.login-btn-nav:hover {
   color: rgb(36, 73, 36);
   background-color: rgb(134, 134, 184);
   box-shadow: 5px 5px 2px green;

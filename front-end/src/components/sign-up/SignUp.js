@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import logo from '../img/logo.jpeg'
+import 'regenerator-runtime/runtime'
 import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
-import {Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Link, BrowserRouter as Router } from 'react-router-dom'
 
 function SignUp () {
   const [status, setStatus] = useState('')
@@ -26,7 +27,6 @@ function SignUp () {
 
   function login () {
     modifyUrl('http://localhost:3000/addUserDetails', values)
-    console.log(values)
     setUserDetails([...userDetails, values])
   }
 
@@ -38,7 +38,7 @@ function SignUp () {
             <label className='logo-text'>SpaceRep</label>
             <img src={logo} alt='logo' width='70' height='30' className='logo' />
           </Link>
-          <Link to='/login' className='login-btn'>Log In</Link>
+          <Link to='/login' className='login-btn-nav'>Log In</Link>
         </nav>
         <section className='signup-box'>
           <h1 className='heading'>Create a new account</h1>

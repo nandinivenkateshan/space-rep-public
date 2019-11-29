@@ -24,7 +24,7 @@ function NavBar () {
         <div className='navbar-start'>
           <Link className='navbar-item' to='/decks'> Decks</Link>
           <Link className='navbar-item' to='/add'> Add</Link>
-          <Link className='navbar-item' to=''> Search</Link>
+          <Link className='navbar-item' to='/search'> Search</Link>
         </div>
 
         <div className='navbar-end'>

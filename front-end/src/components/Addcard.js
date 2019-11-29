@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import 'bulma/css/bulma.css'
 import './App.css'
+import NavBar from './NavBar'
 import showdown from 'showdown'
 import 'regenerator-runtime/runtime'
 
@@ -64,6 +65,7 @@ function Cards () {
 
   return (
     <div>
+      <NavBar />
       <form onSubmit={e => handleSubmit(e)}>
         <div className='field'>
 

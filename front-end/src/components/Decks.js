@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import NavBar from './NavBar'
 import './App.css'
 import StudyNow from './StudyNow'
 
@@ -30,10 +31,10 @@ function Decks () {
     setStudy(decks.filter(item => item.deck === deck))
     setDisplay(false)
   }
-  // console.log('rendering')
 
   return (
     <Router>
+      <NavBar />
       <div className='decks'>
         {display &&
           <div>

@@ -73,6 +73,14 @@
     align-self: start;
     border: 1px solid black;
   }
+  .login-form .inputinvalid {
+    border: 1px solid red;
+    grid-column: 2 / 4;
+    padding: 5px;
+    border-radius: 5px;
+    align-self: start;
+  }
+
   .login-btn {
     grid-column: 2 / 3;
     margin-top: 20px;
@@ -80,23 +88,24 @@
     background-color: rgb(20, 20, 90);
     color: rgb(235, 228, 228);
     font-weight: bold;
-    padding: 6px;
+    width: 60px;
+    padding: 8px;
     border-radius: 6px;
     box-shadow: 5px 5px 2px grey;
+    font-size:15px;
   }
-  .signup-btn {
+  .signup-btn-nav {
     text-decoration: none;
     background-color: rgb(20, 20, 90);
     color: rgb(235, 228, 228);
-    width: 60px;
-    padding: 5px;
+    padding: 7px;
     font-weight: bold;
     border-radius: 6px;
     box-shadow: 5px 5px 2px rgb(179, 125, 125);
     text-align: center;
     margin: auto 40px;
   }
-  .signup-btn:hover,
+  .signup-btn-nav:hover,
   .login-btn:hover {
     color: rgb(36, 73, 36);
     background-color: rgb(134, 134, 184);
@@ -115,4 +124,11 @@
   }
   .reset-pswd:hover{
       color: rgb(77, 66, 20);
+  }
+  .acc-not-exist-msg {
+    color: rgb(235, 48, 48);
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 40px;
+    text-shadow: 3px 3px 7px grey;
   }
