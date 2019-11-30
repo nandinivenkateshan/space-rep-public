@@ -72,27 +72,19 @@ function StudyNow (props) {
   if (showStudy) {
     studyDiv = (
       <div className='study-box'>
-        <table className='study-table'>
-          <thead>
-            <tr>
-              <th className='deck-name'>{deckName.toUpperCase()}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Total</td>
-              <td>{items.length}</td>
-            </tr>
-          </tbody>
-        </table>
-        <button onClick={() => handleStudy()}>Study Now</button>
+        <h1 className='heading'>{deckName.toUpperCase()}</h1>
+        <div className='details'>
+          <label>Total</label>
+          <label>{items.length}</label>
+        </div>
+        <button onClick={() => handleStudy()} className='study-btn'>Study Now</button>
       </div>)
   }
 
   if (showQuestion && items.length) {
     questionDiv = (
-      <div>
-        <h3>{parse(items[0].question)}</h3>
+      <div className='showQuestion-box'>
+        <h4 className='showQuestion'>{parse(items[0].question)}</h4>
         <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>
       </div>
     )
@@ -100,18 +92,18 @@ function StudyNow (props) {
 
   if (showAnswer && items.length) {
     answerDiv = (
-      <div>
-        {/* aria attributes */}
-        <div>{parse(items[0].answer)}</div>
-        <div className='answer-btns'>
+      <div className='showAnswer-box'>
+        <div className='showAnswer'>{parse(items[0].answer)}</div>
+        <div className='timings'>
           <label>&lt; 1 min</label>
           <label>&lt; 15 min</label>
           <label>1 day</label>
-          <button onClick={() => handleAgainAnswer(items[0].id)}>Again</button>
-          <button onClick={() => handleEasyAnswer(items[0].id)}>Easy</button>
-          <button onClick={() => handleGoodAnswer(items[0].id)}>Good</button>
         </div>
-
+        <div className='answer-btns'>
+          <button onClick={() => handleAgainAnswer(items[0].id)} className='btn'>Again</button>
+          <button onClick={() => handleEasyAnswer(items[0].id)} className='btn'>Easy</button>
+          <button onClick={() => handleGoodAnswer(items[0].id)} className='btn'>Good</button>
+        </div>
       </div>
     )
   }

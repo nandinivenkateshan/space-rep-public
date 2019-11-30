@@ -6,18 +6,67 @@
     width: 300px;
 }
 .decks-heading {
-  text-align: center;
   color: red;
   font-size:30px;
   text-shadow: 1px 1px 1px grey;
   margin-bottom: 20px;
+  text-align: center;
 }
 .deck {
     text-decoration: none;
-    margin: 70px;
+    margin-left: 80px;
 }
 .list{
     list-style-type:none;
     margin-bottom:5px;
 }
+.study-box {
+    display: grid;
+    grid-template-rows: 2fr 2fr 1fr;
+}
+.details{
+    display: flex;
+    justify-content: space-evenly;
 
+}
+.study-box .heading {
+    text-align: center;
+    color: red;
+    font-size:30px;
+    text-shadow: 1px 1px 1px grey;
+}
+
+.study-box .study-btn {
+    width: 100px;
+    padding: 3px;
+    border-radius: 6px;
+    background-color: rgb(99, 99, 49);
+    color: white;
+    font-weight: bold;  
+    font-size: 15px; 
+    margin: auto;
+}
+
+.showQuestion-box {
+    display: grid;
+    grid-template-rows: 10fr 1fr; 
+}
+.showQuestion-box .study-btn, .answer-btns .btn  {
+    width: 100px;
+    margin:0px auto;
+    border-radius: 6px;
+    background-color: rgb(99, 99, 49);
+    height: 40px;
+    color: white;
+}
+.showQuestion-box .showQuestion, .showAnswer-box .showAnswer {
+    margin: 0px auto;
+}
+.showAnswer-box {
+    display: grid;
+    grid-template-rows: 9fr 1fr 1fr;
+}
+.showAnswer-box .timings {
+    display: flex;
+    justify-content: space-evenly;
+}
