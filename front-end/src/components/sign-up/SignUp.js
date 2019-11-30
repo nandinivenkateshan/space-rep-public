@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import logo from '../img/logo.jpeg'
 import 'regenerator-runtime/runtime'
 import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
-import { Link } from 'react-router-dom'
-import Navbar from '../navbar/nav'
+import Navbar from '../navbar/nav-register'
 
 function SignUp () {
   const [status, setStatus] = useState('')
@@ -17,7 +15,7 @@ function SignUp () {
   )
 
   const modifyUrl = async (url, data) => {
-    const res = await fetch(url, {
+    const res = await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -36,7 +34,7 @@ function SignUp () {
 
   return (
     <main className='signup-page'>
-      <Navbar login='login' />
+      <Navbar login='logIn' />
       <section className='signup-box'>
         <h1 className='heading'>Create a new account</h1>
         <p className='sub-heading'>It's free and always will be.</p>

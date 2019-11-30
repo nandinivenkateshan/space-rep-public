@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import 'bulma/css/bulma.css'
 import './App.css'
-import NavBar from './NavBar'
+import NavBar from './App'
 import showdown from 'showdown'
 import 'regenerator-runtime/runtime'
 

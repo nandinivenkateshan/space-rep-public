@@ -2,27 +2,6 @@
     margin: 0px;
   }
   
-  .logo-text {
-    font-weight: bold;
-    font-size: 20px;
-    align-self: center;
-    color: rgb(20, 20, 90);
-  }
-  
-  .navbar-menu {
-    font-size: 14px;
-  }
-  
-  .navbar {
-    background-color: rgb(212, 202, 202);
-    padding: 0px 10px 0px 20px;
-    margin-bottom: 40px;
-  }
-  .logo {
-    height: 40px;
-    width: auto;
-    border-radius: 50%;
-  }
   .input-tag {
     border: 1px solid black;
     padding: 10px 40px 10px 10px;
@@ -30,15 +9,6 @@
     font-size: 15px;
   }
   
-  .navbar{
-    display: flex;
-    justify-content: space-between;
-    padding: 16px;
-  }
-  .logo-items {
-    display: flex;
-    text-decoration: none;
-  }
   .main .heading {
     font-weight: bold;
     font-size: 20px;

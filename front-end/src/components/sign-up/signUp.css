@@ -18,15 +18,6 @@
   border-radius: 6px;
   box-shadow: 5px 5px 2px grey;
 }
-.signup-nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px;
-}
-.logo-items {
-  display: flex;
-  text-decoration: none;
-}
 .signup-page .heading {
   font-weight: bold;
   font-size: 20px;

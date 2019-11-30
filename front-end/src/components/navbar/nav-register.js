@@ -1,13 +1,13 @@
 import React from 'react'
 import logo from '../img/logo.jpeg'
 import './nav.css'
-import { Link, BrowserRouter as Router } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function Navbar (props) {
   const { signup, login } = props
   return (
     <main className='main'>
-      <nav className='navbar'>
+      <nav className='nav-bar'>
         <Link to='/' className='logos'>
           <label className='logo-text'>SpaceRep</label>
           <img src={logo} alt='logo' className='logo' />

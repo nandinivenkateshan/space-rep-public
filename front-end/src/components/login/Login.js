@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './login.css'
 import { Link, Redirect } from 'react-router-dom'
-import Navbar from '../navbar/nav'
+import Navbar from '../navbar/nav-register'
 
 function Login () {
   const [data, setData] = useState()
@@ -56,7 +56,7 @@ function Login () {
 
   return (
     <main className='main'>
-      <Navbar signup='signup' />
+      <Navbar signup='signUp' />
       <section className='login-box'>
         <h1 className='heading'>Login</h1>
         <p className='sub-heading'>Log in to an existing account.</p>

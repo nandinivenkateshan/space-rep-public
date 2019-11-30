@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
-import NavBar from './NavBar'
+import NavBar from './App'
 import './App.css'
 import StudyNow from './StudyNow'
 

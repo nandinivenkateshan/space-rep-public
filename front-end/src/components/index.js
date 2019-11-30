@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Routes from './Router.js'
-// import Home from './home/Home'
-//import Navbar from './navbar/nav'
+// import App from './App'
 
 // Hot module replacement (HMR)
 // if (module.hot) {
