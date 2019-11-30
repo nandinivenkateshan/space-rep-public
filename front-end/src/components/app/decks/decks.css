@@ -1,0 +1,23 @@
+* {
+  margin: 0px;
+}
+.decks {
+    margin: 50px auto;
+    width: 300px;
+}
+.decks-heading {
+  text-align: center;
+  color: red;
+  font-size:30px;
+  text-shadow: 1px 1px 1px grey;
+  margin-bottom: 20px;
+}
+.deck {
+    text-decoration: none;
+    margin: 70px;
+}
+.list{
+    list-style-type:none;
+    margin-bottom:5px;
+}
+

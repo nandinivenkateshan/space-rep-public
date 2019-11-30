@@ -5,6 +5,7 @@ import showdown from 'showdown'
 import 'regenerator-runtime/runtime'
 
 function Addcard () {
+  const [isSubmit, setIssubmit] = useState(false)
   const [markQ, setMarkQ] = useState('')
   const [markAns, setMarkAns] = useState('')
   const [cards, setCards] = useState([])
@@ -45,6 +46,7 @@ function Addcard () {
     }
     addToDb('http://localhost:3000/card', card)
     setCards([card, ...cards])
+    setIssubmit(true)
     setAnswer('')
     setQuestion('')
     setDeck('')
@@ -73,6 +75,7 @@ function Addcard () {
             placeholder='Enter the Deck'
             onChange={(e) => handleDeck(e)}
             value={deck}
+            required
           />
           <textarea
             className='question-box'
@@ -80,14 +83,18 @@ function Addcard () {
             value={question}
             onChange={(event) => handleQuestion(event)}
             onBlur={() => handleQuestionBlur()}
+            required
           />
           <textarea
             className='answer-box'
             placeholder='Enter the Answer'
             value={answer} onChange={(event) => handleAnswer(event)}
             onBlur={() => handleAnswerBlur()}
+            required
           />
           <button className='save-btn'>Save</button>
+          {isSubmit &&
+            <p className='isSubmit-para'>Added Successfully</p>}
         </section>
       </form>
     </main>

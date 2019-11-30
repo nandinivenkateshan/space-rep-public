@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
-import NavBar from './App'
-import './App.css'
+import { Route, Link } from 'react-router-dom'
+import NavBar from '../navbar/Navbar'
+import './decks.css'
 import StudyNow from './StudyNow'
 
 function Decks () {
@@ -13,7 +13,7 @@ function Decks () {
 
   useEffect(() => {
     async function getDataFromDb () {
-      let data = await fetch('http://localhost:3000/cards')
+      let data = await window.fetch('http://localhost:3000/cards')
       data = await data.json()
       setDecks(data)
     }
@@ -21,8 +21,11 @@ function Decks () {
   }, []);
 
   (function a () {
-    array = decks.map(item => item.deck)
-    array = Array.from(new Set(array))
+    array = decks.reduce((acc, cv) => {
+      const val = acc.find(item => item.deck === cv.deck)
+      if (!val) return acc.concat(cv)
+      return acc
+    }, [])
   }())
 
   function handleTotalDeck (e) {
@@ -33,17 +36,22 @@ function Decks () {
   }
 
   return (
-    <Router>
+    <main>
       <NavBar />
-      <div className='decks'>
+      <section className='decks'>
         {display &&
           <div>
             <h1 className='decks-heading'>Decks</h1>
             <ul>
               {array.map(item => {
                 return (
-                  <li key={Date.now()}>
-                    <Link to={`/decks/${item.toLowerCase()}`} onClick={(e) => handleTotalDeck(e)}> {item.toUpperCase()}</Link>
+                  <li key={item.id} className='list'>
+                    <Link
+                      to={`/decks/${item.deck.toLowerCase()}`}
+                      onClick={(e) => handleTotalDeck(e)} className='deck'
+                    >
+                      {item.deck.toUpperCase()}
+                    </Link>
                   </li>
                 )
               })}
@@ -52,8 +60,8 @@ function Decks () {
         <Route exact path='/decks/:id'>
           <StudyNow props={studyDeck} deckClickTime={deckClickTime} />
         </Route>
-      </div>
-    </Router>
+      </section>
+    </main>
   )
 }
 
