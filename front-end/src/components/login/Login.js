@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './login.css'
+import 'regenerator-runtime/runtime'
 import { Link, Redirect } from 'react-router-dom'
-import Navbar from '../navbar/nav-register'
+import Navbar from '../navbar/Nav-register'
 
 function Login () {
   const [data, setData] = useState()

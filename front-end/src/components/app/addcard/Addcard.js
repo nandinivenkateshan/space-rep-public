@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import 'bulma/css/bulma.css'
-import './App.css'
-import NavBar from './App'
+import './addcard.css'
+import NavBar from '../navbar/Navbar'
 import showdown from 'showdown'
 import 'regenerator-runtime/runtime'
 
-function Cards () {
+function Addcard () {
   const [markQ, setMarkQ] = useState('')
   const [markAns, setMarkAns] = useState('')
   const [cards, setCards] = useState([])
@@ -28,7 +27,7 @@ function Cards () {
   }
 
   async function addToDb (url, data) {
-    await fetch(url, {
+    await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -64,42 +63,35 @@ function Cards () {
   }
 
   return (
-    <div>
+    <main>
       <NavBar />
       <form onSubmit={e => handleSubmit(e)}>
-        <div className='field'>
-
+        <section className='field'>
           <input
-            className='input-tag'
+            className='input-box'
             type='text'
             placeholder='Enter the Deck'
             onChange={(e) => handleDeck(e)}
             value={deck}
           />
-          <div className='control'>
-            <textarea
-              className='textarea is-danger has-fixed-size'
-              placeholder='Enter the Question'
-              value={question}
-              onChange={(event) => handleQuestion(event)}
-              onBlur={() => handleQuestionBlur()}
-            />
-          </div>
-          <div className='control'>
-            <textarea
-              className='textarea is-focused has-fixed-size'
-              placeholder='Enter the Answer'
-              value={answer} onChange={(event) => handleAnswer(event)}
-              onBlur={() => handleAnswerBlur()}
-            />
-          </div>
-        </div>
-        <div className='has-text-centered'>
-          <button className='button is-success is-rounded is-center'>Save</button>
-        </div>
+          <textarea
+            className='question-box'
+            placeholder='Enter the Question'
+            value={question}
+            onChange={(event) => handleQuestion(event)}
+            onBlur={() => handleQuestionBlur()}
+          />
+          <textarea
+            className='answer-box'
+            placeholder='Enter the Answer'
+            value={answer} onChange={(event) => handleAnswer(event)}
+            onBlur={() => handleAnswerBlur()}
+          />
+          <button className='save-btn'>Save</button>
+        </section>
       </form>
-    </div>
+    </main>
   )
 }
 
-export default Cards
+export default Addcard

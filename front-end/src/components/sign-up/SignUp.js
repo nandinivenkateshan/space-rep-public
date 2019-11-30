@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime'
 import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
-import Navbar from '../navbar/nav-register'
+import Navbar from '../navbar/Nav-register'
 
 function SignUp () {
   const [status, setStatus] = useState('')

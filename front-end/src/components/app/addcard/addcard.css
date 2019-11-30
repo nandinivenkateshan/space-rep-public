@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+.field {
+    margin-top: 60px;
+    display: grid;
+    grid-gap: 30px;
+    justify-content: center;
+  }
+  .input-box {
+      border: 1px solid grey;
+    padding: 10px 40px 10px 10px;
+    width: 300px;
+    font-size: 15px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px grey;
+  }
+  .question-box, .answer-box {
+    padding: 10px 40px 60px 10px;
+    width: 300px;
+    font-size: 15px;
+    resize: none;
+    box-shadow: 2px 2px 2px grey;
+  }
+  /* .question-box:empty:before,
+  .answer-box:empty:before {
+    content: attr(data-placeholder);
+    color: grey;
+    display: inline-block;
+  } */
+
+  .save-btn {
+      width: 60px;
+      margin: auto;
+      padding: 6px;
+      border-radius: 6px;
+      background-color: green;
+      color: white;
+      font-weight: bold;  
+      font-size: 15px;
+  }
+ 
+
+/* 
+
+.question,
+.answer {
+  border: 1px solid black;
+  padding: 10px 40px 60px 10px;
+  width: 300px;
+  font-size: 15px;
+}
+.input-tag {
+    border: 1px solid black;
+    padding: 10px 40px 10px 10px;
+    width: 300px;
+    font-size: 15px;
+  }
+
+  .study-box {
+    border: 1px solid black;
+    width: 500px;
+    margin: 30px auto;
+    padding: 10px;
+  } */

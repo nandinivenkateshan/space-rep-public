@@ -2,9 +2,9 @@ import React from 'react'
 import Home from './home/Home'
 import SignUp from './sign-up/SignUp'
 import Login from './login/Login'
-import Navbar from './app/navbar/navbar'
-// import Decks from './Decks'
-// import Addcard from './Addcard'
+import Navbar from './app/navbar/Navbar'
+// // import Decks from './Decks'
+import Addcard from './app/addcard/Addcard'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 function routes () {
@@ -15,8 +15,8 @@ function routes () {
         <Route path='/signup' component={SignUp} />
         <Route path='/login' component={Login} />
         <Route path='/loggedIn' component={Navbar} />
-        {/* <Route path='/decks' component={Decks} />
-        <Route path='/add' component={Addcard} /> */}
+        {/* <Route path='/decks' component={Decks} /> */}
+        <Route path='/add' component={Addcard} />
       </Switch>
     </Router>
   )
