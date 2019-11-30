@@ -4,7 +4,8 @@ import './App.css'
 import logo from '../img/logo.jpeg'
 import { Link } from 'react-router-dom'
 
-function NavBar () {
+function NavBar (props) {
+
   return (
     <nav className='navbar' role='navigation' aria-label='main navigation'>
       <div className='navbar-brand'>

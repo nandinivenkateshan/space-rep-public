@@ -73,13 +73,17 @@ function StudyNow (props) {
     studyDiv = (
       <div className='study-box'>
         <table className='study-table'>
-          <tr>
-            <th className='deck-name'>{deckName.toUpperCase()}</th>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td>{items.length}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th className='deck-name'>{deckName.toUpperCase()}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total</td>
+              <td>{items.length}</td>
+            </tr>
+          </tbody>
         </table>
         <button onClick={() => handleStudy()}>Study Now</button>
       </div>)
@@ -97,7 +101,7 @@ function StudyNow (props) {
   if (showAnswer && items.length) {
     answerDiv = (
       <div>
-        {/*aria attributes */}
+        {/* aria attributes */}
         <div>{parse(items[0].answer)}</div>
         <div className='answer-btns'>
           <label>&lt; 1 min</label>
