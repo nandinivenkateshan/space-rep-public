@@ -58,15 +58,17 @@
     background-color: rgb(99, 99, 49);
     height: 40px;
     color: white;
+    font-weight: bold;  
 }
 .showQuestion-box .showQuestion, .showAnswer-box .showAnswer {
     margin: 0px auto;
 }
 .showAnswer-box {
     display: grid;
-    grid-template-rows: 9fr 1fr 1fr;
+    grid-template-rows: 7fr 1fr 1fr;
 }
 .showAnswer-box .timings {
+    margin-top: 28px;
     display: flex;
     justify-content: space-evenly;
 }

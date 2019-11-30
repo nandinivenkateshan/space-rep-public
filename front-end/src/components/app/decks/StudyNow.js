@@ -84,7 +84,7 @@ function StudyNow (props) {
   if (showQuestion && items.length) {
     questionDiv = (
       <div className='showQuestion-box'>
-        <h4 className='showQuestion'>{parse(items[0].question)}</h4>
+        <div className='showQuestion'>{parse(items[0].question)}</div>
         <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>
       </div>
     )

@@ -75,8 +75,16 @@ function Addcard () {
             placeholder='Enter the Deck'
             onChange={(e) => handleDeck(e)}
             value={deck}
+            list='deck'
             required
           />
+          <datalist id='deck'>
+            <option>Default</option>
+            <option>JavaScript</option>
+            <option>Python</option>
+            <option>Clojure</option>
+            <option>Swift</option>
+          </datalist>
           <textarea
             className='question-box'
             placeholder='Enter the Question'
