@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import NavBar from '../navbar/Navbar'
 import './decks.css'
-import StudyNow from './StudyNow'
 
 function Decks () {
   let array
-  const [deckClickTime, setDeckClickTime] = useState('')
-  const [display, setDisplay] = useState(true)
   const [decks, setDecks] = useState([])
-  const [studyDeck, setStudy] = useState('')
 
   useEffect(() => {
     async function getDataFromDb () {
@@ -29,8 +25,7 @@ function Decks () {
   }())
 
   const modifyDeckClickTime = async (url, data) => {
-    console.log(url, data)
-    const res = await window.fetch(url, {
+    await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -43,36 +38,29 @@ function Decks () {
     const deck = e.target.innerText.toLowerCase()
     const deckClickTime = Date.now()
     modifyDeckClickTime('http://localhost:3000/updateDeckClickTime', { deck, deckClickTime })
-    // setDeckClickTime(Date.now())
-    // setStudy(decks.filter(item => item.deck === deck))
-    // setDisplay(false)
   }
 
   return (
     <main>
       <NavBar />
       <section className='decks'>
-        {display &&
-          <div>
-            <h1 className='decks-heading'>Decks</h1>
-            <ul>
-              {array.map(item => {
-                return (
-                  <li key={item.id} className='list'>
-                    <Link
-                      to={`/decks/${item.deck.toLowerCase()}`}
-                      onClick={(e) => handleTotalDeck(e)} className='deck'
-                    >
-                      {item.deck.toUpperCase()}
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>}
-        {/* <Route exact path='/decks/:id'>
-          <StudyNow props={studyDeck} deckClickTime={deckClickTime} />
-        </Route> */}
+        <div>
+          <h1 className='decks-heading'>Decks</h1>
+          <ul>
+            {array.map(item => {
+              return (
+                <li key={item.id} className='list'>
+                  <Link
+                    to={`/decks/${item.deck.toLowerCase()}`}
+                    onClick={(e) => handleTotalDeck(e)} className='deck'
+                  >
+                    {item.deck.toUpperCase()}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </section>
     </main>
   )

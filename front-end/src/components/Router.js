@@ -16,6 +16,7 @@ function routes () {
         <Route path='/signup' component={SignUp} />
         <Route path='/login' component={Login} />
         <Route path='/loggedIn' component={Navbar} />
+        <Route path='/decks/:id' component={StudyNow} />
         <Route path='/decks' component={Decks} />
         <Route path='/add' component={Addcard} />
 
