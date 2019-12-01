@@ -28,11 +28,24 @@ function Decks () {
     }, [])
   }())
 
+  const modifyDeckClickTime = async (url, data) => {
+    console.log(url, data)
+    const res = await window.fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  }
+
   function handleTotalDeck (e) {
     const deck = e.target.innerText.toLowerCase()
-    setDeckClickTime(Date.now())
-    setStudy(decks.filter(item => item.deck === deck))
-    setDisplay(false)
+    const deckClickTime = Date.now()
+    modifyDeckClickTime('http://localhost:3000/updateDeckClickTime', { deck, deckClickTime })
+    // setDeckClickTime(Date.now())
+    // setStudy(decks.filter(item => item.deck === deck))
+    // setDisplay(false)
   }
 
   return (
@@ -57,9 +70,9 @@ function Decks () {
               })}
             </ul>
           </div>}
-        <Route exact path='/decks/:id'>
+        {/* <Route exact path='/decks/:id'>
           <StudyNow props={studyDeck} deckClickTime={deckClickTime} />
-        </Route>
+        </Route> */}
       </section>
     </main>
   )

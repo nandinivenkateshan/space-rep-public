@@ -22,8 +22,8 @@ function StudyNow (props) {
     setItems(array)
   }, [])
 
-  async function modifyUrl (url, data) {
-    await fetch(url, {
+  async function modifyTimeStamp (url, data) {
+    await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -45,7 +45,7 @@ function StudyNow (props) {
 
   function handleEasyAnswer (id) {
     const timeStamp = Date.now() + (1 * 60 * 60 * 1000)
-    modifyUrl('http://localhost:3000/updateTimeStamp',
+    modifyTimeStamp('http://localhost:3000/updateTimeStamp',
       { id, timeStamp }
     )
     setItems(items.slice(1))
@@ -61,7 +61,7 @@ function StudyNow (props) {
 
   function handleGoodAnswer (id) {
     const timeStamp = Date.now() + (15 * 60 * 1000)
-    modifyUrl('http://localhost:3000/updateTimeStamp',
+    modifyTimeStamp('http://localhost:3000/updateTimeStamp',
       { id, timeStamp }
     )
     setItems(items.slice(1))

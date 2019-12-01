@@ -49,8 +49,14 @@ const addCard = (req, res) => {
   })
 }
 
-
-
+const updateDeckClickTime = (req,res) => {
+  const {deck, deckClickTime} = req.body
+  pool.query('UPDATE cards SET deckclicktime=$2 WHERE deck=$1',
+  [deck,deckClickTime],(error,result) => {
+    if(error) throw error
+    else res.send('Updated deckclicktime successfully')
+  })
+}
 
 const updateTimeStamp = (req,res) => {
   const id = req.body.id
@@ -67,5 +73,6 @@ const updateTimeStamp = (req,res) => {
       getCards,
       updateTimeStamp,
       getUserDetails,
-      addUserDetails
+      addUserDetails,
+      updateDeckClickTime
   }

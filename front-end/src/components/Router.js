@@ -6,6 +6,7 @@ import Navbar from './app/navbar/Navbar'
 import Decks from './app/decks/Decks'
 import Addcard from './app/addcard/Addcard'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import StudyNow from './app/decks/StudyNow'
 
 function routes () {
   return (
@@ -17,6 +18,7 @@ function routes () {
         <Route path='/loggedIn' component={Navbar} />
         <Route path='/decks' component={Decks} />
         <Route path='/add' component={Addcard} />
+
       </Switch>
     </Router>
   )

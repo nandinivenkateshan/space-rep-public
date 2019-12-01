@@ -15,5 +15,6 @@ app.post('/addUserDetails', db.addUserDetails)
 app.get('/cards', db.getCards)  
 app.post('/card', db.addCard)
 app.post('/updateTimeStamp', db.updateTimeStamp)
+app.post('/updateDeckClickTime', db.updateDeckClickTime)
 
 app.listen(port, () => console.log(`App running on the port ${port}`))
