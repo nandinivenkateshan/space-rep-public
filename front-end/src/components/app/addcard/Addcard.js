@@ -13,6 +13,8 @@ function Addcard () {
   const [answer, setAnswer] = useState('')
   const [deck, setDeck] = useState('')
 
+  setTimeout(() => setIssubmit(false), 3000)
+
   const handleDeck = e => {
     return setDeck(e.target.value.trim())
   }
@@ -75,16 +77,21 @@ function Addcard () {
             placeholder='Enter the Deck'
             onChange={(e) => handleDeck(e)}
             value={deck}
-            list='deck'
+            list='deck-list'
             required
           />
-          <datalist id='deck'>
+          <datalist id='deck-list'>
             <option>Default</option>
             <option>JavaScript</option>
             <option>Python</option>
             <option>Clojure</option>
             <option>Swift</option>
+            <option>C</option>
+            <option>C++</option>
+            <option>HTML</option>
+            <option>CSS</option>
           </datalist>
+
           <textarea
             className='question-box'
             placeholder='Enter the Question'

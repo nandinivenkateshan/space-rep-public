@@ -113,7 +113,7 @@ function StudyNow (props) {
       {studyDiv || answerDiv || questionDiv}
       {
         !items.length &&
-          <h1>Congratulations ! You have finished this deck for now</h1>
+          <label className='congrats-msg'>Congratulations ! You have finished this deck for now</label>
       }
     </div>
   )

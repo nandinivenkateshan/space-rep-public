@@ -40,9 +40,12 @@ function Login () {
 
   const handleEmail = (e) => {
     const val = e.target.value
-    data.map(item => {
-      if (item.user_email !== val) setExistingMail(true)
-    })
+    if (val !== '') {
+      const value = data.find(item => {
+        return item.user_email === val
+      })
+      setExistingMail(!value)
+    }
   }
 
   const validate = values => {

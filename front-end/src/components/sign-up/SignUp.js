@@ -23,6 +23,7 @@ function SignUp () {
       }
     })
     const response = await res.json()
+    console.log(response)
     setStatus(res.ok)
     setResMsg(response)
   }
