@@ -21,8 +21,10 @@
   margin-bottom: 5px;
 }
 .study-box {
+  width: 300px;
   display: grid;
   grid-template-rows: 2fr 2fr 1fr;
+  margin: 60px auto;
 }
 .details {
   display: flex;
@@ -49,6 +51,8 @@
 .showQuestion-box {
   display: grid;
   grid-template-rows: 10fr 1fr;
+  width: 500px;
+  margin: 50px auto; 
 }
 .answer-btns {
     display:flex;
@@ -70,6 +74,8 @@
 .showAnswer-box {
   display: grid;
   grid-template-rows: 7fr 1fr 1fr;
+  width: 500px;
+  margin: 50px auto; 
 }
 .showAnswer-box .timings {
   margin-top: 28px;
@@ -78,4 +84,7 @@
 }
 .congrats-msg {
   color: green;
+  width: 500px;
+  margin: 60px auto;
+  font-size: 20px;
 }

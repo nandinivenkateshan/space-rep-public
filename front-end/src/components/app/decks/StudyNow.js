@@ -15,20 +15,17 @@ function StudyNow () {
     async function getDataFromDb () {
       let data = await window.fetch('http://localhost:3000/cards')
       data = await data.json()
-      setArr(data.filter(item => item.deck === deckName))
+      data = data.filter(item => item.deck === deckName)
+      console.log('after filter')
+      data = data.reduce((acc, cv) => {
+        if (cv.deckclicktime >= Number(cv.timestamp)) {
+          acc.push(cv)
+        }
+        return acc
+      }, [])
+      setArr(data)
     }
     getDataFromDb()
-  }, [])
-
-  useEffect(() => {
-    const array = arr.reduce((acc, cv) => {
-      if (cv.deckclicktime >= Number(cv.timestamp)) {
-        acc.push(cv)
-      }
-      return acc
-    }, [])
-
-    setArr(array)
   }, [])
 
   async function modifyTimeStamp (url, data) {
@@ -53,7 +50,7 @@ function StudyNow () {
   }
 
   function handleEasyAnswer (id) {
-    const timeStamp = Date.now() + (1 * 60 * 60 * 1000)
+    const timeStamp = Date.now() + (24 * 60 * 60 * 1000)
     modifyTimeStamp('http://localhost:3000/updateTimeStamp',
       { id, timeStamp }
     )
@@ -116,6 +113,7 @@ function StudyNow () {
       </div>
     )
   }
+  console.log('render array', arr)
 
   return (
     <main>
@@ -123,7 +121,7 @@ function StudyNow () {
       {studyDiv || answerDiv || questionDiv}
       {
         !arr.length &&
-          <label className='congrats-msg'>Congratulations ! You have finished this deck for now</label>
+          <p className='congrats-msg'>Congratulations ! You have finished this deck for now</p>
       }
     </main>
   )
