@@ -16,7 +16,6 @@ function Login () {
     const fetchData = async () => {
       const res = await window.fetch('http://localhost:3000/getUserDetails')
       const data = await res.json()
-      console.log('res', res)
       setData(data)
     }
     fetchData()

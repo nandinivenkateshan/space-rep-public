@@ -13,17 +13,16 @@ function StudyNow () {
 
   useEffect(() => {
     async function getDataFromDb () {
-      let data = await window.fetch('http://localhost:3000/cards')
-      data = await data.json()
-      data = data.filter(item => item.deck === deckName)
-      console.log('after filter')
-      data = data.reduce((acc, cv) => {
+      const data = await window.fetch('http://localhost:3000/cards')
+      let res = await data.json()
+      res = res.filter(item => item.deck === deckName)
+      res = res.reduce((acc, cv) => {
         if (cv.deckclicktime >= Number(cv.timestamp)) {
           acc.push(cv)
         }
         return acc
       }, [])
-      setArr(data)
+      setArr(res)
     }
     getDataFromDb()
   }, [])
@@ -50,7 +49,7 @@ function StudyNow () {
   }
 
   function handleEasyAnswer (id) {
-    const timeStamp = Date.now() + (24 * 60 * 60 * 1000)
+    const timeStamp = Date.now() + (15 * 60 * 1000)
     modifyTimeStamp('http://localhost:3000/updateTimeStamp',
       { id, timeStamp }
     )
@@ -66,7 +65,7 @@ function StudyNow () {
   }
 
   function handleGoodAnswer (id) {
-    const timeStamp = Date.now() + (15 * 60 * 1000)
+    const timeStamp = Date.now() + (24 * 60 * 60 * 1000)
     modifyTimeStamp('http://localhost:3000/updateTimeStamp',
       { id, timeStamp }
     )
@@ -113,7 +112,6 @@ function StudyNow () {
       </div>
     )
   }
-  console.log('render array', arr)
 
   return (
     <main>
