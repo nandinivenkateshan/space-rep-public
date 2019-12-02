@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import parse from 'html-react-parser'
 import NavBar from '../navbar/Navbar'
+import config from '../../Config'
 
 function StudyNow () {
+  const url = config().url
   const { id: deckName } = useParams()
   const [arr, setArr] = useState([])
   const [showStudy, setStudy] = useState(true)
@@ -12,17 +14,21 @@ function StudyNow () {
   let answerDiv, studyDiv, questionDiv
 
   useEffect(() => {
+    console.log('useEffect rendering')
     async function getDataFromDb () {
-      const data = await window.fetch('http://localhost:3000/cards')
-      let res = await data.json()
-      res = res.filter(item => item.deck === deckName)
-      res = res.reduce((acc, cv) => {
+      const data = await window.fetch(`${url}/cards`)
+      const res = await data.json()
+      const res1 = res.filter(item => item.deck === deckName)
+      const res2 = res1.reduce((acc, cv) => {
         if (cv.deckclicktime >= Number(cv.timestamp)) {
           acc.push(cv)
         }
         return acc
       }, [])
-      setArr(res)
+      console.log('res:', res)
+      console.log('res1:', res1)
+      console.log('res2:', res2)
+      setArr(res2)
     }
     getDataFromDb()
   }, [])
@@ -50,7 +56,7 @@ function StudyNow () {
 
   function handleEasyAnswer (id) {
     const timeStamp = Date.now() + (15 * 60 * 1000)
-    modifyTimeStamp('http://localhost:3000/updateTimeStamp',
+    modifyTimeStamp(`${url}/updateTimeStamp`,
       { id, timeStamp }
     )
     setArr(arr.slice(1))
@@ -66,7 +72,7 @@ function StudyNow () {
 
   function handleGoodAnswer (id) {
     const timeStamp = Date.now() + (24 * 60 * 60 * 1000)
-    modifyTimeStamp('http://localhost:3000/updateTimeStamp',
+    modifyTimeStamp(`${url}/updateTimeStamp`,
       { id, timeStamp }
     )
     setArr(arr.slice(1))
@@ -77,6 +83,7 @@ function StudyNow () {
   if (showStudy) {
     studyDiv = (
       <div className='study-box'>
+        {console.log(arr)}
         <h1 className='heading'>{deckName.toUpperCase()}</h1>
         <div className='details'>
           <label>Total</label>

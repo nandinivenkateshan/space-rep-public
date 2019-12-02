@@ -4,8 +4,10 @@ import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
 import Navbar from '../navbar/Nav-register'
+import config from '../Config'
 
 function SignUp () {
+  const url = config().url
   const [status, setStatus] = useState('')
   const [resMsg, setResMsg] = useState({})
   const [userDetails, setUserDetails] = useState([])
@@ -29,7 +31,7 @@ function SignUp () {
   }
 
   function login () {
-    modifyUrl('http://localhost:3000/addUserDetails', values)
+    modifyUrl(`${url}/addUserDetails`, values)
     setUserDetails([...userDetails, values])
   }
 

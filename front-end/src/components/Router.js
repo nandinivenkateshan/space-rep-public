@@ -19,7 +19,6 @@ function routes () {
         <Route path='/decks/:id' component={StudyNow} />
         <Route path='/decks' component={Decks} />
         <Route path='/add' component={Addcard} />
-
       </Switch>
     </Router>
   )

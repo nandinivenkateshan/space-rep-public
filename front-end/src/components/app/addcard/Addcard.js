@@ -3,8 +3,10 @@ import './addcard.css'
 import NavBar from '../navbar/Navbar'
 import showdown from 'showdown'
 import 'regenerator-runtime/runtime'
+import config from '../../Config'
 
 function Addcard () {
+  const url = config().url
   const [isSubmit, setIssubmit] = useState(false)
   const [markQ, setMarkQ] = useState('')
   const [markAns, setMarkAns] = useState('')
@@ -46,7 +48,7 @@ function Addcard () {
       question: markQ,
       answer: markAns
     }
-    addToDb('http://localhost:3000/card', card)
+    addToDb(`${url}/card`, card)
     setCards([card, ...cards])
     setIssubmit(true)
     setAnswer('')

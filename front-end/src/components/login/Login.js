@@ -3,8 +3,10 @@ import './login.css'
 import 'regenerator-runtime/runtime'
 import { Link, Redirect } from 'react-router-dom'
 import Navbar from '../navbar/Nav-register'
+import config from '../Config'
 
 function Login () {
+  const url = config().url
   const [data, setData] = useState()
   const [isExistingMail, setExistingMail] = useState(false)
   const [values, setValues] = useState({})
@@ -14,7 +16,7 @@ function Login () {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await window.fetch('http://localhost:3000/getUserDetails')
+      const res = await window.fetch(`${url}/getUserDetails`)
       const data = await res.json()
       setData(data)
     }

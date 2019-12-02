@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import NavBar from '../navbar/Navbar'
 import './decks.css'
+import config from '../../Config'
 
 function Decks () {
   let array
+  const url = config().url
   const [decks, setDecks] = useState([])
 
   useEffect(() => {
     async function getDataFromDb () {
-      let data = await window.fetch('http://localhost:3000/cards')
+      let data = await window.fetch(`${url}/cards`)
       data = await data.json()
       setDecks(data)
     }
@@ -37,7 +39,7 @@ function Decks () {
   function handleTotalDeck (e) {
     const deck = e.target.innerText.toLowerCase()
     const deckClickTime = Date.now()
-    modifyDeckClickTime('http://localhost:3000/updateDeckClickTime', { deck, deckClickTime })
+    modifyDeckClickTime(`${url}/updateDeckClickTime`, { deck, deckClickTime })
   }
 
   return (
