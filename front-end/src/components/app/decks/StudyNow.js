@@ -1,20 +1,43 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { useParams } from 'react-router-dom'
 import parse from 'html-react-parser'
 import NavBar from '../navbar/Navbar'
 import config from '../../Config'
 
+const initialState = {
+  arr: [],
+  showStudy: true,
+  showQuestion: false,
+  showAnswer: false
+}
+
+function reducer (state, action) {
+  switch (action.type) {
+    case 'setArr':
+      return { ...state, arr: [...action.newArr] }
+    case 'study':
+      return { ...state, showStudy: false, showQuestion: true }
+    case 'question':
+      return { ...state, showQuestion: false, showAnswer: true }
+    case 'answer' :
+      return { ...state, showQuestion: true, showAnswer: false }
+    case 'easyAnswer':
+      return { ...state, showQuestion: true, showAnswer: false, arr: [...action.newArr] }
+    case 'againAnswer':
+      return { ...state, showQuestion: true, showAnswer: false, arr: [...action.newArr] }
+    case 'goodAnswer':
+      return { ...state, showQuestion: false, showAnswer: true, arr: [...action.newArr] }
+    default: console.log('Unexpected action')
+  }
+}
+
 function StudyNow () {
+  const [state, dispatch] = useReducer(reducer, initialState)
   const url = config().url
   const { id: deckName } = useParams()
-  const [arr, setArr] = useState([])
-  const [showStudy, setStudy] = useState(true)
-  const [showQuestion, setShowQuestion] = useState(false)
-  const [showAnswer, setShowAnswer] = useState(false)
-  let answerDiv, studyDiv, questionDiv
+  let answerDiv, studyDiv, questionDiv, congratsMsg
 
   useEffect(() => {
-    console.log('useEffect rendering')
     async function getDataFromDb () {
       const data = await window.fetch(`${url}/cards`)
       const res = await data.json()
@@ -25,10 +48,7 @@ function StudyNow () {
         }
         return acc
       }, [])
-      console.log('res:', res)
-      console.log('res1:', res1)
-      console.log('res2:', res2)
-      setArr(res2)
+      dispatch({ type: 'setArr', newArr: res2 })
     }
     getDataFromDb()
   }, [])
@@ -45,13 +65,11 @@ function StudyNow () {
   }
 
   function handleStudy () {
-    setStudy(false)
-    setShowQuestion(true)
+    dispatch({ type: 'study' })
   }
 
   function handleQuestion () {
-    setShowQuestion(false)
-    setShowAnswer(true)
+    dispatch({ type: 'question' })
   }
 
   function handleEasyAnswer (id) {
@@ -59,15 +77,11 @@ function StudyNow () {
     modifyTimeStamp(`${url}/updateTimeStamp`,
       { id, timeStamp }
     )
-    setArr(arr.slice(1))
-    setShowQuestion(true)
-    setShowAnswer(false)
+    dispatch({ type: 'easyAnswer', newArr: state.arr.slice(1) })
   }
 
   function handleAgainAnswer (id) {
-    setArr([...arr.slice(1), arr[0]])
-    setShowQuestion(true)
-    setShowAnswer(false)
+    dispatch({ type: 'againAnswer', newArr: [...state.arr.slice(1), state.arr[0]] })
   }
 
   function handleGoodAnswer (id) {
@@ -75,59 +89,56 @@ function StudyNow () {
     modifyTimeStamp(`${url}/updateTimeStamp`,
       { id, timeStamp }
     )
-    setArr(arr.slice(1))
-    setShowQuestion(true)
-    setShowAnswer(false)
+    dispatch({ action: 'goodAnswer', newArr: state.arr.slice(1) })
   }
 
-  if (showStudy) {
+  if (state.showStudy) {
     studyDiv = (
       <div className='study-box'>
-        {console.log(arr)}
         <h1 className='heading'>{deckName.toUpperCase()}</h1>
         <div className='details'>
           <label>Total</label>
-          <label>{arr.length}</label>
+          <label>{state.arr.length}</label>
         </div>
         <button onClick={() => handleStudy()} className='study-btn'>Study Now</button>
       </div>)
   }
 
-  if (showQuestion && arr.length) {
+  if (state.showQuestion && state.arr.length) {
     questionDiv = (
       <div className='showQuestion-box'>
-        <div className='showQuestion'>{parse(arr[0].question)}</div>
+        <div className='showQuestion'>{parse(state.arr[0].question)}</div>
         <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>
       </div>
     )
   }
 
-  if (showAnswer && arr.length) {
+  if (state.showAnswer && state.arr.length) {
     answerDiv = (
       <div className='showAnswer-box'>
-        <div className='showAnswer'>{parse(arr[0].answer)}</div>
+        <div className='showAnswer'>{parse(state.arr[0].answer)}</div>
         <div className='timings'>
           <label>&lt; 1 min</label>
           <label>&lt; 15 min</label>
           <label>1 day</label>
         </div>
         <div className='answer-btns'>
-          <button onClick={() => handleAgainAnswer(arr[0].id)} className='btn'>Again</button>
-          <button onClick={() => handleEasyAnswer(arr[0].id)} className='btn'>Easy</button>
-          <button onClick={() => handleGoodAnswer(arr[0].id)} className='btn'>Good</button>
+          <button onClick={() => handleAgainAnswer(state.arr[0].id)} className='btn'>Again</button>
+          <button onClick={() => handleEasyAnswer(state.arr[0].id)} className='btn'>Easy</button>
+          <button onClick={() => handleGoodAnswer(state.arr[0].id)} className='btn'>Good</button>
         </div>
       </div>
     )
   }
 
+  if (!state.arr.length) {
+    congratsMsg = <p className='congrats-msg'>Congratulations ! You have finished this deck for now</p>
+  }
+
   return (
     <main>
       <NavBar />
-      {studyDiv || answerDiv || questionDiv}
-      {
-        !arr.length &&
-          <p className='congrats-msg'>Congratulations ! You have finished this deck for now</p>
-      }
+      {studyDiv || answerDiv || questionDiv || congratsMsg}
     </main>
   )
 }
