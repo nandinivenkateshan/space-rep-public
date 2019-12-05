@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import NavBar from '../navbar/Navbar'
 import './decks.css'
 import config from '../../Config'
@@ -8,6 +8,8 @@ function Decks () {
   let array
   const url = config().url
   const [decks, setDecks] = useState([])
+  const [isClick, setIsClick] = useState(false)
+  const [path, setPath] = useState('')
 
   useEffect(() => {
     async function getDataFromDb () {
@@ -27,17 +29,19 @@ function Decks () {
   }())
 
   const modifyDeckClickTime = async (url, data) => {
-    await window.fetch(url, {
+    const res = await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       }
     })
+    if (res.ok) setIsClick(true)
   }
 
   function handleTotalDeck (e) {
     const deck = e.target.innerText.toLowerCase()
+    setPath(deck)
     const deckClickTime = Date.now()
     modifyDeckClickTime(`${url}/updateDeckClickTime`, { deck, deckClickTime })
   }
@@ -52,13 +56,14 @@ function Decks () {
             {array.map(item => {
               return (
                 <li key={item.id} className='list'>
-                  <Link
-                    to={`/decks/${item.deck.toLowerCase()}`}
+                  <p
                     onClick={(e) => handleTotalDeck(e)} className='deck'
                   >
                     {item.deck.toUpperCase()}
-                  </Link>
+                  </p>
+                  {isClick && <Redirect to={`/decks/${path}`} />}
                 </li>
+
               )
             })}
           </ul>

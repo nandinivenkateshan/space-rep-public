@@ -15,6 +15,9 @@
 .deck {
   text-decoration: none;
   margin-left: 130px;
+  cursor: pointer;
+  color: rgb(44, 44, 40); 
+  text-shadow: 0px 0px 1px red;
 }
 .list {
   list-style-type: none;

@@ -1,6 +1,7 @@
 const express = require('express')
 const db = require('./query')
 const app = express()
+const bcrypt = require('bcrypt')
 const port = 3000
 app.use(express.json())
 

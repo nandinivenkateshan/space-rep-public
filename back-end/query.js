@@ -1,4 +1,5 @@
 require('dotenv').config()
+const bcrypt = require('bcrypt')
 const Pool = require('pg').Pool
 
 const pool = new Pool({
@@ -18,9 +19,10 @@ const getUserDetails = (req, res) => {
   })
 }
 
-const addUserDetails = (req,res) => {
+const addUserDetails = async (req,res) => {
 const {user_name, user_email,pswd} = req.body
-  pool.query ('INSERT INTO signup (user_name, user_email, pswd) VALUES ($1,$2,$3)', [user_name,user_email,pswd], (error,result) => {
+const hashedPswd = await bcrypt.hash(pswd,10)
+  pool.query ('INSERT INTO signup (user_name, user_email, pswd) VALUES ($1,$2,$3)', [user_name,user_email,hashedPswd], (error,result) => {
     if (error) {
       res.send({error: "Email already exist"})
     } else{
@@ -51,6 +53,7 @@ const addCard = (req, res) => {
 
 const updateDeckClickTime = (req,res) => {
   const {deck, deckClickTime} = req.body
+  console.log(deck,deckClickTime)
   pool.query('UPDATE cards SET deckclicktime=$2 WHERE deck=$1',
   [deck,deckClickTime],(error,result) => {
     if(error) throw error

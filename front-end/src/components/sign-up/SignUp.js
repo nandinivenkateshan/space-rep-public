@@ -16,8 +16,9 @@ function SignUp () {
     validate
   )
 
-  const modifyUrl = async (url, data) => {
+  const updateUserDetails = async (url, data) => {
     const res = await window.fetch(url, {
+      
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -25,13 +26,12 @@ function SignUp () {
       }
     })
     const response = await res.json()
-    console.log(response)
     setStatus(res.ok)
     setResMsg(response)
   }
 
   function login () {
-    modifyUrl(`${url}/addUserDetails`, values)
+    updateUserDetails(`${url}/addUserDetails`, values)
     setUserDetails([...userDetails, values])
   }
 
