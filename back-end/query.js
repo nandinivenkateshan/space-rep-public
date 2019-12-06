@@ -1,7 +1,5 @@
 require('dotenv').config()
 const bcrypt = require('bcrypt')
-const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
 const Pool = require('pg').Pool
 
 const pool = new Pool({
@@ -34,18 +32,18 @@ const hashedPswd = await bcrypt.hash(pswd,10)
 }
 
 const login = (req,res) => {
-  const {user_email, pswd} = req.body
-  const hashedPswd = await bcrypt.hash(pswd,10)
-  passport.use(   new LocalStrategy(
-    function(user_email, hashedPswd, done) {
-      // User.findOne({ username: username }, function (err, user) {
-      //   if (err) { return done(err); }
-      //   if (!user) { return done(null, false); }
-      //   if (!user.verifyPassword(password)) { return done(null, false); }
-      //   return done(null, user);
-      // });
-    }
-  ))
+  const {user_email, pswd} = req.body 
+  pool.query('SELECT * FROM signup WHERE user_email=$1',[user_email], async (error,result) => {
+    if(error) console.log('error')
+    else {
+      const val = result.rows
+      if(val.length === 0) res.send({res: 'No User with this Email'})
+      else {
+        if(await bcrypt.compare(pswd, val[0].pswd)) res.send({res: 'pass'})
+        else res.send({res: 'Password is incorrect'})
+      }
+    }   
+  })
 }
 
 1
@@ -70,7 +68,6 @@ const addCard = (req, res) => {
 
 const updateDeckClickTime = (req,res) => {
   const {deck, deckClickTime} = req.body
-  console.log(deck,deckClickTime)
   pool.query('UPDATE cards SET deckclicktime=$2 WHERE deck=$1',
   [deck,deckClickTime],(error,result) => {
     if(error) throw error

@@ -4,7 +4,6 @@
   "description": "Space Repetition",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
     "dev": "npx parcel index.html --open",
     "watch": "npx parcel watch index.html",
     "build": "npx parcel build index.html --no-content-hash --no-source-maps"
@@ -15,7 +14,6 @@
     "bulma": "^0.8.0",
     "html-react-parser": "^0.10.0",
     "react": "^16.11.0",
-    "react-contenteditable": "^3.3.2",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "showdown": "^1.9.1",
