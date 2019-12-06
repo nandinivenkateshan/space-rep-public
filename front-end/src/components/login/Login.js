@@ -7,27 +7,30 @@ import config from '../Config'
 
 function Login () {
   const url = config().url
-  const [data, setData] = useState()
-  const [isExistingMail, setExistingMail] = useState(false)
   const [values, setValues] = useState({})
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await window.fetch(`${url}/getUserDetails`)
-      const data = await res.json()
-      setData(data)
-    }
-    fetchData()
-  }, [])
-
-  useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
+      console.log(values)
+      checkUserDetails(`${url}/login`, values)
       setIsLogin(true)
     }
   }, [errors])
+
+  const checkUserDetails = async (url, data) => {
+    const res = await window.fetch(url, {
+      method: 'GET',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const response = await res.json()
+    console.log(response)
+  }
 
   const handleChange = e => {
     e.persist()
@@ -40,15 +43,15 @@ function Login () {
     setErrors(validate(values))
   }
 
-  const handleEmail = (e) => {
-    const val = e.target.value
-    if (val !== '') {
-      const value = data.find(item => {
-        return item.user_email === val
-      })
-      setExistingMail(!value)
-    }
-  }
+  // const handleEmail = (e) => {
+  //   const val = e.target.value
+  //   if (val !== '') {
+  //     const value = data.find(item => {
+  //       return item.user_email === val
+  //     })
+  //     setExistingMail(!value)
+  //   }
+  // }
 
   const validate = values => {
     const errors = {}
@@ -66,10 +69,10 @@ function Login () {
       <section className='login-box'>
         <h1 className='heading'>Login</h1>
         <p className='sub-heading'>Log in to an existing account.</p>
-        {isExistingMail &&
+        {/* {isExistingMail &&
           <p className='acc-not-exist-msg'>Sorry, no account was found with that email address.
             Please check your spelling and try again.
-          </p>}
+          </p>} */}
         <form className='login-form' onSubmit={e => handleSubmit(e)}>
           <label htmlFor='email' className='label'>Email</label>
           <input
@@ -77,7 +80,7 @@ function Login () {
             id='email' name='user_email' className={`input${errors.user_email && 'invalid'}`}
             onChange={(e) => handleChange(e)}
             value={values.user_email || ''}
-            onBlur={(e) => handleEmail(e)}
+            // onBlur={(e) => handleEmail(e)}
           />
           {errors.user_email && (
             <p className='invalid-para'>{errors.user_email}</p>
@@ -93,7 +96,7 @@ function Login () {
             <p className='invalid-para'>{errors.pswd}</p>
           )}
           <button className='login-btn'>Login</button>
-          {isLogin &&
+          {isLogin && // updateUserDetails(`${url}/login`, values)
             <Redirect to='/loggedIn' />}
         </form>
         <Link className='reset-pswd' to=''>Reset Password</Link>

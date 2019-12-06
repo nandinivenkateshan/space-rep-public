@@ -1,5 +1,7 @@
 require('dotenv').config()
 const bcrypt = require('bcrypt')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 const Pool = require('pg').Pool
 
 const pool = new Pool({
@@ -29,6 +31,21 @@ const hashedPswd = await bcrypt.hash(pswd,10)
       res.send({success:"Added user details successfully"})
     }
   })
+}
+
+const login = (req,res) => {
+  const {user_email, pswd} = req.body
+  const hashedPswd = await bcrypt.hash(pswd,10)
+  passport.use(   new LocalStrategy(
+    function(user_email, hashedPswd, done) {
+      // User.findOne({ username: username }, function (err, user) {
+      //   if (err) { return done(err); }
+      //   if (!user) { return done(null, false); }
+      //   if (!user.verifyPassword(password)) { return done(null, false); }
+      //   return done(null, user);
+      // });
+    }
+  ))
 }
 
 1
@@ -77,5 +94,6 @@ const updateTimeStamp = (req,res) => {
       updateTimeStamp,
       getUserDetails,
       addUserDetails,
-      updateDeckClickTime
+      updateDeckClickTime,
+      login
   }

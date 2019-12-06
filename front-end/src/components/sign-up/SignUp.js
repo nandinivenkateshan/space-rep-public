@@ -5,6 +5,7 @@ import useForm from './useForm'
 import validate from './SignUPFormValidation'
 import Navbar from '../navbar/Nav-register'
 import config from '../Config'
+import { Redirect } from 'react-router-dom'
 
 function SignUp () {
   const url = config().url
@@ -18,7 +19,6 @@ function SignUp () {
 
   const updateUserDetails = async (url, data) => {
     const res = await window.fetch(url, {
-      
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -88,13 +88,13 @@ function SignUp () {
           {errors.pswd && <p className='invalid-para'>{errors.pswd}</p>}
           <button className='signup-btn'>Sign Up </button>
         </form>
-        {status && resMsg.success && (
-          <p className='acc-success'>Account Created Successfully...</p>
-        )}
         {status && resMsg.error && (
           <p className='acc-exist-already'>
             Sorry, an account with this email address already exists.
           </p>
+        )}
+        {status && resMsg.success && (
+          <Redirect to='/loggedIn' />
         )}
       </section>
     </main>
