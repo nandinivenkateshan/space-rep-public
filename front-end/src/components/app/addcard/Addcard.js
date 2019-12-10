@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './addcard.css'
 import NavBar from '../navbar/Navbar'
 import showdown from 'showdown'
@@ -14,8 +14,23 @@ function Addcard () {
   const [question, setQuestion] = useState('')
   const [answer, setAnswer] = useState('')
   const [deck, setDeck] = useState('')
+  const [decksOpt, setDecksForOpt] = useState([])
 
   setTimeout(() => setIssubmit(false), 3000)
+
+  useEffect(() => {
+    async function getDataFromDb () {
+      let data = await window.fetch(`${url}/cards`)
+      data = await data.json()
+      const array = data.reduce((acc, cv) => {
+        const val = acc.find(item => item.deck === cv.deck)
+        if (!val) return acc.concat(cv)
+        return acc
+      }, [])
+      setDecksForOpt(array)
+    }
+    getDataFromDb()
+  }, [deck])
 
   const handleDeck = e => {
     return setDeck(e.target.value.trim())
@@ -83,15 +98,9 @@ function Addcard () {
             required
           />
           <datalist id='deck-list'>
-            <option>Default</option>
-            <option>JavaScript</option>
-            <option>Python</option>
-            <option>Clojure</option>
-            <option>Swift</option>
-            <option>C</option>
-            <option>C++</option>
-            <option>HTML</option>
-            <option>CSS</option>
+            {decksOpt.map(item => {
+              return <option key={item.id}>{item.deck}</option>
+            })}
           </datalist>
 
           <textarea

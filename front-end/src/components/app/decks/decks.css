@@ -1,9 +1,11 @@
 * {
   margin: 0px;
+  font-family: 'Roboto', sans-serif;
 }
 .decks {
   margin: 50px auto;
   width: 400px;
+  display: grid;
 }
 .decks-heading {
   color: red;
@@ -11,17 +13,24 @@
   text-shadow: 1px 1px 1px grey;
   margin-bottom: 20px;
   text-align: center;
+  margin-left: 30px;
 }
 .deck {
   text-decoration: none;
-  margin-left: 130px;
   cursor: pointer;
   color: rgb(44, 44, 40); 
   text-shadow: 0px 0px 1px red;
+ 
 }
 .list {
   list-style-type: none;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 10px;
+  grid-gap: 100px;
+  border-bottom: 1px solid yellow; 
+ 
 }
 .study-box {
   width: 300px;
@@ -85,9 +94,49 @@
   display: flex;
   justify-content: space-around;
 }
+.edit-btn {
+  text-align: center;
+  display: block;
+  cursor: pointer;
+  color: rgb(20, 20, 90);
+  text-shadow: 0px 0px 1px red;
+  font-size: 20px;
+}
 .congrats-msg {
   color: green;
   width: 500px;
   margin: 60px auto;
   font-size: 20px;
+}
+.dropdown-box{
+  max-width: 70px;
+  position: relative;
+  justify-self: end;
+}
+.dropdown-content {
+  background-color: rgb(219, 189, 189);
+  position:absolute;
+  display: none;
+  z-index: 1;
+  box-shadow: 2px 2px 2px grey;
+}
+.dropdown-box:hover .dropdown-content{
+ display: block;;
+}
+.dropdown-content label:hover{
+  background-color: rgb(207, 158, 158);
+}
+.dropdown-content label {
+  display: flex;
+  position: relative;
+  color: rgb(44, 44, 40); 
+  text-shadow: 0px 0px 1px red;
+  padding: 10px;
+}
+
+.dropdown-btn {
+  text-decoration: none;
+  cursor: pointer;
+  color: rgb(44, 44, 40); 
+  text-shadow: 0px 0px 1px red;
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import parse from 'html-react-parser'
 import NavBar from '../navbar/Navbar'
 import config from '../../Config'
@@ -106,28 +106,38 @@ function StudyNow () {
 
   if (state.showQuestion && state.arr.length) {
     questionDiv = (
-      <div className='showQuestion-box'>
-        <div className='showQuestion'>{parse(state.arr[0].question)}</div>
-        <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>
-      </div>
+      <section>
+        <div className='showQuestion-box'>
+          <div className='showQuestion'>
+            {parse(state.arr[0].question)}
+          </div>
+          <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>
+        </div>
+        <Link to='' className='edit-btn'>Edit</Link>
+      </section>
     )
   }
 
   if (state.showAnswer && state.arr.length) {
     answerDiv = (
-      <div className='showAnswer-box'>
-        <div className='showAnswer'>{parse(state.arr[0].answer)}</div>
-        <div className='timings'>
-          <label>&lt; 1 min</label>
-          <label>&lt; 15 min</label>
-          <label>1 day</label>
+      <section>
+        <div className='showAnswer-box'>
+          <div className='showAnswer'>
+            {parse(state.arr[0].answer)}
+          </div>
+          <div className='timings'>
+            <label>&lt; 1 min</label>
+            <label>&lt; 15 min</label>
+            <label>1 day</label>
+          </div>
+          <div className='answer-btns'>
+            <button onClick={() => handleAgainAnswer(state.arr[0].id)} className='btn'>Again</button>
+            <button onClick={() => handleEasyAnswer(state.arr[0].id)} className='btn'>Easy</button>
+            <button onClick={() => handleGoodAnswer(state.arr[0].id)} className='btn'>Good</button>
+          </div>
         </div>
-        <div className='answer-btns'>
-          <button onClick={() => handleAgainAnswer(state.arr[0].id)} className='btn'>Again</button>
-          <button onClick={() => handleEasyAnswer(state.arr[0].id)} className='btn'>Easy</button>
-          <button onClick={() => handleGoodAnswer(state.arr[0].id)} className='btn'>Good</button>
-        </div>
-      </div>
+        <Link to='' className='edit-btn'>Edit</Link>
+      </section>
     )
   }
 
