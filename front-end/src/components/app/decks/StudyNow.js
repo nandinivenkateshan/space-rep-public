@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Redirect } from 'react-router-dom'
 import parse from 'html-react-parser'
 import NavBar from '../navbar/Navbar'
 import config from '../../Config'
@@ -8,7 +8,8 @@ const initialState = {
   arr: [],
   showStudy: true,
   showQuestion: false,
-  showAnswer: false
+  showAnswer: false,
+  edit: false
 }
 
 function reducer (state, action) {
@@ -27,6 +28,8 @@ function reducer (state, action) {
       return { ...state, showQuestion: true, showAnswer: false, arr: [...action.newArr] }
     case 'goodAnswer':
       return { ...state, showQuestion: false, showAnswer: true, arr: [...action.newArr] }
+    case 'edit' :
+      return { ...state, edit: true }
     default: console.log('Unexpected action')
   }
 }
@@ -104,6 +107,10 @@ function StudyNow () {
       </div>)
   }
 
+  function handleEdit () {
+    dispatch({ type: 'edit' })
+  }
+
   if (state.showQuestion && state.arr.length) {
     questionDiv = (
       <section>
@@ -113,7 +120,7 @@ function StudyNow () {
           </div>
           <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>
         </div>
-        <Link to='' className='edit-btn'>Edit</Link>
+        <button className='edit-btn' onClick={handleEdit}>Edit</button>
       </section>
     )
   }
@@ -136,7 +143,7 @@ function StudyNow () {
             <button onClick={() => handleGoodAnswer(state.arr[0].id)} className='btn'>Good</button>
           </div>
         </div>
-        <Link to='' className='edit-btn'>Edit</Link>
+        <button className='edit-btn'>Edit</button>
       </section>
     )
   }
@@ -146,8 +153,10 @@ function StudyNow () {
   }
 
   return (
-    <main>
+    <main className='main'>
       <NavBar />
+      {state.edit &&
+        <Redirect to='/edit' />}
       {studyDiv || answerDiv || questionDiv || congratsMsg}
     </main>
   )

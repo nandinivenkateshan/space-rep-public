@@ -101,6 +101,7 @@
   color: rgb(20, 20, 90);
   text-shadow: 0px 0px 1px red;
   font-size: 20px;
+  margin: -20px auto;
 }
 .congrats-msg {
   color: green;
@@ -140,3 +141,4 @@
   color: rgb(44, 44, 40); 
   text-shadow: 0px 0px 1px red;
 }
+

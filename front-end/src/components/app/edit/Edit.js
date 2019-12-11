@@ -1,9 +1,8 @@
 import React from 'react'
-import './addcard.css'
+import Form from '../addcard/Form'
 import NavBar from '../navbar/Navbar'
-import Form from './Form'
 
-function Addcard () {
+function Edit () {
   return (
     <main>
       <NavBar />
@@ -12,4 +11,4 @@ function Addcard () {
   )
 }
 
-export default Addcard
+export default Edit

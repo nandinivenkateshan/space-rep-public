@@ -12,7 +12,7 @@ function Decks () {
   const [path, setPath] = useState('')
 
   useEffect(() => {
-    async function getDataFromDb () {
+    async function getDataFromDb () { 
       let data = await window.fetch(`${url}/cards`)
       data = await data.json()
       setDecks(data)
