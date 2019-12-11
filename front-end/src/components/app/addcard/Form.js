@@ -5,16 +5,26 @@ import 'regenerator-runtime/runtime'
 import config from '../../Config'
 import EnterDeck from './EnterDeck'
 import TextQA from './TextQA'
+import { Redirect } from 'react-router-dom'
 
 function Form (props) {
+  const { heading, id, editCard } = props
+  let editQuestion, editDeck, editAns
+  if (id) {
+    editDeck = editCard[0].deck
+    editQuestion = editCard[0].question
+    editAns = editCard[0].answer
+  }
+
   const url = config().url
   const [isSubmit, setIssubmit] = useState(false)
+  const [isUpdate, setIsUpdate] = useState(false)
   const [markQ, setMarkQ] = useState('')
   const [markAns, setMarkAns] = useState('')
   const [cards, setCards] = useState([])
-  const [question, setQuestion] = useState('')
-  const [answer, setAnswer] = useState('')
-  const [deck, setDeck] = useState('')
+  const [question, setQuestion] = useState(editQuestion || '')
+  const [answer, setAnswer] = useState(editAns || '')
+  const [deck, setDeck] = useState(editDeck || '')
   const [decksOpt, setDecksForOpt] = useState([])
 
   setTimeout(() => setIssubmit(false), 3000)
@@ -57,19 +67,42 @@ function Form (props) {
     })
   }
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    const card = {
-      deck: deck.toLowerCase(),
-      question: markQ,
-      answer: markAns
+  async function updateCard (url, card) {
+    const response = await window.fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(card),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    if (response.ok) {
+      setIsUpdate(true)
     }
-    addToDb(`${url}/card`, card)
-    setCards([card, ...cards])
-    setIssubmit(true)
-    setAnswer('')
-    setQuestion('')
-    setDeck('')
+  }
+
+  const handleSubmit = e => {
+    if (id) {
+      const card = {
+        id: Number(id),
+        deck: deck.toLowerCase() || editDeck,
+        question: markQ || editQuestion,
+        answer: markAns || editAns
+      }
+      updateCard(`${url}/updateCard`, card)
+    } else {
+      const card = {
+        deck: deck.toLowerCase(),
+        question: markQ,
+        answer: markAns
+      }
+      addToDb(`${url}/card`, card)
+      setCards([card, ...cards])
+      setIssubmit(true)
+      setAnswer('')
+      setQuestion('')
+      setDeck('')
+    }
+    e.preventDefault()
   }
 
   const handleQuestionBlur = () => {
@@ -87,8 +120,8 @@ function Form (props) {
   return (
     <form onSubmit={e => handleSubmit(e)}>
       <section className='field'>
-        <h1 className='heading'>Add Card</h1>
-        <EnterDeck value={deck} onEnterDeck={(e) => handleDeck(e)} decksOpt={decksOpt} />
+        <h1 className='heading'>{heading}</h1>
+        <EnterDeck value={deck} onEnterDeck={(e) => handleDeck(e)} decksOpt={decksOpt} placeholder='Enter the deck' />
         <TextQA
           placeholder='Enter the Question'
           value={question}
@@ -101,9 +134,13 @@ function Form (props) {
           onHandleAnswer={e => handleAnswer(e)}
           onHandleAnswerBlur={() => handleAnswerBlur()}
         />
-        <button className='save-btn'>Save</button>
+        {!id &&
+          <button className='save-btn'>Save</button>}
+        {id &&
+          <button className='save-btn'>Update</button>}
         {isSubmit &&
           <p className='isSubmit-para'>Added Successfully</p>}
+        {isUpdate && <Redirect to='/decks' />}
       </section>
     </form>
   )

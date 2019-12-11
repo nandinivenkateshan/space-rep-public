@@ -2,7 +2,7 @@ import React from 'react'
 import './addcard.css'
 
 function TextQA (props) {
-  const { value, onHandleQustion, onHandleQustionBlur, onHandleAnswer, onHandleAnswerBlur } = props
+  const { value, onHandleQustion, onHandleQustionBlur, onHandleAnswer, onHandleAnswerBlur,placeholder } = props
   const handleQA = e => {
     if (onHandleQustion) return onHandleQustion(e)
     return onHandleAnswer(e)
@@ -13,8 +13,8 @@ function TextQA (props) {
   }
   return (
     <textarea
+      placeholder={placeholder}
       className='qa-box'
-      placeholder='Enter the Question'
       value={value}
       onChange={e => handleQA(e)}
       onBlur={() => handleQABlur()}

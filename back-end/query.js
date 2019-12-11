@@ -65,6 +65,13 @@ const addCard = (req, res) => {
   })
 }
 
+const deckNames = (req, res) => {
+  pool.query('SELECT DISTINCT deck FROM cards', (error, result) => {
+    if (error) console.log('error while fetching decknames')
+    else res.send(result.rows)
+  })
+}
+
 const updateDeckClickTime = (req, res) => {
   const { deck, deckClickTime } = req.body
   pool.query('UPDATE cards SET deckclicktime=$2 WHERE deck=$1',
@@ -99,6 +106,18 @@ const deleteDeck = (req, res) => {
   })
 }
 
+const updateCard = (req, res) => {
+  console.log('req body', req.body)
+  const { id, deck, question, answer } = req.body
+  console.log(id, deck, question, answer)
+
+  pool.query('UPDATE cards SET deck=$2, question=$3, answer=$4 WHERE id=$1',
+    [id, deck, question, answer], (error, result) => {
+      if (error) console.log('Error while updating card')
+      else res.send('Updated card successfully')
+    })
+}
+
 module.exports = {
   addCard,
   getCards,
@@ -108,5 +127,7 @@ module.exports = {
   updateDeckClickTime,
   login,
   modifyDeckName,
-  deleteDeck
+  deleteDeck,
+  updateCard,
+  deckNames
 }

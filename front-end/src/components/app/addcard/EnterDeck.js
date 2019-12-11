@@ -1,7 +1,7 @@
 import React from 'react'
 import './addcard.css'
 function EnterDeck (props) {
-  const { value: deck, onEnterDeck, decksOpt } = props
+  const { value: deck, onEnterDeck, decksOpt, placeholder } = props
   function handleDeck (e) {
     onEnterDeck(e)
   }
@@ -10,7 +10,7 @@ function EnterDeck (props) {
       <input
         className='input-box'
         type='text'
-        placeholder='Enter the Deck'
+        placeholder={placeholder}
         onChange={(e) => handleDeck(e)}
         value={deck}
         list='deck-list'

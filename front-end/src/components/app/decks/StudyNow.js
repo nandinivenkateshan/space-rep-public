@@ -9,7 +9,8 @@ const initialState = {
   showStudy: true,
   showQuestion: false,
   showAnswer: false,
-  edit: false
+  edit: false,
+  editId: ''
 }
 
 function reducer (state, action) {
@@ -29,7 +30,7 @@ function reducer (state, action) {
     case 'goodAnswer':
       return { ...state, showQuestion: false, showAnswer: true, arr: [...action.newArr] }
     case 'edit' :
-      return { ...state, edit: true }
+      return { ...state, edit: true, editId: action.editId }
     default: console.log('Unexpected action')
   }
 }
@@ -107,8 +108,8 @@ function StudyNow () {
       </div>)
   }
 
-  function handleEdit () {
-    dispatch({ type: 'edit' })
+  function handleEdit (id) {
+    dispatch({ type: 'edit', editId: id })
   }
 
   if (state.showQuestion && state.arr.length) {
@@ -116,11 +117,12 @@ function StudyNow () {
       <section>
         <div className='showQuestion-box'>
           <div className='showQuestion'>
+            {console.log('type', typeof state.arr[0].id)}
             {parse(state.arr[0].question)}
           </div>
           <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>
         </div>
-        <button className='edit-btn' onClick={handleEdit}>Edit</button>
+        <button className='edit-btn' onClick={() => handleEdit(state.arr[0].id)}>Edit</button>
       </section>
     )
   }
@@ -143,7 +145,7 @@ function StudyNow () {
             <button onClick={() => handleGoodAnswer(state.arr[0].id)} className='btn'>Good</button>
           </div>
         </div>
-        <button className='edit-btn'>Edit</button>
+        <button className='edit-btn' onClick={() => handleEdit(state.arr[0].id)}>Edit</button>
       </section>
     )
   }
@@ -156,7 +158,7 @@ function StudyNow () {
     <main className='main'>
       <NavBar />
       {state.edit &&
-        <Redirect to='/edit' />}
+        <Redirect to={`/edit/${state.editId}`} />}
       {studyDiv || answerDiv || questionDiv || congratsMsg}
     </main>
   )

@@ -5,28 +5,28 @@ import './decks.css'
 import config from '../../Config'
 
 function Decks () {
-  let array
   const url = config().url
   const [decks, setDecks] = useState([])
   const [isClick, setIsClick] = useState(false)
   const [path, setPath] = useState('')
 
   useEffect(() => {
-    async function getDataFromDb () { 
-      let data = await window.fetch(`${url}/cards`)
+    async function getDataFromDb () {
+      let data = await window.fetch(`${url}/deckNames`)
+      console.log(data)
       data = await data.json()
+      data = data.map(item => {
+        return item.deck.toUpperCase()
+      })
+      data = data.reduce((acc, cv) => {
+        const val = acc.find(item => item === cv)
+        if (!val) return acc.concat(cv)
+        return acc
+      }, [])
       setDecks(data)
     }
     getDataFromDb()
-  }, [decks]);
-
-  (function a () {
-    array = decks.reduce((acc, cv) => {
-      const val = acc.find(item => item.deck === cv.deck)
-      if (!val) return acc.concat(cv)
-      return acc
-    }, [])
-  }())
+  }, [])
 
   const modifyDeckClickTime = async (url, data) => {
     const res = await window.fetch(url, {
@@ -85,27 +85,23 @@ function Decks () {
       <section className='decks'>
         <h1 className='decks-heading'>Decks</h1>
         <ul>
-          {array.map(item => {
+          {decks.map(item => {
             return (
               <li key={item.id} className='list'>
                 <label
                   onClick={(e) => handleTotalDeck(e)} className='deck'
                 >
-                  {item.deck.toUpperCase()}
+                  {item}
                 </label>
-
                 <div className='dropdown-box'>
-                  <label className='dropdown-btn'>ACTION
-                  </label>
+                  <label className='dropdown-btn'>ACTION</label>
                   <div className='dropdown-content'>
-                    <label onClick={() => handleRename(item.deck)}>Rename</label>
-                    <label onClick={() => handleDeleteDeck(item.deck)}>Delete</label>
+                    <label onClick={() => handleRename(item)}>Rename</label>
+                    <label onClick={() => handleDeleteDeck(item)}>Delete</label>
                   </div>
                 </div>
                 {isClick && <Redirect to={`/decks/${path}`} />}
-
               </li>
-
             )
           })}
         </ul>

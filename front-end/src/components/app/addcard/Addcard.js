@@ -7,7 +7,7 @@ function Addcard () {
   return (
     <main>
       <NavBar />
-      <Form />
+      <Form heading='Add Card' />
     </main>
   )
 }

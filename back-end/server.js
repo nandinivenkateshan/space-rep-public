@@ -20,6 +20,7 @@ app.post('/updateDeckClickTime', db.updateDeckClickTime)
 app.post('/login', db.login)
 app.post('/modifyDeckName', db.modifyDeckName)
 app.post('/deleteDeck', db.deleteDeck)
-
+app.post('/updateCard', db.updateCard)
+app.get('/deckNames', db.deckNames)
 app.listen(port, () => console.log(`Server running on the port ${port}`))
 
