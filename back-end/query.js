@@ -10,6 +10,21 @@ const pool = new Pool({
   port: process.env.DB_PORT
 })
 
+/* Authentication */
+
+const addToAuthentication = (req, res) => {
+  const { email } = req.body
+  const obj = {
+    action: true,
+    sid: email + Math.random()
+  }
+  console.log(obj)
+  pool.query('INSERT INTO authentication(email,action,sid) VALUES ($1,$2,$3)', [email, obj.action, obj.sid], (error, result) => {
+    if (error) console.log('error')
+    else console.log('successfully created authentication details')
+  })
+}
+
 /* User Details */
 
 const getUserDetails = (req, res) => {
@@ -66,7 +81,7 @@ const addCard = (req, res) => {
 }
 
 const deckNames = (req, res) => {
-  pool.query('SELECT DISTINCT deck FROM cards', (error, result) => {
+  pool.query('SELECT DISTINCT ON(deck) deck, id FROM cards', (error, result) => {
     if (error) console.log('error while fetching decknames')
     else res.send(result.rows)
   })
@@ -107,10 +122,7 @@ const deleteDeck = (req, res) => {
 }
 
 const updateCard = (req, res) => {
-  console.log('req body', req.body)
   const { id, deck, question, answer } = req.body
-  console.log(id, deck, question, answer)
-
   pool.query('UPDATE cards SET deck=$2, question=$3, answer=$4 WHERE id=$1',
     [id, deck, question, answer], (error, result) => {
       if (error) console.log('Error while updating card')
@@ -129,5 +141,6 @@ module.exports = {
   modifyDeckName,
   deleteDeck,
   updateCard,
-  deckNames
+  deckNames,
+  addToAuthentication
 }

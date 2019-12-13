@@ -9,24 +9,18 @@ function Decks () {
   const [decks, setDecks] = useState([])
   const [isClick, setIsClick] = useState(false)
   const [path, setPath] = useState('')
+  const [isAction, setAction] = useState(false)
 
   useEffect(() => {
     async function getDataFromDb () {
       let data = await window.fetch(`${url}/deckNames`)
-      console.log(data)
       data = await data.json()
-      data = data.map(item => {
-        return item.deck.toUpperCase()
-      })
-      data = data.reduce((acc, cv) => {
-        const val = acc.find(item => item === cv)
-        if (!val) return acc.concat(cv)
-        return acc
-      }, [])
+      console.log(data)
       setDecks(data)
+      setAction(false)
     }
     getDataFromDb()
-  }, [])
+  }, [isAction])
 
   const modifyDeckClickTime = async (url, data) => {
     const res = await window.fetch(url, {
@@ -40,6 +34,7 @@ function Decks () {
   }
 
   const modifyDeckName = async (url, data) => {
+    setAction(true)
     await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -58,18 +53,18 @@ function Decks () {
 
   function handleRename (deckName) {
     const reName = window.prompt('Enter New Name')
-    modifyDeckName(`${url}/modifyDeckName`, { reName, deckName })
+    if (reName) modifyDeckName(`${url}/modifyDeckName`, { reName, deckName })
   }
 
   async function deleteDeck (url, data) {
-    const res = await window.fetch(url, {
+    setAction(true)
+    await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    console.log(res)
   }
 
   function handleDeleteDeck (deckName) {
@@ -91,13 +86,13 @@ function Decks () {
                 <label
                   onClick={(e) => handleTotalDeck(e)} className='deck'
                 >
-                  {item}
+                  {item.deck.toUpperCase()}
                 </label>
                 <div className='dropdown-box'>
                   <label className='dropdown-btn'>ACTION</label>
                   <div className='dropdown-content'>
-                    <label onClick={() => handleRename(item)}>Rename</label>
-                    <label onClick={() => handleDeleteDeck(item)}>Delete</label>
+                    <label onClick={() => handleRename(item.deck)}>Rename</label>
+                    <label onClick={() => handleDeleteDeck(item.deck)}>Delete</label>
                   </div>
                 </div>
                 {isClick && <Redirect to={`/decks/${path}`} />}

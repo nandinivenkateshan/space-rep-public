@@ -27,21 +27,16 @@ function Form (props) {
   const [deck, setDeck] = useState(editDeck || '')
   const [decksOpt, setDecksForOpt] = useState([])
 
-  setTimeout(() => setIssubmit(false), 3000)
+  setTimeout(() => setIssubmit(false), 4000)
 
   useEffect(() => {
     async function getDataFromDb () {
-      let data = await window.fetch(`${url}/cards`)
+      let data = await window.fetch(`${url}/deckNames`)
       data = await data.json()
-      const array = data.reduce((acc, cv) => {
-        const val = acc.find(item => item.deck === cv.deck)
-        if (!val) return acc.concat(cv)
-        return acc
-      }, [])
-      setDecksForOpt(array)
+      setDecksForOpt(data)
     }
     getDataFromDb()
-  }, [deck])
+  }, [isSubmit])
 
   const handleDeck = e => {
     return setDeck(e.target.value.trim())

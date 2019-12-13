@@ -1,10 +1,13 @@
 import React from 'react'
 import './addcard.css'
+
 function EnterDeck (props) {
   const { value: deck, onEnterDeck, decksOpt, placeholder } = props
+
   function handleDeck (e) {
     onEnterDeck(e)
   }
+
   return (
     <>
       <input

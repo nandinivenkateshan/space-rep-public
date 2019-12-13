@@ -29,8 +29,23 @@ function Login () {
     })
     const response = await res.json()
     if (response.res === 'pass') {
+      const auth = {
+        email: data.user_email
+      }
+      addToAuthentication(`${url}/addToAuthentication`, auth)
       setIsLogin(true)
     } else setErrMsg(response)
+  }
+
+  async function addToAuthentication (url, data) {
+    console.log(url)
+    await window.fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
   }
 
   const handleChange = e => {
@@ -53,6 +68,7 @@ function Login () {
     if (!values.pswd) errors.pswd = 'Password is required'
     return errors
   }
+
   return (
     <main className='main'>
       <Navbar signup='signUp' />
