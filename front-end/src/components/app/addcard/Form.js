@@ -11,9 +11,10 @@ function Form (props) {
   const { heading, id, editCard } = props
   let editQuestion, editDeck, editAns
   if (id) {
+    const converter = new showdown.Converter()
     editDeck = editCard[0].deck
-    editQuestion = editCard[0].question
-    editAns = editCard[0].answer
+    editQuestion = converter.makeMarkdown(editCard[0].question)
+    editAns = converter.makeMarkdown(editCard[0].answer)
   }
 
   const [isSubmit, setIssubmit] = useState(false)
@@ -60,9 +61,6 @@ function Form (props) {
         'Content-Type': 'application/json'
       }
     })
-    // if (response.ok) {
-    //   setIsUpdate(true)
-    // }
     setIsUpdate(response.ok)
   }
 
