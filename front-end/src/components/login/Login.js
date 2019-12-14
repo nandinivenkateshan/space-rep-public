@@ -3,10 +3,9 @@ import './login.css'
 import 'regenerator-runtime/runtime'
 import { Link, Redirect } from 'react-router-dom'
 import Navbar from '../navbar/Nav-register'
-import config from '../Config'
+import url from '../Config'
 
 function Login () {
-  const url = config().url
   const [values, setValues] = useState({})
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -28,24 +27,9 @@ function Login () {
       }
     })
     const response = await res.json()
-    if (response.res === 'pass') {
-      const auth = {
-        email: data.user_email
-      }
-      addToAuthentication(`${url}/addToAuthentication`, auth)
-      setIsLogin(true)
-    } else setErrMsg(response)
-  }
-
-  async function addToAuthentication (url, data) {
-    console.log(url)
-    await window.fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    console.log(response)
+    if (response.msg === 'pass') setIsLogin(true)
+    else setErrMsg(response)
   }
 
   const handleChange = e => {

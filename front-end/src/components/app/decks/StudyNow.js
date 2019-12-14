@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
 import parse from 'html-react-parser'
 import NavBar from '../navbar/Navbar'
-import config from '../../Config'
+import url from '../../Config'
 
 const initialState = {
   arr: [],
@@ -28,7 +28,7 @@ function reducer (state, action) {
     case 'againAnswer':
       return { ...state, showQuestion: true, showAnswer: false, arr: [...action.newArr] }
     case 'goodAnswer':
-      return { ...state, showQuestion: false, showAnswer: true, arr: [...action.newArr] }
+      return { ...state, showQuestion: true, showAnswer: false, arr: [...action.newArr] }
     case 'edit' :
       return { ...state, edit: true, editId: action.editId }
     default: console.log('Unexpected action')
@@ -37,7 +37,6 @@ function reducer (state, action) {
 
 function StudyNow () {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const url = config().url
   const { id: deckName } = useParams()
   let answerDiv, studyDiv, questionDiv, congratsMsg
 
@@ -93,7 +92,7 @@ function StudyNow () {
     modifyTimeStamp(`${url}/updateTimeStamp`,
       { id, timeStamp }
     )
-    dispatch({ action: 'goodAnswer', newArr: state.arr.slice(1) })
+    dispatch({ type: 'goodAnswer', newArr: state.arr.slice(1) })
   }
 
   if (state.showStudy) {
@@ -117,7 +116,6 @@ function StudyNow () {
       <section>
         <div className='showQuestion-box'>
           <div className='showQuestion'>
-            {console.log('type', typeof state.arr[0].id)}
             {parse(state.arr[0].question)}
           </div>
           <button onClick={() => handleQuestion()} className='study-btn'>Show Answer</button>

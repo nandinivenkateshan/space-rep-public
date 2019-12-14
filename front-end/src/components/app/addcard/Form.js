@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './addcard.css'
 import showdown from 'showdown'
 import 'regenerator-runtime/runtime'
-import config from '../../Config'
+import url from '../../Config'
 import EnterDeck from './EnterDeck'
 import TextQA from './TextQA'
 import { Redirect } from 'react-router-dom'
@@ -16,7 +16,6 @@ function Form (props) {
     editAns = editCard[0].answer
   }
 
-  const url = config().url
   const [isSubmit, setIssubmit] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
   const [markQ, setMarkQ] = useState('')
@@ -28,15 +27,6 @@ function Form (props) {
   const [decksOpt, setDecksForOpt] = useState([])
 
   setTimeout(() => setIssubmit(false), 4000)
-
-  useEffect(() => {
-    async function getDataFromDb () {
-      let data = await window.fetch(`${url}/deckNames`)
-      data = await data.json()
-      setDecksForOpt(data)
-    }
-    getDataFromDb()
-  }, [isSubmit])
 
   const handleDeck = e => {
     return setDeck(e.target.value.trim())
@@ -70,9 +60,10 @@ function Form (props) {
         'Content-Type': 'application/json'
       }
     })
-    if (response.ok) {
-      setIsUpdate(true)
-    }
+    // if (response.ok) {
+    //   setIsUpdate(true)
+    // }
+    setIsUpdate(response.ok)
   }
 
   const handleSubmit = e => {
@@ -111,6 +102,15 @@ function Form (props) {
     const html = converter.makeHtml(answer)
     setMarkAns(html)
   }
+
+  useEffect(() => {
+    async function getDataFromDb () {
+      let data = await window.fetch(`${url}/deckNames`)
+      data = await data.json()
+      setDecksForOpt(data)
+    }
+    getDataFromDb()
+  }, [isSubmit])
 
   return (
     <form onSubmit={e => handleSubmit(e)}>

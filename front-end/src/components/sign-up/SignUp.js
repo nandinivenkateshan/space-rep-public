@@ -4,11 +4,10 @@ import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
 import Navbar from '../navbar/Nav-register'
-import config from '../Config'
+import url from '../Config'
 import { Redirect } from 'react-router-dom'
 
 function SignUp () {
-  const url = config().url
   const [status, setStatus] = useState('')
   const [resMsg, setResMsg] = useState({})
   const [userDetails, setUserDetails] = useState([])
@@ -26,6 +25,8 @@ function SignUp () {
       }
     })
     const response = await res.json()
+    console.log(response)
+    console.log(res)
     setStatus(res.ok)
     setResMsg(response)
   }

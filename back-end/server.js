@@ -12,9 +12,9 @@ app.use(function (req, res, next) {
 })
 
 app.get('/getUserDetails', db.getUserDetails)
-app.post('/addUserDetails', db.addUserDetails)
 app.get('/cards', db.getCards)
 app.post('/card', db.addCard)
+app.post('/addUserDetails', db.addUserDetails)
 app.post('/updateTimeStamp', db.updateTimeStamp)
 app.post('/updateDeckClickTime', db.updateDeckClickTime)
 app.post('/login', db.login)
@@ -22,6 +22,4 @@ app.post('/modifyDeckName', db.modifyDeckName)
 app.post('/deleteDeck', db.deleteDeck)
 app.post('/updateCard', db.updateCard)
 app.get('/deckNames', db.deckNames)
-app.post('/login/addToAuthentication', db.addToAuthentication)
 app.listen(port, () => console.log(`Server running on the port ${port}`))
-

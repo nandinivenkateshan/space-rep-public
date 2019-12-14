@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import NavBar from '../navbar/Navbar'
 import './decks.css'
-import config from '../../Config'
+import url from '../../Config'
 
 function Decks () {
-  const url = config().url
   const [decks, setDecks] = useState([])
   const [isClick, setIsClick] = useState(false)
   const [path, setPath] = useState('')
@@ -15,7 +14,6 @@ function Decks () {
     async function getDataFromDb () {
       let data = await window.fetch(`${url}/deckNames`)
       data = await data.json()
-      console.log(data)
       setDecks(data)
       setAction(false)
     }

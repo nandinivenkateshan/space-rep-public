@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react'
 import Form from '../addcard/Form'
 import NavBar from '../navbar/Navbar'
 import { useParams } from 'react-router-dom'
-import config from '../../Config'
+import url from '../../Config'
 
 function Edit () {
   const { id } = useParams()
   const [editCard, setEditCard] = useState('')
-  const url = config().url
 
   useEffect(() => {
     async function getDataFromDb () {
@@ -18,11 +17,11 @@ function Edit () {
     }
     getDataFromDb()
   }, [])
-  
+
   return (
     <main>
       <NavBar />
-      {editCard[0] &&
+      {editCard &&
         <Form heading='Edit card' id={id} editCard={editCard} />}
     </main>
   )
