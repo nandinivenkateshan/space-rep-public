@@ -77,7 +77,8 @@ function Form (props) {
       const card = {
         deck: deck.toLowerCase(),
         question: markQ,
-        answer: markAns
+        answer: markAns,
+        status: 'new'
       }
       addToDb(`${url}/card`, card)
       setCards([card, ...cards])
@@ -102,12 +103,16 @@ function Form (props) {
   }
 
   useEffect(() => {
+    const abortController = new window.AbortController()
     async function getDataFromDb () {
-      let data = await window.fetch(`${url}/deckNames`)
+      let data = await window.fetch(`${url}/deckNames`, { signal: abortController.signal })
       data = await data.json()
       setDecksForOpt(data)
     }
     getDataFromDb()
+    return () => {
+      abortController.abort()
+    }
   }, [isSubmit])
 
   return (

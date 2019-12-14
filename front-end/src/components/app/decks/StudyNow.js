@@ -10,13 +10,14 @@ const initialState = {
   showQuestion: false,
   showAnswer: false,
   edit: false,
-  editId: ''
+  editId: '',
+  newCards: []
 }
 
 function reducer (state, action) {
   switch (action.type) {
     case 'setArr':
-      return { ...state, arr: [...action.newArr] }
+      return { ...state, arr: [...action.newArr], newCards: [...action.newCards] }
     case 'study':
       return { ...state, showStudy: false, showQuestion: true }
     case 'question':
@@ -51,10 +52,14 @@ function StudyNow () {
         }
         return acc
       }, [])
-      dispatch({ type: 'setArr', newArr: res2 })
+      const newCards = res2.filter(item => item.status === 'new')
+      dispatch({ type: 'setArr', newArr: res2, newCards: newCards })
     }
     getDataFromDb()
   }, [])
+
+  // const ar = state.arr.filter(item => item.status === 'new')
+  // console.log(ar)
 
   async function modifyTimeStamp (url, data) {
     await window.fetch(url, {
@@ -100,8 +105,12 @@ function StudyNow () {
       <div className='study-box'>
         <h1 className='heading'>{deckName.toUpperCase()}</h1>
         <div className='details'>
-          <label>Total</label>
-          <label>{state.arr.length}</label>
+          <label>New</label>
+          <label>{state.newCards.length}</label>
+          <label>In Learning</label>
+          <label>1</label>
+          <label>To Review</label>
+          <label>2</label>
         </div>
         <button onClick={() => handleStudy()} className='study-btn'>Study Now</button>
       </div>)

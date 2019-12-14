@@ -80,9 +80,9 @@ const getCards = async (req, res) => {
 }
 
 const addCard = async (req, res) => {
-  const { deck, question, answer } = req.body
+  const { deck, question, answer, status } = req.body
   try {
-    const result = await pool.query('INSERT INTO cards (deck, question, answer) VALUES ($1,$2,$3) RETURNING id', [deck, question, answer])
+    const result = await pool.query('INSERT INTO cards (deck, question, answer, status) VALUES ($1,$2,$3,$4) RETURNING id', [deck, question, answer, status])
     res.send(result.rows)
   } catch (e) {
     console.log('Error while adding card')
