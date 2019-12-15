@@ -93,7 +93,7 @@ function SignUp () {
           </p>
         )}
         {status && resMsg.success && (
-          <Redirect to='/loggedIn' />
+          <Redirect to='/login' />
         )}
       </section>
     </main>

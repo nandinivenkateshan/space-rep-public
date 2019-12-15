@@ -56,11 +56,10 @@ const login = async (req, res) => {
 }
 
 const addToAuthenticatonTable = async data => {
-  const [email, , sid] = data
+  const [, , sid] = data
   try {
     await pool.query('INSERT INTO authentication(email,action,sid) VALUES ($1,$2,$3)', data)
     return ({
-      userMail: email,
       sid: sid,
       msg: 'pass'
     })
@@ -69,10 +68,22 @@ const addToAuthenticatonTable = async data => {
   }
 }
 
+const logout = async (req, res) => {
+  try {
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [req.query.sid])
+    const email = val.rows[0].email
+    await pool.query('UPDATE authentication SET action=false WHERE email=$1', [email])
+    res.send('Logged out succesfully ')
+  } catch (e) { console.log('Unable to update the authentication') }
+}
+
 /* cards details */
 const getCards = async (req, res) => {
+  const sid = req.query.sid
   try {
-    const result = await pool.query('SELECT * FROM cards ORDER BY id ASC')
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sid])
+    const email = val.rows[0].email
+    const result = await pool.query('SELECT * FROM cards WHERE email=$1', [email])
     res.json(result.rows)
   } catch (e) {
     console.log('Error while fetching data')
@@ -80,9 +91,10 @@ const getCards = async (req, res) => {
 }
 
 const addCard = async (req, res) => {
-  const { deck, question, answer, status } = req.body
+  const { deck, question, answer, status, sessionId } = req.body
   try {
-    const result = await pool.query('INSERT INTO cards (deck, question, answer, status) VALUES ($1,$2,$3,$4) RETURNING id', [deck, question, answer, status])
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sessionId])
+    const result = await pool.query('INSERT INTO cards (deck, question, answer, status,email) VALUES ($1,$2,$3,$4,$5) RETURNING id', [deck, question, answer, status, val.rows[0].email])
     res.send(result.rows)
   } catch (e) {
     console.log('Error while adding card')
@@ -90,19 +102,28 @@ const addCard = async (req, res) => {
 }
 
 const deckNames = async (req, res) => {
+  const sid = req.query.sid
   try {
-    const result = await pool.query('SELECT DISTINCT ON(deck) deck, id FROM cards')
-    res.send(result.rows)
+    const val = await pool.query('SELECT email, action FROM authentication WHERE sid=$1', [sid])
+    console.log(val.rows[0])
+    const check = val.rows[0].action
+    if (check === 'true') {
+      console.log('true part')
+      const email = val.rows[0].email
+      const result = await pool.query('SELECT DISTINCT ON(deck) deck, id FROM cards WHERE email=$1', [email])
+      res.send(result.rows)
+    } else { console.log('else part') }
   } catch (e) {
     console.log('error while fetching decknames')
   }
 }
 
 const updateDeckClickTime = async (req, res) => {
-  const { deck, deckClickTime } = req.body
+  const { deck, deckClickTime, sessionId } = req.body
   try {
-    await pool.query('UPDATE cards SET deckclicktime=$2 WHERE deck=$1',
-      [deck, deckClickTime])
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sessionId])
+    await pool.query('UPDATE cards SET deckclicktime=$2 WHERE deck=$1 and email=$3',
+      [deck, deckClickTime, val.rows[0].email])
     res.send('Updated deckclicktime successfully')
   } catch (e) {
     console.log('Error in updating deck click time')
@@ -110,10 +131,10 @@ const updateDeckClickTime = async (req, res) => {
 }
 
 const updateTimeStamp = async (req, res) => {
-  const id = req.body.id
-  const timeStamp = req.body.timeStamp
+  const { id, timeStamp, status, sessionId } = req.body
   try {
-    await pool.query('UPDATE cards SET timestamp=$1 WHERE id=$2', [timeStamp, id])
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sessionId])
+    await pool.query('UPDATE cards SET timestamp=$1, status=$3 WHERE id=$2 and email=$4', [timeStamp, id, status, val.rows[0].email])
     res.send('Updated timeStamp successfully')
   } catch (e) {
     console.log('Error while updating timeStamp')
@@ -121,9 +142,10 @@ const updateTimeStamp = async (req, res) => {
 }
 
 const modifyDeckName = async (req, res) => {
-  const { reName, deckName } = req.body
+  const { reName, deckName, sessionId } = req.body
   try {
-    await pool.query('UPDATE cards SET deck=$1 WHERE deck=$2', [reName, deckName])
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sessionId])
+    await pool.query('UPDATE cards SET deck=$1 WHERE deck=$2 and email=$3', [reName, deckName, val.rows[0].email])
     res.send('Updated deckname successfully')
   } catch (e) {
     console.log('Error while modifying deckname')
@@ -131,9 +153,10 @@ const modifyDeckName = async (req, res) => {
 }
 
 const deleteDeck = async (req, res) => {
-  const { deckName } = req.body
+  const { deckName, sessionId } = req.body
   try {
-    await pool.query('DELETE FROM cards WHERE deck=$1', [deckName])
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sessionId])
+    await pool.query('DELETE FROM cards WHERE deck=$1 and email=$2', [deckName, val.rows[0].email])
     res.send('Deleted deck successfully')
   } catch (e) {
     console.log('Error in deleting deck')
@@ -141,10 +164,11 @@ const deleteDeck = async (req, res) => {
 }
 
 const updateCard = async (req, res) => {
-  const { id, deck, question, answer } = req.body
+  const { id, deck, question, answer, sessionId } = req.body
   try {
-    await pool.query('UPDATE cards SET deck=$2, question=$3, answer=$4 WHERE id=$1',
-      [id, deck, question, answer])
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sessionId])
+    await pool.query('UPDATE cards SET deck=$2, question=$3, answer=$4 WHERE id=$1 and email=$5',
+      [id, deck, question, answer, val.rows[0].email])
     res.send('Updated card successfully')
   } catch (e) {
     console.log('Error while updating card')
@@ -162,5 +186,6 @@ module.exports = {
   modifyDeckName,
   deleteDeck,
   updateCard,
-  deckNames
+  deckNames,
+  logout
 }

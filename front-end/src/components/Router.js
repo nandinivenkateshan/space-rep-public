@@ -2,6 +2,7 @@ import React from 'react'
 import Home from './home/Home'
 import SignUp from './sign-up/SignUp'
 import Login from './login/Login'
+import Logout from './login/Logout'
 import Navbar from './app/navbar/Navbar'
 import Decks from './app/decks/Decks'
 import Addcard from './app/addcard/Addcard'
@@ -21,6 +22,7 @@ function routes () {
         <Route path='/decks' component={Decks} />
         <Route path='/add' component={Addcard} />
         <Route exact path='/edit/:id' component={Form} />
+        <Route path='/loggedout' component={Logout} />
       </Switch>
     </Router>
   )

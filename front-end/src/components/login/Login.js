@@ -27,7 +27,7 @@ function Login () {
       }
     })
     const response = await res.json()
-    console.log(response)
+    window.localStorage.setItem('session', JSON.stringify(response.sid))
     if (response.msg === 'pass') setIsLogin(true)
     else setErrMsg(response)
   }
@@ -87,7 +87,7 @@ function Login () {
           {isLogin &&
             <Redirect to='/loggedIn' />}
         </form>
-        <Link className='reset-pswd' to=''>Reset Password</Link>
+        {/* <Link className='reset-pswd' to=''>Reset Password</Link> */}
       </section>
     </main>
   )

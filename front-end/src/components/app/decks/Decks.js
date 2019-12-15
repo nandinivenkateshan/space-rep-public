@@ -9,10 +9,11 @@ function Decks () {
   const [isClick, setIsClick] = useState(false)
   const [path, setPath] = useState('')
   const [isAction, setAction] = useState(false)
+  const sid = JSON.parse(window.localStorage.getItem('session'))
 
   useEffect(() => {
     async function getDataFromDb () {
-      let data = await window.fetch(`${url}/deckNames`)
+      let data = await window.fetch(`${url}/deckNames/?sid=${sid}`)
       data = await data.json()
       setDecks(data)
       setAction(false)
@@ -21,9 +22,11 @@ function Decks () {
   }, [isAction])
 
   const modifyDeckClickTime = async (url, data) => {
+    const sessionId = JSON.parse(window.localStorage.getItem('session'))
+    const value = { ...data, sessionId }
     const res = await window.fetch(url, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(value),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -32,10 +35,12 @@ function Decks () {
   }
 
   const modifyDeckName = async (url, data) => {
+    const sessionId = JSON.parse(window.localStorage.getItem('session'))
+    const value = { ...data, sessionId }
     setAction(true)
     await window.fetch(url, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(value),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -55,10 +60,12 @@ function Decks () {
   }
 
   async function deleteDeck (url, data) {
+    const sessionId = JSON.parse(window.localStorage.getItem('session'))
+    const value = { ...data, sessionId }
     setAction(true)
     await window.fetch(url, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(value),
       headers: {
         'Content-Type': 'application/json'
       }

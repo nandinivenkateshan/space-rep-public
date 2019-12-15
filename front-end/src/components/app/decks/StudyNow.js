@@ -11,13 +11,19 @@ const initialState = {
   showAnswer: false,
   edit: false,
   editId: '',
-  newCards: []
+  newCards: [],
+  learning: []
 }
 
 function reducer (state, action) {
   switch (action.type) {
     case 'setArr':
-      return { ...state, arr: [...action.newArr], newCards: [...action.newCards] }
+      return {
+        ...state,
+        arr: [...action.newArr],
+        newCards: [...action.newCards],
+        learning: [...action.learning]
+      }
     case 'study':
       return { ...state, showStudy: false, showQuestion: true }
     case 'question':
@@ -40,10 +46,11 @@ function StudyNow () {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { id: deckName } = useParams()
   let answerDiv, studyDiv, questionDiv, congratsMsg
+  const sid = JSON.parse(window.localStorage.getItem('session'))
 
   useEffect(() => {
     async function getDataFromDb () {
-      const data = await window.fetch(`${url}/cards`)
+      const data = await window.fetch(`${url}/cards/?sid=${sid}`)
       const res = await data.json()
       const res1 = res.filter(item => item.deck === deckName)
       const res2 = res1.reduce((acc, cv) => {
@@ -53,18 +60,18 @@ function StudyNow () {
         return acc
       }, [])
       const newCards = res2.filter(item => item.status === 'new')
-      dispatch({ type: 'setArr', newArr: res2, newCards: newCards })
+      const learning = res2.filter(item => item.status === 'learning')
+      dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learning: learning })
     }
     getDataFromDb()
   }, [])
 
-  // const ar = state.arr.filter(item => item.status === 'new')
-  // console.log(ar)
-
   async function modifyTimeStamp (url, data) {
+    const sessionId = JSON.parse(window.localStorage.getItem('session'))
+    const value = { ...data, ...sessionId }
     await window.fetch(url, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(value),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -82,20 +89,26 @@ function StudyNow () {
 
   function handleEasyAnswer (id) {
     const timeStamp = Date.now() + (15 * 60 * 1000)
+    const status = 'learning'
     modifyTimeStamp(`${url}/updateTimeStamp`,
-      { id, timeStamp }
+      { id, timeStamp, status }
     )
     dispatch({ type: 'easyAnswer', newArr: state.arr.slice(1) })
   }
 
   function handleAgainAnswer (id) {
+    const status = 'learning'
+    modifyTimeStamp(`${url}/updateTimeStamp`,
+      { id, status }
+    )
     dispatch({ type: 'againAnswer', newArr: [...state.arr.slice(1), state.arr[0]] })
   }
 
   function handleGoodAnswer (id) {
+    const status = 'learning'
     const timeStamp = Date.now() + (24 * 60 * 60 * 1000)
     modifyTimeStamp(`${url}/updateTimeStamp`,
-      { id, timeStamp }
+      { id, timeStamp, status }
     )
     dispatch({ type: 'goodAnswer', newArr: state.arr.slice(1) })
   }
@@ -108,9 +121,9 @@ function StudyNow () {
           <label>New</label>
           <label>{state.newCards.length}</label>
           <label>In Learning</label>
-          <label>1</label>
+          <label>{state.learning.length}</label>
           <label>To Review</label>
-          <label>2</label>
+          <label>review</label>
         </div>
         <button onClick={() => handleStudy()} className='study-btn'>Study Now</button>
       </div>)
@@ -141,11 +154,20 @@ function StudyNow () {
           <div className='showAnswer'>
             {parse(state.arr[0].answer)}
           </div>
-          <div className='timings'>
-            <label>&lt; 1 min</label>
-            <label>&lt; 15 min</label>
-            <label>1 day</label>
-          </div>
+          {state.arr[0].status === 'learning' &&
+            <div className='timings'>
+              <label>&lt; 1 min</label>
+              <label> 1 day</label>
+              <label>4 day</label>
+            </div>}
+          {console.log('new', state.arr[0].status)}
+          {state.arr[0].status === 'new' &&
+            <div className='timings'>
+              <label>&lt; 1 min</label>
+              <label>&lt; 15 min</label>
+              <label>1 day</label>
+            </div>}
+
           <div className='answer-btns'>
             <button onClick={() => handleAgainAnswer(state.arr[0].id)} className='btn'>Again</button>
             <button onClick={() => handleEasyAnswer(state.arr[0].id)} className='btn'>Easy</button>

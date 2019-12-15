@@ -4,6 +4,8 @@ import logo from '../../img/logo.jpeg'
 import { Link } from 'react-router-dom'
 
 function Navbar () {
+  const sid = JSON.parse(window.localStorage.getItem('session'))
+  console.log(sid)
   return (
     <nav className='navbar'>
       <Link className='navbar-brand' to='/'>
@@ -18,7 +20,7 @@ function Navbar () {
 
       <div className='navbar-menu-end'>
         <Link className='navbar-item' to=''> Account</Link>
-        <Link className='navbar-item' to=''> Log Out</Link>
+        <Link className='navbar-item' to='/loggedout'> Log Out</Link>
       </div>
     </nav>
   )

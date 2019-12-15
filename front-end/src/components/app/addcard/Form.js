@@ -9,6 +9,7 @@ import { Redirect } from 'react-router-dom'
 
 function Form (props) {
   const { heading, id, editCard } = props
+  const sid = JSON.parse(window.localStorage.getItem('session'))
   let editQuestion, editDeck, editAns
   if (id) {
     const converter = new showdown.Converter()
@@ -44,9 +45,11 @@ function Form (props) {
   }
 
   async function addToDb (url, data) {
+    const sessionId = JSON.parse(window.localStorage.getItem('session'))
+    const value = { ...data, sessionId }
     await window.fetch(url, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(value),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -54,9 +57,11 @@ function Form (props) {
   }
 
   async function updateCard (url, card) {
+    const sessionId = JSON.parse(window.localStorage.getItem('session'))
+    const value = { ...card, sessionId }
     const response = await window.fetch(url, {
       method: 'POST',
-      body: JSON.stringify(card),
+      body: JSON.stringify(value),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -105,7 +110,7 @@ function Form (props) {
   useEffect(() => {
     const abortController = new window.AbortController()
     async function getDataFromDb () {
-      let data = await window.fetch(`${url}/deckNames`, { signal: abortController.signal })
+      let data = await window.fetch(`${url}/decknames/?sid=${sid}`, { signal: abortController.signal })
       data = await data.json()
       setDecksForOpt(data)
     }
