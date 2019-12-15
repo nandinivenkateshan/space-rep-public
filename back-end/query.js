@@ -89,6 +89,17 @@ const getCards = async (req, res) => {
     console.log('Error while fetching data')
   }
 }
+const account = async (req, res) => {
+  const sid = req.query.sid
+  try {
+    const val = await pool.query('SELECT email, action FROM authentication WHERE sid=$1', [sid])
+    const { email, action } = val.rows[0]
+    if (action === 'true') {
+      const result = await pool.query('SELECT * FROM signup WHERE user_email=$1', [email])
+      res.send({ user: result.rows[0].user_name })
+    } else { res.send({ fail: 'User has to login' }) }
+  } catch (e) { console.log('error in fetching') }
+}
 
 const addCard = async (req, res) => {
   const { deck, question, answer, status, sessionId } = req.body
@@ -105,14 +116,12 @@ const deckNames = async (req, res) => {
   const sid = req.query.sid
   try {
     const val = await pool.query('SELECT email, action FROM authentication WHERE sid=$1', [sid])
-    console.log(val.rows[0])
     const check = val.rows[0].action
     if (check === 'true') {
-      console.log('true part')
       const email = val.rows[0].email
       const result = await pool.query('SELECT DISTINCT ON(deck) deck, id FROM cards WHERE email=$1', [email])
       res.send(result.rows)
-    } else { console.log('else part') }
+    }
   } catch (e) {
     console.log('error while fetching decknames')
   }
@@ -187,5 +196,6 @@ module.exports = {
   deleteDeck,
   updateCard,
   deckNames,
-  logout
+  logout,
+  account
 }
