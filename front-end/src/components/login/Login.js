@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './login.css'
-import 'regenerator-runtime/runtime'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import Navbar from '../navbar/Nav-register'
 import url from '../Config'
 

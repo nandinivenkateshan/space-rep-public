@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './addcard.css'
 import showdown from 'showdown'
-import 'regenerator-runtime/runtime'
 import url from '../../Config'
 import EnterDeck from './EnterDeck'
 import TextQA from './TextQA'

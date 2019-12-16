@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import 'regenerator-runtime/runtime'
 import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
