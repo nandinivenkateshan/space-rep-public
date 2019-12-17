@@ -82,7 +82,10 @@ function Form (props) {
         deck: deck.toLowerCase(),
         question: markQ,
         answer: markAns,
-        status: 'new'
+        status: 'new',
+        again: '60', // 1min
+        easy: '900', // 15 min
+        good: '86400' // 1 day
       }
       addToDb(`${url}/card`, card)
       setCards([card, ...cards])

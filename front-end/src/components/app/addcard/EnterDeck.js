@@ -18,6 +18,7 @@ function EnterDeck (props) {
         value={deck}
         list='deck-list'
         required
+        autoFocus
       />
       <datalist id='deck-list'>
         {decksOpt.map(item => {

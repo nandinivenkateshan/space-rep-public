@@ -102,10 +102,10 @@ const account = async (req, res) => {
 }
 
 const addCard = async (req, res) => {
-  const { deck, question, answer, status, sessionId } = req.body
+  const { deck, question, answer, status, sessionId, again, easy, good } = req.body
   try {
     const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sessionId])
-    const result = await pool.query('INSERT INTO cards (deck, question, answer, status,email) VALUES ($1,$2,$3,$4,$5) RETURNING id', [deck, question, answer, status, val.rows[0].email])
+    const result = await pool.query('INSERT INTO cards (deck, question, answer, status,email,again, easy, good) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id', [deck, question, answer, status, val.rows[0].email, again, easy, good])
     res.send(result.rows)
   } catch (e) {
     console.log('Error while adding card')
@@ -140,10 +140,10 @@ const updateDeckClickTime = async (req, res) => {
 }
 
 const updateTimeStamp = async (req, res) => {
-  const { id, timeStamp, status, sessionId } = req.body
+  const { id, timeStamp, easy, good, again, status, sid } = req.body
   try {
-    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sessionId])
-    await pool.query('UPDATE cards SET timestamp=$1, status=$3 WHERE id=$2 and email=$4', [timeStamp, id, status, val.rows[0].email])
+    const val = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sid])
+    await pool.query('UPDATE cards SET timestamp=$1, status=$3,easy=$5, good=$6, again=$7 WHERE id=$2 and email=$4', [timeStamp, id, status, val.rows[0].email, easy, good, again])
     res.send('Updated timeStamp successfully')
   } catch (e) {
     console.log('Error while updating timeStamp')

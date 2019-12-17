@@ -50,7 +50,7 @@ function Decks () {
   function handleTotalDeck (e) {
     const deck = e.target.innerText.toLowerCase()
     setPath(deck)
-    const deckClickTime = Date.now()
+    const deckClickTime = parseInt(Date.now() / 1000)
     modifyDeckClickTime(`${url}/updateDeckClickTime`, { deck, deckClickTime })
   }
 

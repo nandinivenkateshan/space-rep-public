@@ -12,7 +12,6 @@ function Navbar () {
     async function getDataFromDb () {
       let data = await window.fetch(`${url}/account/?sid=${sid}`)
       data = await data.json()
-      console.log(data)
       if (data.user) setAccount(data.user)
     }
     getDataFromDb()
@@ -20,25 +19,27 @@ function Navbar () {
 
   return (
     <>
-      {!account &&
-        <Login />}
-      {account &&
-        <nav className='navbar'>
-          <Link className='navbar-brand' to='/loggedIn'>
-            <label className='logo-text'>SpaceRep</label>
-            <img src={logo} alt='logo' className='logo' />
-          </Link>
+      {/*
+      {account && */}
+      <nav className='navbar'>
+        <Link className='navbar-brand' to='/loggedIn'>
+          <label className='logo-text'>SpaceRep</label>
+          <img src={logo} alt='logo' className='logo' />
+        </Link>
 
-          <div className='navbar-menu-start'>
-            <Link className='navbar-item' to='/decks'> Decks</Link>
-            <Link className='navbar-item' to='/add'> Add</Link>
-          </div>
+        <div className='navbar-menu-start'>
+          <Link className='navbar-item' to='/decks'> Decks</Link>
+          <Link className='navbar-item' to='/add'> Add</Link>
+        </div>
 
-          <div className='navbar-menu-end'>
-            <Link className='navbar-item' to='/loggedIn'>Account- {account}</Link>
-            <Link className='navbar-item' to='/loggedout'> Log Out</Link>
-          </div>
-        </nav>}
+        <div className='navbar-menu-end'>
+          <Link className='navbar-item' to='/loggedIn'>Account- {account}</Link>
+          <Link className='navbar-item' to='/loggedout'> Log Out</Link>
+        </div>
+      </nav>
+      {/* {!account &&
+        <Login />} */}
+
     </>
   )
 }

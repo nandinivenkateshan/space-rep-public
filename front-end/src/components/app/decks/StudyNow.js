@@ -12,7 +12,8 @@ const initialState = {
   edit: false,
   editId: '',
   newCards: [],
-  learning: []
+  learningCards: [],
+  reviewCards: []
 }
 
 function reducer (state, action) {
@@ -22,7 +23,8 @@ function reducer (state, action) {
         ...state,
         arr: [...action.newArr],
         newCards: [...action.newCards],
-        learning: [...action.learning]
+        learningCards: [...action.learningCards],
+        reviewCards: [...action.reviewCards]
       }
     case 'study':
       return { ...state, showStudy: false, showQuestion: true }
@@ -53,22 +55,24 @@ function StudyNow () {
       const data = await window.fetch(`${url}/cards/?sid=${sid}`)
       const res = await data.json()
       const res1 = res.filter(item => item.deck === deckName)
+      console.log(res1)
       const res2 = res1.reduce((acc, cv) => {
-        if (cv.deckclicktime >= Number(cv.timestamp)) {
+        if (Number(cv.deckclicktime) >= Number(cv.timestamp)) {
           acc.push(cv)
         }
         return acc
       }, [])
+      console.log('res2', res2)
       const newCards = res2.filter(item => item.status === 'new')
-      const learning = res2.filter(item => item.status === 'learning')
-      dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learning: learning })
+      const learningCards = res2.filter(item => item.status === 'learning')
+      const reviewCards = res2.filter(item => item.status === 'review')
+      dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learningCards: learningCards, reviewCards: reviewCards })
     }
     getDataFromDb()
   }, [])
 
   async function modifyTimeStamp (url, data) {
-    const sessionId = JSON.parse(window.localStorage.getItem('session'))
-    const value = { ...data, ...sessionId }
+    const value = { ...data, sid }
     await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(value),
@@ -87,28 +91,83 @@ function StudyNow () {
     dispatch({ type: 'question' })
   }
 
-  function handleEasyAnswer (id) {
-    const timeStamp = Date.now() + (15 * 60 * 1000)
-    const status = 'learning'
+  function ConvertSec (n) {
+    const time = []
+    const day = parseInt(n / (24 * 3600))
+    if (day) time.push(` ${day}d`)
+    n = (n % (24 * 3600))
+    const hour = parseInt(n / 3600)
+    if (hour) time.push(` ${hour}hour`)
+    n = parseInt(n % 3600)
+    const min = parseInt(n / 60)
+    if (min) time.push(` ${min}min`)
+
+    n = parseInt(n % 60)
+    const sec = n
+    if (sec) time.push(sec + 'sec')
+    return time
+  }
+
+  function handleEasyAnswer (array) {
+    console.log('array', array)
+    let { id, status, easy, good, again } = array
+    const timeToDelay = easy
+    if (status === 'new') {
+      status = 'learning'
+      easy = 86400 // 1 day
+      good = 259200 // 3 days
+    }
+    if (status === 'learning') {
+      status = 'review'
+      easy = 172800 // 2 days
+      good = 345600 // 4 days
+    }
+    if (status === 'review') {
+      easy = Number(easy) + 172800
+      good = Number(good) + 345600
+    }
+
+    const timeStamp = parseInt(Date.now() / 1000) + Number(timeToDelay)
     modifyTimeStamp(`${url}/updateTimeStamp`,
-      { id, timeStamp, status }
+      { id, easy, good, again, timeStamp, status }
     )
     dispatch({ type: 'easyAnswer', newArr: state.arr.slice(1) })
   }
 
-  function handleAgainAnswer (id) {
-    const status = 'learning'
+  function handleAgainAnswer (array) {
+    let { id, status, again, easy, good } = array
+    status = 'learning'
+    easy = 86400 // 1 day
+    good = 259200 // 3 day
+
+    const timeStamp = parseInt(Date.now() / 1000)
     modifyTimeStamp(`${url}/updateTimeStamp`,
-      { id, status }
+      { id, again, easy, good, timeStamp, status }
     )
     dispatch({ type: 'againAnswer', newArr: [...state.arr.slice(1), state.arr[0]] })
   }
 
-  function handleGoodAnswer (id) {
-    const status = 'learning'
-    const timeStamp = Date.now() + (24 * 60 * 60 * 1000)
+  function handleGoodAnswer (array) {
+    let { id, status, good, easy, again } = array
+    const timeToDelay = good
+    if (status === 'new') {
+      status = 'learning'
+      easy = 86400 // 1 day
+      good = 259200 // 3 day
+    }
+    if (status === 'learning') {
+      status = 'review'
+      easy = 172800 // 2 days
+      good = 345600 // 4 days
+    }
+    if (status === 'review') {
+      easy = Number(easy) + 172800
+      good = Number(good) + 345600
+    }
+
+    const timeStamp = parseInt(Date.now() / 1000) + Number(timeToDelay)
     modifyTimeStamp(`${url}/updateTimeStamp`,
-      { id, timeStamp, status }
+      { id, good, easy, again, timeStamp, status }
     )
     dispatch({ type: 'goodAnswer', newArr: state.arr.slice(1) })
   }
@@ -121,9 +180,9 @@ function StudyNow () {
           <label>New</label>
           <label>{state.newCards.length}</label>
           <label>In Learning</label>
-          <label>{state.learning.length}</label>
+          <label>{state.learningCards.length}</label>
           <label>To Review</label>
-          <label>review</label>
+          <label>{state.reviewCards.length}</label>
         </div>
         <button onClick={() => handleStudy()} className='study-btn'>Study Now</button>
       </div>)
@@ -154,24 +213,15 @@ function StudyNow () {
           <div className='showAnswer'>
             {parse(state.arr[0].answer)}
           </div>
-          {state.arr[0].status === 'learning' &&
-            <div className='timings'>
-              <label>&lt; 1 min</label>
-              <label> 1 day</label>
-              <label>4 day</label>
-            </div>}
-          {console.log('new', state.arr[0].status)}
-          {state.arr[0].status === 'new' &&
-            <div className='timings'>
-              <label>&lt; 1 min</label>
-              <label>&lt; 15 min</label>
-              <label>1 day</label>
-            </div>}
-
+          <div className='timings'>
+            <label>&lt; {ConvertSec(state.arr[0].again)}</label>
+            <label>  {ConvertSec(state.arr[0].easy)}</label>
+            <label>{ConvertSec(state.arr[0].good)}</label>
+          </div>
           <div className='answer-btns'>
-            <button onClick={() => handleAgainAnswer(state.arr[0].id)} className='btn'>Again</button>
-            <button onClick={() => handleEasyAnswer(state.arr[0].id)} className='btn'>Easy</button>
-            <button onClick={() => handleGoodAnswer(state.arr[0].id)} className='btn'>Good</button>
+            <button onClick={() => handleAgainAnswer(state.arr[0])} className='btn'>Again</button>
+            <button onClick={() => handleEasyAnswer(state.arr[0])} className='btn'>Easy</button>
+            <button onClick={() => handleGoodAnswer(state.arr[0])} className='btn'>Good</button>
           </div>
         </div>
         <button className='edit-btn' onClick={() => handleEdit(state.arr[0].id)}>Edit</button>
