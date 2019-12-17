@@ -39,11 +39,16 @@
   margin: 60px auto;
 }
 .details {
-  display: flex;
-  justify-content: space-evenly;
+  margin-bottom: 20px;
 }
+.count {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 100px;
+}
+
 .study-box .heading {
-  text-align: center;
+  text-align: left;
   color: red;
   font-size: 30px;
   text-shadow: 1px 1px 1px grey;
@@ -57,7 +62,6 @@
   color: white;
   font-weight: bold;
   font-size: 15px;
-  margin: 0px auto 7px auto;
 }
 
 .showQuestion-box {

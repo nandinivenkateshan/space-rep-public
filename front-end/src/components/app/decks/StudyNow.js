@@ -174,18 +174,24 @@ function StudyNow () {
 
   if (state.showStudy) {
     studyDiv = (
-      <div className='study-box'>
+      <main className='study-box'>
         <h1 className='heading'>{deckName.toUpperCase()}</h1>
-        <div className='details'>
-          <label>New</label>
-          <label>{state.newCards.length}</label>
-          <label>In Learning</label>
-          <label>{state.learningCards.length}</label>
-          <label>To Review</label>
-          <label>{state.reviewCards.length}</label>
-        </div>
+        <section className='details'>
+          <div className='count'>
+            <label>New</label>
+            <label>{state.newCards.length}</label>
+          </div>
+          <div className='count'>
+            <label>In Learning</label>
+            <label>{state.learningCards.length}</label>
+          </div>
+          <div className='count'>
+            <label>To Review</label>
+            <label>{state.reviewCards.length}</label>
+          </div>
+        </section>
         <button onClick={() => handleStudy()} className='study-btn'>Study Now</button>
-      </div>)
+      </main>)
   }
 
   function handleEdit (id) {
