@@ -55,17 +55,19 @@ function StudyNow () {
       const data = await window.fetch(`${url}/cards/?sid=${sid}`)
       const res = await data.json()
       const res1 = res.filter(item => item.deck === deckName)
-      console.log(res1)
+      console.log('dta', res1)
       const res2 = res1.reduce((acc, cv) => {
         if (Number(cv.deckclicktime) >= Number(cv.timestamp)) {
           acc.push(cv)
         }
         return acc
       }, [])
-      console.log('res2', res2)
       const newCards = res2.filter(item => item.status === 'new')
+      console.log('new', newCards)
       const learningCards = res2.filter(item => item.status === 'learning')
+      console.log('learn', learningCards)
       const reviewCards = res2.filter(item => item.status === 'review')
+      console.log('review', reviewCards)
       dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learningCards: learningCards, reviewCards: reviewCards })
     }
     getDataFromDb()
@@ -112,17 +114,20 @@ function StudyNow () {
     console.log('array', array)
     let { id, status, easy, good, again } = array
     const timeToDelay = easy
-    if (status === 'new') {
+    const oldStatus = status
+    if (oldStatus === 'new') {
+      console.log('new cards')
       status = 'learning'
       easy = 86400 // 1 day
       good = 259200 // 3 days
     }
-    if (status === 'learning') {
+    if (oldStatus === 'learning') {
+      console.log('learning card')
       status = 'review'
       easy = 172800 // 2 days
       good = 345600 // 4 days
     }
-    if (status === 'review') {
+    if (oldStatus === 'review') {
       easy = Number(easy) + 172800
       good = Number(good) + 345600
     }
@@ -150,17 +155,18 @@ function StudyNow () {
   function handleGoodAnswer (array) {
     let { id, status, good, easy, again } = array
     const timeToDelay = good
-    if (status === 'new') {
+    const oldStatus = status
+    if (oldStatus === 'new') {
       status = 'learning'
       easy = 86400 // 1 day
       good = 259200 // 3 day
     }
-    if (status === 'learning') {
+    if (oldStatus === 'learning') {
       status = 'review'
       easy = 172800 // 2 days
       good = 345600 // 4 days
     }
-    if (status === 'review') {
+    if (oldStatus === 'review') {
       easy = Number(easy) + 172800
       good = Number(good) + 345600
     }
