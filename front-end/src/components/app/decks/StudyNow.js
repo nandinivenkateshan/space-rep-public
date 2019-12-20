@@ -55,7 +55,6 @@ function StudyNow () {
       const data = await window.fetch(`${url}/cards/?sid=${sid}`)
       const res = await data.json()
       const res1 = res.filter(item => item.deck === deckName)
-      console.log('dta', res1)
       const res2 = res1.reduce((acc, cv) => {
         if (Number(cv.deckclicktime) >= Number(cv.timestamp)) {
           acc.push(cv)
@@ -63,11 +62,8 @@ function StudyNow () {
         return acc
       }, [])
       const newCards = res2.filter(item => item.status === 'new')
-      console.log('new', newCards)
       const learningCards = res2.filter(item => item.status === 'learning')
-      console.log('learn', learningCards)
       const reviewCards = res2.filter(item => item.status === 'review')
-      console.log('review', reviewCards)
       dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learningCards: learningCards, reviewCards: reviewCards })
     }
     getDataFromDb()
@@ -96,33 +92,30 @@ function StudyNow () {
   function ConvertSec (n) {
     const time = []
     const day = parseInt(n / (24 * 3600))
-    if (day) time.push(` ${day}d`)
+    if (day) time.push(` ${day} d`)
     n = (n % (24 * 3600))
     const hour = parseInt(n / 3600)
-    if (hour) time.push(` ${hour}hour`)
+    if (hour) time.push(` ${hour} hour`)
     n = parseInt(n % 3600)
     const min = parseInt(n / 60)
-    if (min) time.push(` ${min}min`)
-
+    if (min) time.push(` ${min} min`)
     n = parseInt(n % 60)
     const sec = n
     if (sec) time.push(sec + 'sec')
     return time
   }
 
-  function handleEasyAnswer (array) {
-    console.log('array', array)
+  function handleEasyOrGood (array, e) {
+    const answerType = e.target.innerText.toLowerCase()
     let { id, status, easy, good, again } = array
-    const timeToDelay = easy
+    const timeToDelay = array[answerType]
     const oldStatus = status
     if (oldStatus === 'new') {
-      console.log('new cards')
       status = 'learning'
       easy = 86400 // 1 day
       good = 259200 // 3 days
     }
     if (oldStatus === 'learning') {
-      console.log('learning card')
       status = 'review'
       easy = 172800 // 2 days
       good = 345600 // 4 days
@@ -136,10 +129,10 @@ function StudyNow () {
     modifyTimeStamp(`${url}/updateTimeStamp`,
       { id, easy, good, again, timeStamp, status }
     )
-    dispatch({ type: 'easyAnswer', newArr: state.arr.slice(1) })
+    dispatch({ type: `${answerType}Answer`, newArr: state.arr.slice(1) })
   }
 
-  function handleAgainAnswer (array) {
+  function handleAgain (array) {
     let { id, status, again, easy, good } = array
     status = 'learning'
     easy = 86400 // 1 day
@@ -150,32 +143,6 @@ function StudyNow () {
       { id, again, easy, good, timeStamp, status }
     )
     dispatch({ type: 'againAnswer', newArr: [...state.arr.slice(1), state.arr[0]] })
-  }
-
-  function handleGoodAnswer (array) {
-    let { id, status, good, easy, again } = array
-    const timeToDelay = good
-    const oldStatus = status
-    if (oldStatus === 'new') {
-      status = 'learning'
-      easy = 86400 // 1 day
-      good = 259200 // 3 day
-    }
-    if (oldStatus === 'learning') {
-      status = 'review'
-      easy = 172800 // 2 days
-      good = 345600 // 4 days
-    }
-    if (oldStatus === 'review') {
-      easy = Number(easy) + 172800
-      good = Number(good) + 345600
-    }
-
-    const timeStamp = parseInt(Date.now() / 1000) + Number(timeToDelay)
-    modifyTimeStamp(`${url}/updateTimeStamp`,
-      { id, good, easy, again, timeStamp, status }
-    )
-    dispatch({ type: 'goodAnswer', newArr: state.arr.slice(1) })
   }
 
   if (state.showStudy) {
@@ -231,9 +198,9 @@ function StudyNow () {
             <label>{ConvertSec(state.arr[0].good)}</label>
           </div>
           <div className='answer-btns'>
-            <button onClick={() => handleAgainAnswer(state.arr[0])} className='btn'>Again</button>
-            <button onClick={() => handleEasyAnswer(state.arr[0])} className='btn'>Easy</button>
-            <button onClick={() => handleGoodAnswer(state.arr[0])} className='btn'>Good</button>
+            <button onClick={() => handleAgain(state.arr[0])} className='btn'>Again</button>
+            <button onClick={(e) => handleEasyOrGood(state.arr[0], e)} className='btn'>Easy</button>
+            <button onClick={(e) => handleEasyOrGood(state.arr[0], e)} className='btn'>Good</button>
           </div>
         </div>
         <button className='edit-btn' onClick={() => handleEdit(state.arr[0].id)}>Edit</button>

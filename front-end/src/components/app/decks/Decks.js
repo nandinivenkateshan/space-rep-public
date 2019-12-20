@@ -22,8 +22,7 @@ function Decks () {
   }, [isAction])
 
   const modifyDeckClickTime = async (url, data) => {
-    const sessionId = JSON.parse(window.localStorage.getItem('session'))
-    const value = { ...data, sessionId }
+    const value = { ...data, sid }
     const res = await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(value),
@@ -35,8 +34,7 @@ function Decks () {
   }
 
   const modifyDeckName = async (url, data) => {
-    const sessionId = JSON.parse(window.localStorage.getItem('session'))
-    const value = { ...data, sessionId }
+    const value = { ...data, sid }
     setAction(true)
     await window.fetch(url, {
       method: 'POST',
@@ -60,8 +58,7 @@ function Decks () {
   }
 
   async function deleteDeck (url, data) {
-    const sessionId = JSON.parse(window.localStorage.getItem('session'))
-    const value = { ...data, sessionId }
+    const value = { ...data, sid }
     setAction(true)
     await window.fetch(url, {
       method: 'POST',

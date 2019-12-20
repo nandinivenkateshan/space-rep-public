@@ -12,8 +12,6 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.7.6",
-    "bulma": "^0.8.0",
-    "heroku": "^7.35.0",
     "html-react-parser": "^0.10.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
