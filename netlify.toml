@@ -5,5 +5,5 @@ command = "npm install --prefix front-end/ && npm run --prefix front-end/dist"
 
 [[redirects]]
 from = "/*"
-to = "/front-end/index.html"
+to = "/index.html"
 status = 200
