@@ -70,7 +70,7 @@ function Login () {
   }
 
   return (
-    <main className='main'>
+    <>
       <Navbar signup='signUp' />
       <section className='login-box'>
         <h1 className='heading'>Login</h1>
@@ -105,7 +105,7 @@ function Login () {
         </form>
         {/* <Link className='reset-pswd' to=''>Reset Password</Link> */}
       </section>
-    </main>
+    </>
   )
 }
 
