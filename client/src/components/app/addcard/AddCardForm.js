@@ -9,6 +9,7 @@ import { Redirect } from 'react-router-dom'
 function AddCardForm ({ heading, id, editCard }) {
   const sid = JSON.parse(window.localStorage.getItem('session'))
   let editQuestion, editDeck, editAns, saveBtn, updateBtn
+
   if (id) {
     const converter = new showdown.Converter()
     editDeck = editCard[0].deck
@@ -87,7 +88,7 @@ function AddCardForm ({ heading, id, editCard }) {
         easy: '900', // 15 min
         good: '86400' // 1 day
       }
-      addToDb(`${url}/card`, card)
+      addToDb(`${url}/addCard`, card)
       setCards([card, ...cards])
       setIssubmit(true)
       setAnswer('')
@@ -110,7 +111,7 @@ function AddCardForm ({ heading, id, editCard }) {
   }
 
   async function getDataFromDb () {
-    let data = await window.fetch(`${url}/decknames/?sid=${sid}`)
+    let data = await window.fetch(`${url}/getDecknames/?sid=${sid}`)
     data = await data.json()
     setDecksForOpt(data)
   }

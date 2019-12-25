@@ -130,6 +130,7 @@ const getCards = async (req, res) => {
     console.log('Error while fetching data')
   }
 }
+
 const account = async (req, res) => {
   const sid = req.query.sid
   try {

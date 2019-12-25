@@ -8,7 +8,7 @@ function Navbar () {
   const [account, setAccount] = useState('')
   const sid = JSON.parse(window.localStorage.getItem('session'))
 
-  useEffect(() => {
+  useEffect(() => { 
     async function getDataFromDb () {
       let data = await window.fetch(`${url}/checkAccount/?sid=${sid}`)
       data = await data.json()

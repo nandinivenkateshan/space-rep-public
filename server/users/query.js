@@ -44,12 +44,11 @@ async function login ({ user_email: mail, pswd }) {
     return { res: 'unable to fetch user details' }
   }
 
-  const val = result.rows
-  if (val.length === 0) {
+  if (result.rows.length === 0) {
     return { res: 'No User with this Email' }
   }
 
-  if (!(await bcrypt.compare(pswd, val[0].pswd))) {
+  if (!(await bcrypt.compare(pswd, result.rows[0].pswd))) {
     return { res: 'Password is incorrect' }
   }
 
@@ -82,16 +81,18 @@ async function checkAccount (sid) {
   let result
   try {
     const response = await pool.query('SELECT email, action FROM authentication WHERE sid=$1', [sid])
-    result = response.rows[0]
+    result = response.rows
   } catch {
     return 'error in fetching from authentication'
   }
-  if (result.action === 'false') {
+  if (result.length === 0) {
+    return { fail: 'Empty result' }
+  }
+  if (result[0].action === 'false') {
     return { fail: 'User has to login' }
   }
-
   try {
-    const value = await pool.query('SELECT * FROM signup WHERE user_email=$1', [result.email])
+    const value = await pool.query('SELECT * FROM signup WHERE user_email=$1', [result[0].email])
     return { user: value.rows[0].user_name }
   } catch {
     return 'Failed to fetch authenticated user from signup'

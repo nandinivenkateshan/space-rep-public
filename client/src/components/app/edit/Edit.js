@@ -10,7 +10,7 @@ function Edit () {
   const sid = JSON.parse(window.localStorage.getItem('session'))
 
   async function getDataFromDb () {
-    const res = await window.fetch(`${url}/cards/?sid=${sid}`)
+    const res = await window.fetch(`${url}/getCards/?sid=${sid}`)
     const data = await res.json()
     const card = data.filter(item => item.id === Number(id))
     setEditCard(card)

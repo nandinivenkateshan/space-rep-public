@@ -12,7 +12,7 @@ function Decks () {
   const sid = JSON.parse(window.localStorage.getItem('session'))
   console.log('sid', sid)
   async function getDataFromDb () {
-    let data = await window.fetch(`${url}/deckNames/?sid=${sid}`)
+    let data = await window.fetch(`${url}/getDeckNames/?sid=${sid}`)
     data = await data.json()
     setDecks(data)
     setAction(false)

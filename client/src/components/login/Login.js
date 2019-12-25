@@ -6,7 +6,6 @@ import url from '../config'
 
 function Login () {
   const sid = JSON.parse(window.localStorage.getItem('session'))
-
   const [values, setValues] = useState({})
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -24,7 +23,7 @@ function Login () {
     const data = await response.json()
     if (data) {
       const response = await window.fetch(`${url}/logout/?sid=${sid}`)
-      console.log(response)
+     // console.log(response)
     }
   }
 
@@ -103,7 +102,6 @@ function Login () {
           {isLogin &&
             <Redirect to='/decks' />}
         </form>
-        {/* <Link className='reset-pswd' to=''>Reset Password</Link> */}
       </section>
     </>
   )

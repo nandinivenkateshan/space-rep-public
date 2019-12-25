@@ -53,7 +53,7 @@ function StudyNow () {
 
   useEffect(() => {
     async function getDataFromDb () {
-      const data = await window.fetch(`${url}/cards/?sid=${sid}`)
+      const data = await window.fetch(`${url}/getCards/?sid=${sid}`)
       const res = await data.json()
       const res1 = res.filter(item => item.deck === deckName)
       const res2 = res1.reduce((acc, cv) => {
