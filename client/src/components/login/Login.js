@@ -20,7 +20,7 @@ function Login () {
   }, [errors])
 
   async function checkUserLogout () {
-    const response = await window.fetch(`${url}/account/?sid=${sid}`)
+    const response = await window.fetch(`${url}/checkAccount/?sid=${sid}`)
     const data = await response.json()
     if (data) {
       const response = await window.fetch(`${url}/logout/?sid=${sid}`)

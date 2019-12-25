@@ -5,11 +5,12 @@ import url from '../config'
 import { Link } from 'react-router-dom'
 
 function Navbar ({ signup, login }) {
+  console.log('Hinavbar')
   const [isLoggedIn, setIsLogged] = useState(false)
   const sid = JSON.parse(window.localStorage.getItem('session'))
   useEffect(() => {
     async function getDataFromDb () {
-      let data = await window.fetch(`${url}/account/?sid=${sid}`)
+      let data = await window.fetch(`${url}/checkAccount/?sid=${sid}`)
       data = await data.json()
       if (data.user) setIsLogged(data.user)
     }

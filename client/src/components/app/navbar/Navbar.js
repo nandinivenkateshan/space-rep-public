@@ -4,14 +4,13 @@ import logo from '../../img/logo.jpeg'
 import { Link } from 'react-router-dom'
 import url from '../../config'
 
-
 function Navbar () {
   const [account, setAccount] = useState('')
   const sid = JSON.parse(window.localStorage.getItem('session'))
 
   useEffect(() => {
     async function getDataFromDb () {
-      let data = await window.fetch(`${url}/account/?sid=${sid}`)
+      let data = await window.fetch(`${url}/checkAccount/?sid=${sid}`)
       data = await data.json()
       if (data.user) setAccount(data.user)
     }

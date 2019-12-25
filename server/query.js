@@ -55,6 +55,47 @@ const login = async (req, res) => {
   }
 }
 
+const mylogin = async (req, res) => {
+  const { user_email: mail, pswd } = req.body
+  let result
+  try {
+    result = await pool.query('SELECT * FROM signup WHERE user_email=$1', [mail])
+  } catch (e) {
+    res.send({ res: 'unable to fetch login details' })
+    return
+  }
+
+  const val = result.rows
+  if (val.length === 0) {
+    res.send({ res: 'No User with this Email' })
+    return
+  }
+
+  if (!(await bcrypt.compare(pswd, val[0].pswd))) {
+    res.send({ res: 'Password is incorrect' })
+    return
+  }
+
+  const obj = {
+    action: true,
+    sid: mail + Math.random()
+  }
+
+  let authSuccess
+  try {
+    authSuccess = await addToAuthenticatonTable([mail, obj.action, obj.sid])
+  } catch {
+    res.send({ res: 'session failed' })
+    return
+  }
+
+  if (!authSuccess) {
+    res.send({ res: 'something failed' })
+  }
+
+  res.send(result)
+}
+
 const addToAuthenticatonTable = async data => {
   const [, , sid] = data
   try {

@@ -35,7 +35,7 @@ function SignUp () {
   }
 
   function login () {
-    addUserDetails(`${url}/addUserDetails`, values)
+    addUserDetails(`${url}/createAccount`, values)
     setUserDetails([...userDetails, values])
   }
 
