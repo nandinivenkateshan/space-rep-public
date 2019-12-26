@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
-import NavBar from '../navbar/Navbar'
-import url from '../../config'
-import ShowQues from './ShowQues'
-import ShowAnswer from './ShowAnswer'
+import NavBar from '../Navbar/Navbar'
+import url from '../config'
+import Question from './Question'
+import Answer from './Answer'
 
 const initialState = {
   arr: [],
@@ -45,7 +45,7 @@ function reducer (state, action) {
   }
 }
 
-function StudyNow () {
+function Deck () {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { id: deckName } = useParams()
   let studyDiv, congratsMsg
@@ -124,7 +124,7 @@ function StudyNow () {
         <Redirect to={`/edit/${state.editId}`} />}
 
       {state.showQuestion && state.arr.length &&
-        <ShowQues
+        <Question
           question={state.arr[0].question}
           id={state.arr[0].id}
           onQuestion={() => handleQuestion()}
@@ -132,7 +132,7 @@ function StudyNow () {
         />}
 
       {state.showAnswer && state.arr.length &&
-        <ShowAnswer
+        <Answer
           cards={state.arr}
           onAgainAns={card => handleAgain(card)}
           onEasyOrGood={card => handleEasyOrGood(card)}
@@ -143,4 +143,4 @@ function StudyNow () {
   )
 }
 
-export default StudyNow
+export default Deck

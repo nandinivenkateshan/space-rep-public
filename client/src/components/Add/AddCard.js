@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import './addcard.css'
 import showdown from 'showdown'
-import url from '../../config'
-import EnterDeckName from './EnterDeckName'
-import EnterQA from './EnterQA'
+import url from '../config'
 import { Redirect } from 'react-router-dom'
 
-function AddCardForm ({ heading, id, editCard }) {
+function AddCard ({ heading, id, editCard }) {
+  console.log(heading, id, editCard)
   const sid = JSON.parse(window.localStorage.getItem('session'))
   let editQuestion, editDeck, editAns, saveBtn, updateBtn
 
@@ -124,18 +123,33 @@ function AddCardForm ({ heading, id, editCard }) {
     <form onSubmit={e => handleSubmit(e)}>
       <section className='field'>
         <h1 className='heading'>{heading}</h1>
-        <EnterDeckName value={deck} onEnterDeck={(e) => handleDeck(e)} decksOpt={decksOpt} placeholder='Enter the deck' />
-        <EnterQA
+        <input
+          className='input-box'
+          type='text'
+          placeholder='Enter the deck'
+          onChange={(e) => handleDeck(e)}
+          value={deck}
+          list='deck-list'
+          required
+          autoFocus
+        />
+        <datalist id='deck-list'>
+          {decksOpt.map(item => {
+            return <option key={item.id}>{item.deck}</option>
+          })}
+        </datalist>
+        <textarea
+          className='qa-box'
           placeholder='Enter the Question'
           value={question}
-          onHandleQustion={e => handleQuestion(e)}
-          onHandleQustionBlur={() => handleQuestionBlur()}
+          onChange={(event) => handleQuestion(event)}
+          onBlur={() => handleQuestionBlur()}
         />
-        <EnterQA
+        <textarea
+          className='qa-box'
           placeholder='Enter the Answer'
-          value={answer}
-          onHandleAnswer={e => handleAnswer(e)}
-          onHandleAnswerBlur={() => handleAnswerBlur()}
+          value={answer} onChange={(event) => handleAnswer(event)}
+          onBlur={() => handleAnswerBlur()}
         />
         {saveBtn || updateBtn}
         {isSubmit &&
@@ -146,4 +160,4 @@ function AddCardForm ({ heading, id, editCard }) {
   )
 }
 
-export default AddCardForm
+export default AddCard

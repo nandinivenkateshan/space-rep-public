@@ -1,8 +1,8 @@
 import React from 'react'
 import parse from 'html-react-parser'
-import url from '../../config'
+import url from '../config'
 
-function ShowAnswer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
+function Answer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
   const sid = JSON.parse(window.localStorage.getItem('session'))
 
   function ConvertSec (n) {
@@ -99,4 +99,4 @@ function ShowAnswer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
   )
 }
 
-export default ShowAnswer
+export default Answer

@@ -4,9 +4,9 @@
   "description": "Space Repetition",
   "main": "index.js",
   "scripts": {
-    "dev": "npx parcel index.html --open",
-    "watch": "npx parcel watch index.html",
-    "build": "npx parcel build index.html --no-content-hash --no-source-maps"
+    "dev": "npx parcel public/index.html --open",
+    "watch": "npx parcel watch public/index.html",
+    "build": "npx parcel build public/index.html --no-content-hash --no-source-maps"
   },
   "author": "",
   "license": "MIT",
@@ -14,11 +14,14 @@
     "@babel/runtime": "^7.7.6",
     "bulma": "^0.8.0",
     "html-react-parser": "^0.10.0",
+    "index": "^0.4.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "showdown": "^1.9.1",
-    "styled-components": "^4.4.1"
+    "styled": "^1.0.0",
+    "styled-components": "^4.4.1",
+    "styled-media-query": "^2.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",

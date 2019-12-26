@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import Form from '../addcard/AddCardForm'
-import NavBar from '../navbar/Navbar'
+import EditCard from '../Add/AddCard'
 import { useParams } from 'react-router-dom'
-import url from '../../config'
+import NavBar from '../Navbar/Navbar'
+import url from '../config'
 
 function Edit () {
   const { id } = useParams()
@@ -24,7 +24,7 @@ function Edit () {
     <main>
       <NavBar />
       {editCard &&
-        <Form heading='Edit card' id={id} editCard={editCard} />}
+        <EditCard heading='Edit card' id={id} editCard={editCard} />}
     </main>
   )
 }

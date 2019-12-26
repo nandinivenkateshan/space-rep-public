@@ -1,7 +1,7 @@
 import React from 'react'
 import parse from 'html-react-parser'
 
-function ShowQues ({ question, id, onQuestion, onEdit }) {
+function Question ({ question, id, onQuestion, onEdit }) {
   function handleQuestion () {
     onQuestion()
   }
@@ -21,4 +21,4 @@ function ShowQues ({ question, id, onQuestion, onEdit }) {
   )
 }
 
-export default ShowQues
+export default Question

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './login.css'
 import { Redirect } from 'react-router-dom'
-import Navbar from '../navbar/Nav-register'
+import Navbar from '../HomePage/Navbar'
 import url from '../config'
 
 function Login () {
@@ -23,7 +23,7 @@ function Login () {
     const data = await response.json()
     if (data) {
       const response = await window.fetch(`${url}/logout/?sid=${sid}`)
-     // console.log(response)
+      // console.log(response)
     }
   }
 

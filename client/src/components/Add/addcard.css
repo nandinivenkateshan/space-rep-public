@@ -30,6 +30,7 @@
   font-size: 15px;
   resize: none;
   box-shadow: 2px 2px 2px grey;
+  border-radius: 5px;
 }
 .save-btn {
   width: 60px;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
-import NavBar from '../navbar/Navbar'
-import './decks.css'
-import url from '../../config'
+import NavBar from '../Navbar/Navbar'
+import './style.css'
+import url from '../config'
 
 function Decks () {
   const [decks, setDecks] = useState([])
@@ -11,6 +11,7 @@ function Decks () {
   const [isAction, setAction] = useState(false)
   const sid = JSON.parse(window.localStorage.getItem('session'))
   console.log('sid', sid)
+
   async function getDataFromDb () {
     let data = await window.fetch(`${url}/getDeckNames/?sid=${sid}`)
     data = await data.json()

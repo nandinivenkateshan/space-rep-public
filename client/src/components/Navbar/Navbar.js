@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import 'bulma/css/bulma.css'
 import logo from '../../img/logo.jpeg'
 import { Link } from 'react-router-dom'
-import url from '../../config'
+import url from '../config'
 
 function Navbar () {
   const [account, setAccount] = useState('')
   const sid = JSON.parse(window.localStorage.getItem('session'))
 
-  useEffect(() => { 
+  useEffect(() => {
     async function getDataFromDb () {
       let data = await window.fetch(`${url}/checkAccount/?sid=${sid}`)
       data = await data.json()
@@ -19,7 +19,6 @@ function Navbar () {
 
   return (
     <>
-
       <nav className='navbar' role='navigation' aria-label='main navigation'>
         <div className='navbar-brand'>
           <Link className='navbar-item' to='/loggedIn'>
@@ -27,11 +26,11 @@ function Navbar () {
             <label className='logo-text'>SpaceRep</label>
           </Link>
 
-          <Link role='button' className='navbar-burger' aria-label='menu' aria-expanded='false'>
+          {/* <Link role='button' className='navbar-burger' aria-label='menu' aria-expanded='false'>
             <span aria-hidden='true' />
             <span aria-hidden='true' />
             <span aria-hidden='true' />
-          </Link>
+          </Link> */}
         </div>
 
         <div className='navbar-menu'>
