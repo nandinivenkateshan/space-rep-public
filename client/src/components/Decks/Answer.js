@@ -1,10 +1,8 @@
 import React from 'react'
 import parse from 'html-react-parser'
-import url from '../config'
+import obj from '../config'
 
 function Answer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
-  const sid = JSON.parse(window.localStorage.getItem('session'))
-
   function ConvertSec (n) {
     const time = []
     const day = parseInt(n / (24 * 3600))
@@ -22,6 +20,7 @@ function Answer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
   }
 
   async function modifyTimeStamp (url, data) {
+    const sid = obj.sid
     const value = { ...data, sid }
     await window.fetch(url, {
       method: 'POST',
@@ -40,7 +39,7 @@ function Answer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
     good = 259200 // 3 day
 
     const timeStamp = parseInt(Date.now() / 1000)
-    modifyTimeStamp(`${url}/updateTimeStamp`,
+    modifyTimeStamp(`${obj.url}/updateTimeStamp`,
       { id, again, easy, good, timeStamp, status }
     )
     onAgainAns({ type: 'againAnswer', newArr: [...cards.slice(1), cards[0]] })
@@ -67,7 +66,7 @@ function Answer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
     }
 
     const timeStamp = parseInt(Date.now() / 1000) + Number(timeToDelay)
-    modifyTimeStamp(`${url}/updateTimeStamp`,
+    modifyTimeStamp(`${obj.url}/updateTimeStamp`,
       { id, easy, good, again, timeStamp, status }
     )
     onEasyOrGood({ type: `${answerType}Answer`, newArr: cards.slice(1) })

@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react'
 import 'bulma/css/bulma.css'
 import logo from '../../img/logo.jpeg'
 import { Link } from 'react-router-dom'
-import url from '../config'
+import obj from '../config'
 
 function Navbar () {
   const [account, setAccount] = useState('')
-  const sid = JSON.parse(window.localStorage.getItem('session'))
 
   useEffect(() => {
     async function getDataFromDb () {
-      let data = await window.fetch(`${url}/checkAccount/?sid=${sid}`)
+      let data = await window.fetch(`${obj.url}/checkAccount/?sid=${obj.sid}`)
       data = await data.json()
       if (data.user) setAccount(data.user)
     }

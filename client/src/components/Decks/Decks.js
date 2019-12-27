@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import NavBar from '../Navbar/Navbar'
 import './style.css'
-import url from '../config'
+import obj from '../config'
 
 function Decks () {
+  const sid = obj.sid
   const [decks, setDecks] = useState([])
   const [isClick, setIsClick] = useState(false)
   const [path, setPath] = useState('')
   const [isAction, setAction] = useState(false)
-  const sid = JSON.parse(window.localStorage.getItem('session'))
-  console.log('sid', sid)
 
   async function getDataFromDb () {
-    let data = await window.fetch(`${url}/getDeckNames/?sid=${sid}`)
+    let data = await window.fetch(`${obj.url}/getDeckNames/?sid=${obj.sid}`)
     data = await data.json()
+    console.log(data)
     setDecks(data)
     setAction(false)
   }
@@ -24,8 +24,8 @@ function Decks () {
   }, [isAction])
 
   const modifyDeckClickTime = async (url, data) => {
+  
     const value = { ...data, sid }
-    console.log(value)
     const res = await window.fetch(url, {
       method: 'POST',
       body: JSON.stringify(value),
@@ -52,12 +52,12 @@ function Decks () {
     const deck = e.target.innerText.toLowerCase()
     setPath(deck)
     const deckClickTime = parseInt(Date.now() / 1000)
-    modifyDeckClickTime(`${url}/updateDeckClickTime`, { deck, deckClickTime })
+    modifyDeckClickTime(`${obj.url}/updateDeckClickTime`, { deck, deckClickTime })
   }
 
   function handleRename (deckName) {
     const reName = window.prompt('Enter New Name')
-    if (reName) modifyDeckName(`${url}/modifyDeckName`, { reName, deckName })
+    if (reName) modifyDeckName(`${obj.url}/modifyDeckName`, { reName, deckName })
   }
 
   async function deleteDeck (url, data) {
@@ -75,7 +75,7 @@ function Decks () {
   function handleDeleteDeck (deckName) {
     const result = window.confirm('Are You Sure to Delete? This Can\'t be undone.')
     if (result) {
-      deleteDeck(`${url}/deleteDeck`, { deckName })
+      deleteDeck(`${obj.url}/deleteDeck`, { deckName })
     }
   }
 

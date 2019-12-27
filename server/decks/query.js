@@ -10,7 +10,7 @@ const pool = new Pool({
 async function getDeckNames (sid) {
   let result1, result2
   try {
-    result1 = await pool.query('SELECT email, action FROM authentication WHERE sid=$1', [sid])
+    result1 = await pool.query('SELECT email, active FROM authentication WHERE sid=$1', [sid])
   } catch {
     return 'Unable to fetch from authentication'
   }
@@ -19,7 +19,7 @@ async function getDeckNames (sid) {
     return 'Empty result'
   }
 
-  if (result1.rows[0].action === 'false') {
+  if (result1.rows[0].active === false) {
     return 'User not logged in'
   }
 
@@ -81,7 +81,7 @@ async function modifyDeckName ({ reName, deckName, sid }) {
     return 'Empty result from authentication'
   }
   try {
-    await pool.query('UPDATE cards SET deck=$1 WHERE deck=$2 and email=$3', [reName, deckName, val.rows[0].email])
+    await pool.query('UPDATE cards SET deck=$1 WHERE deck=$2 and email=$3', [reName, deckName, result.rows[0].email])
     return 'Updated deckname successfully'
   } catch {
     return 'Error while modifying deckname'
@@ -99,7 +99,7 @@ async function deleteDeck ({ deckName, sid }) {
     return 'Empty result from authentication'
   }
   try {
-    await pool.query('DELETE FROM cards WHERE deck=$1 and email=$2', [deckName, val.rows[0].email])
+    await pool.query('DELETE FROM cards WHERE deck=$1 and email=$2', [deckName, result.rows[0].email])
     return 'Deleted deck successfully'
   } catch {
     return 'Error in deleting deck'

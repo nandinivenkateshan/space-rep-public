@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import './addcard.css'
 import showdown from 'showdown'
-import url from '../config'
+import obj from '../config'
 import { Redirect } from 'react-router-dom'
 
 function AddCard ({ heading, id, editCard }) {
-  console.log(heading, id, editCard)
-  const sid = JSON.parse(window.localStorage.getItem('session'))
+  const session = JSON.parse(window.localStorage.getItem('session'))
+  const sid = session.sid
   let editQuestion, editDeck, editAns, saveBtn, updateBtn
 
   if (id) {
@@ -76,7 +76,7 @@ function AddCard ({ heading, id, editCard }) {
         question: markQ || editQuestion,
         answer: markAns || editAns
       }
-      updateCard(`${url}/updateCard`, card)
+      updateCard(`${obj.url}/updateCard`, card)
     } else {
       const card = {
         deck: deck.toLowerCase(),
@@ -87,13 +87,13 @@ function AddCard ({ heading, id, editCard }) {
         easy: '900', // 15 min
         good: '86400' // 1 day
       }
-      addToDb(`${url}/addCard`, card)
+      addToDb(`${obj.url}/addCard`, card)
       setCards([card, ...cards])
-      setIssubmit(true)
       setAnswer('')
       setQuestion('')
       setDeck('')
     }
+    setIssubmit(true)
     e.preventDefault()
   }
 
@@ -110,7 +110,7 @@ function AddCard ({ heading, id, editCard }) {
   }
 
   async function getDataFromDb () {
-    let data = await window.fetch(`${url}/getDecknames/?sid=${sid}`)
+    let data = await window.fetch(`${obj.url}/getDecknames/?sid=${sid}`)
     data = await data.json()
     setDecksForOpt(data)
   }

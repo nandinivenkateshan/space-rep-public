@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import './login.css'
 import { Redirect } from 'react-router-dom'
-import Navbar from '../HomePage/Navbar'
-import url from '../config'
+import Navbar from '../About/Navbar'
+import obj from '../config'
 
 function Login () {
-  const sid = JSON.parse(window.localStorage.getItem('session'))
   const [values, setValues] = useState({})
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -14,23 +13,22 @@ function Login () {
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
-      checkUserDetails(`${url}/login`, values)
+      checkUserDetails(`${obj.url}/login`, values)
     }
   }, [errors])
 
   async function checkUserLogout () {
-    const response = await window.fetch(`${url}/checkAccount/?sid=${sid}`)
-    const data = await response.json()
-    if (data) {
-      const response = await window.fetch(`${url}/logout/?sid=${sid}`)
-      // console.log(response)
-    }
+   // console.log('jbvkjnh')
+    // const response = await window.fetch(`${obj.url}/checkAccount/?sid=${obj.sid}`)
+    // const data = await response.json()
+    // if (data) {
+      const response = await window.fetch(`${obj.url}/logout/?sid=${obj.sid}`)
+      console.log(response)
+    // }
   }
 
   useEffect(() => {
-    if (sid) {
-      checkUserLogout()
-    }
+    if (obj.sid) checkUserLogout()
   }, [])
 
   const checkUserDetails = async (url, data) => {
@@ -42,9 +40,10 @@ function Login () {
       }
     })
     const response = await res.json()
-    window.localStorage.setItem('session', JSON.stringify(response.sid))
-    if (response.msg === 'pass') setIsLogin(true)
-    else setErrMsg(response)
+    if (response.sid) {
+      setIsLogin(true)
+      window.localStorage.setItem('session', JSON.stringify(response))
+    } else setErrMsg(response)
   }
 
   const handleChange = e => {

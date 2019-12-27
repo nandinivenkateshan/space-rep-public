@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
 import NavBar from '../Navbar/Navbar'
-import url from '../config'
+import obj from '../config'
 import Question from './Question'
 import Answer from './Answer'
 
@@ -14,7 +14,8 @@ const initialState = {
   editId: '',
   newCards: [],
   learningCards: [],
-  reviewCards: []
+  reviewCards: [],
+  study: false
 }
 
 function reducer (state, action) {
@@ -28,7 +29,7 @@ function reducer (state, action) {
         reviewCards: [...action.reviewCards]
       }
     case 'study':
-      return { ...state, showStudy: false, showQuestion: true }
+      return { ...state, showStudy: false, showQuestion: true, study: true }
     case 'question':
       return { ...state, showQuestion: false, showAnswer: true }
     case 'answer' :
@@ -49,11 +50,12 @@ function Deck () {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { id: deckName } = useParams()
   let studyDiv, congratsMsg
-  const sid = JSON.parse(window.localStorage.getItem('session'))
+  const session = JSON.parse(window.localStorage.getItem('session'))
+  const sid = session.sid
 
   useEffect(() => {
     async function getDataFromDb () {
-      const data = await window.fetch(`${url}/getCards/?sid=${sid}`)
+      const data = await window.fetch(`${obj.url}/getCards/?sid=${sid}`)
       const res = await data.json()
       const res1 = res.filter(item => item.deck === deckName)
       const res2 = res1.reduce((acc, cv) => {
@@ -119,7 +121,7 @@ function Deck () {
   return (
     <main className='main'>
       <NavBar />
-      {studyDiv || congratsMsg}
+      {congratsMsg || studyDiv }
       {state.edit &&
         <Redirect to={`/edit/${state.editId}`} />}
 

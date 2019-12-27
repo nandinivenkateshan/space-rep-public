@@ -40,7 +40,7 @@ async function addCard ({ deck, question, answer, status, sid, again, easy, good
   }
 
   try {
-    result2 = await pool.query('INSERT INTO cards (deck, question, answer, status,email,again, easy, good) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id', [deck, question, answer, status, val.rows[0].email, again, easy, good])
+    result2 = await pool.query('INSERT INTO cards (deck, question, answer, status,email,again, easy, good) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id', [deck, question, answer, status, result1.rows[0].email, again, easy, good])
     return result2.rows
   } catch {
     return 'Error while inserting card'

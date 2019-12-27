@@ -41,7 +41,7 @@ async function login ({ user_email: mail, pswd }) {
   try {
     result = await pool.query('SELECT * FROM signup WHERE user_email=$1', [mail])
   } catch (e) {
-    return { res: 'unable to fetch user details' }
+    return 'unable to fetch user details'
   }
 
   if (result.rows.length === 0) {
@@ -53,43 +53,50 @@ async function login ({ user_email: mail, pswd }) {
   }
 
   const sessionObj = {
-    action: true,
+    active: true,
     sid: mail + Math.random()
   }
 
   try {
-    await pool.query('INSERT INTO authentication(email,action,sid) VALUES ($1,$2,$3)', [mail, sessionObj.action, sessionObj.sid])
+    await pool.query('INSERT INTO authentication(email,active,sid) VALUES ($1,$2,$3)',
+      [mail, sessionObj.active, sessionObj.sid])
     return {
-      sid: sessionObj.sid,
-      msg: 'pass'
+      ...sessionObj
     }
   } catch {
-    return { res: 'Unable to add session id' }
+    return 'Unable to add session id'
   }
 }
 
 async function logout (sid) {
+  console.log('logout')
+  let result1, result2
   try {
-    const response = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sid])
-    const email = response.rows[0].email
-    await pool.query('UPDATE authentication SET action=false WHERE email=$1', [email])
-    return ('Logged out succesfully ')
-  } catch { return ('Unable to update the authentication') }
+    result1 = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sid])
+  } catch {
+    return 'Unable to fetch'
+  }
+  if (result1.rows.length === 0) return 'Empty result'
+  try {
+    result2 = await pool.query('UPDATE authentication SET active=false WHERE email=$1', [result1.rows[0].email])
+    console.log('response', result2)
+  } catch {
+    return 'Unable to update'
+  }
+  if (result2.rows.length === 0) return 'Empty result'
+  
 }
 
 async function checkAccount (sid) {
   let result
   try {
-    const response = await pool.query('SELECT email, action FROM authentication WHERE sid=$1', [sid])
+    const response = await pool.query('SELECT email, active FROM authentication WHERE sid=$1', [sid])
     result = response.rows
   } catch {
     return 'error in fetching from authentication'
   }
   if (result.length === 0) {
     return { fail: 'Empty result' }
-  }
-  if (result[0].action === 'false') {
-    return { fail: 'User has to login' }
   }
   try {
     const value = await pool.query('SELECT * FROM signup WHERE user_email=$1', [result[0].email])

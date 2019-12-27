@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import logo from '../../img/logo.jpeg'
 import styled from 'styled-components'
 import media from 'styled-media-query'
-import url from '../config'
+import obj from '../config'
 import { Link } from 'react-router-dom'
 
 const StyledNav = styled.nav`
@@ -59,19 +59,6 @@ margin: 0px 20px 0px 0px;
 `
 
 function Navbar ({ signup, login }) {
-  const sid = JSON.parse(window.localStorage.getItem('session'))
-  const [isLoggedIn, setIsLogged] = useState(false)
-
-  async function getDataFromDb () {
-    let data = await window.fetch(`${url}/checkAccount/?sid=${sid}`)
-    data = await data.json()
-    if (data.user) setIsLogged(data.user)
-  }
-
-  useEffect(() => {
-    if (sid) getDataFromDb()
-  }, [])
-
   return (
     <StyledNav>
       <StyledLink to='/'>

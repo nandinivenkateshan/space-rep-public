@@ -1,5 +1,6 @@
 import React from 'react'
-import HomePage from './HomePage/HomePage'
+import AboutPage from './About/About'
+import MainPage from './MainPage/MainPage'
 import SignUp from './SignUp/SignUp'
 import Login from './Login/Login'
 import Decks from './Decks/Decks'
@@ -13,7 +14,8 @@ function routes () {
   return (
     <Router>
       <Switch>
-        <Route exact path='/' component={HomePage} />
+        <Route exact path='/' component={MainPage} />
+        <Route exact path='/about' component={AboutPage} />
         <Route exact path='/signup' component={SignUp} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/decks/:id' component={Deck} />

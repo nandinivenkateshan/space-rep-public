@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
-import Navbar from '../HomePage/Navbar'
-import url from '../config.js'
+import Navbar from '../About/Navbar'
+import obj from '../config.js'
 import NetworkErr from '../NetworkError'
 import { Redirect } from 'react-router-dom'
 
@@ -35,7 +35,7 @@ function SignUp () {
   }
 
   function login () {
-    addUserDetails(`${url}/createAccount`, values)
+    addUserDetails(`${obj.url}/createAccount`, values)
     setUserDetails([...userDetails, values])
   }
 
