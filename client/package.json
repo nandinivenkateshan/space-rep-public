@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx parcel public/index.html --open",
     "watch": "npx parcel watch public/index.html",
-    "build": "npx parcel build dist/index.html --no-content-hash --no-source-maps"
+    "build": "react-scripts build"
   },
   "author": "",
   "license": "MIT",
@@ -21,6 +21,7 @@
     "showdown": "^1.9.1",
     "styled": "^1.0.0",
     "styled-components": "^4.4.1",
+    "react-scripts": "3.0.1",
     "styled-media-query": "^2.1.2"
   },
   "devDependencies": {
@@ -32,5 +33,17 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "parcel-bundler": "^1.12.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
