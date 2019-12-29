@@ -16,9 +16,9 @@ function routes () {
         <Route exact path='/' component={About} />
         <Route exact path='/signup' component={SignUp} />
         <Route exact path='/login' component={Login} />
-        <Route exact path='/decks/:id' component={Deck} />
         <Route exact path='/decks' component={Decks} />
         <Route exact path='/add' component={Add} />
+        <Route exact path='/decks/:id' component={Deck} />
         <Route exact path='/edit/:id' component={Edit} />
         <Route component={NotFound} />
       </Switch>

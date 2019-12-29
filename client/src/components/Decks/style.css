@@ -4,9 +4,16 @@
 }
 .decks {
   margin: 50px auto;
-  width: 400px;
+  
   display: grid;
 }
+
+@media (min-width:425px) {
+  .decks {
+    width: 400px;
+  }
+}
+
 .decks-heading {
   color: red;
   font-size: 30px;
@@ -67,8 +74,13 @@
 .showQuestion-box {
   display: grid;
   grid-template-rows: 10fr 1fr;
-  width: 500px;
   margin: 50px auto;
+}
+
+@media (min-width: 768px) {
+  .showQuestion-box {
+    width: 500px;
+  }
 }
 .answer-btns {
   display: flex;
@@ -90,8 +102,13 @@
 .showAnswer-box {
   display: grid;
   grid-template-rows: 7fr 1fr 1fr;
-  width: 500px;
   margin: 50px auto;
+}
+
+@media (min-width:768px) {
+  .showAnswer-box{
+  width: 500px;
+  }
 }
 .showAnswer-box .timings {
   margin-top: 28px;

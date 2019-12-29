@@ -3,7 +3,9 @@ import './login.css'
 import { Redirect } from 'react-router-dom'
 import Navbar from '../About/Navbar'
 import url from '../../url/config'
-import { getSession } from '../../util'
+import { getSession, setSession } from '../../util'
+import { fetchPost } from '../../fetch'
+import NetworkErr from '../NetworkError'
 
 function Login () {
   let active
@@ -17,27 +19,26 @@ function Login () {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const [errMsg, setErrMsg] = useState({})
+  const [netErr, setNetErr] = useState(false)
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
-      checkUserDetails(`${url}/login`, values)
+      fetchReq(`${url}/login`, values)
     }
   }, [errors])
 
-  const checkUserDetails = async (url, data) => {
-    const res = await window.fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    const response = await res.json()
-    if (response.sid) {
-      window.localStorage.setItem('session', JSON.stringify(response))
-      setIsLogin(true)
+  const fetchReq = async (url, card) => {
+    const response = await fetchPost(url, card)
+    if (response.err) {
+      setNetErr(true)
     } else {
-      setErrMsg(response)
+      const result = await response.json()
+      if (result.sid) {
+        setSession(result)
+        setIsLogin(true)
+      } else {
+        setErrMsg(result)
+      }
     }
   }
 
@@ -66,40 +67,46 @@ function Login () {
 
   return (
     <>
+      {netErr && <NetworkErr />}
       {active && <Redirect to='/decks' />}
-      <Navbar signup='signUp' />
-      <section className='login-box'>
-        <h1 className='heading'>Login</h1>
-        <p className='sub-heading'>Log in to an existing account.</p>
-        {errMsg &&
-          <p className='acc-not-exist-msg'> {errMsg.res}
-          </p>}
-        <form className='login-form' onSubmit={e => handleSubmit(e)}>
-          <label htmlFor='email' className='label'>Email</label>
-          <input
-            type='email' placeholder='Enter your Email'
-            id='email' name='user_email' className={`input${errors.user_email && 'invalid'}`}
-            onChange={(e) => handleChange(e)}
-            value={values.user_email || ''}
-          />
-          {errors.user_email && (
-            <p className='invalid-para'>{errors.user_email}</p>
-          )}
-          <label htmlFor='pswd' className='label'>Password</label>
-          <input
-            type='password' id='pswd' name='pswd'
-            className={`input${errors.pswd && 'invalid'}`} placeholder='Enter the password'
-            onChange={(e) => handleChange(e)}
-            value={values.pswd || ''}
-          />
-          {errors.pswd && (
-            <p className='invalid-para'>{errors.pswd}</p>
-          )}
-          <button className='login-btn'>Login</button>
-          {isLogin &&
-            <Redirect to='/decks' />}
-        </form>
-      </section>
+      {!netErr &&
+        <>
+          <Navbar signup='signUp' />
+          <section className='login-box'>
+            <h1 className='heading'>Login</h1>
+            <p className='sub-heading'>Log in to an existing account.</p>
+            {errMsg &&
+              <p className='acc-not-exist-msg'> {errMsg.res}
+              </p>}
+            <form className='login-form' onSubmit={e => handleSubmit(e)}>
+              <label htmlFor='email' className='label'>Email</label>
+              <input
+                type='email' placeholder='Enter your Email'
+                id='email' name='user_email' className={`input${errors.user_email && 'invalid'}`}
+                onChange={(e) => handleChange(e)}
+                value={values.user_email || ''}
+                required
+              />
+              {errors.user_email && (
+                <p className='invalid-para'>{errors.user_email}</p>
+              )}
+              <label htmlFor='pswd' className='label'>Password</label>
+              <input
+                type='password' id='pswd' name='pswd'
+                className={`input${errors.pswd && 'invalid'}`} placeholder='Enter the password'
+                onChange={(e) => handleChange(e)}
+                value={values.pswd || ''}
+                required
+              />
+              {errors.pswd && (
+                <p className='invalid-para'>{errors.pswd}</p>
+              )}
+              <button className='login-btn'>Login</button>
+              {isLogin &&
+                <Redirect to='/decks' />}
+            </form>
+          </section>
+        </>}
     </>
   )
 }
