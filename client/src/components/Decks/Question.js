@@ -5,6 +5,7 @@ function Question ({ question, id, onQuestion, onEdit }) {
   function handleQuestion () {
     onQuestion()
   }
+
   function handleEdit (id) {
     onEdit(id)
   }

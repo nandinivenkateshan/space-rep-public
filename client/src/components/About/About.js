@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Navbar from './Navbar'
 import styled from 'styled-components'
-import url from '../config'
+import { Redirect } from 'react-router-dom'
+import { getSession } from '../../util'
 
 const StyledSection = styled.section`
 margin:10px 100px 0px 100px;
@@ -16,8 +17,14 @@ const StyledPara1 = styled(StyledPara2)`
 `
 
 function Home () {
+  let active
+  const session = getSession()
+  if (session) {
+    active = session.active
+  }
   return (
     <>
+      {active && <Redirect to='/decks' />}
       <main className='main'>
         <Navbar signup='signUp' login='logIn' />
         <StyledSection>

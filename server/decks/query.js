@@ -19,10 +19,6 @@ async function getDeckNames (sid) {
     return 'Empty result'
   }
 
-  if (result1.rows[0].active === false) {
-    return 'User not logged in'
-  }
-
   try {
     result2 = await pool.query('SELECT DISTINCT ON(deck) deck, id FROM cards WHERE email=$1',
       [result1.rows[0].email])

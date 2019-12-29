@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react'
 import './login.css'
 import { Redirect } from 'react-router-dom'
 import Navbar from '../About/Navbar'
-import obj from '../config'
+import url from '../../url/config'
+import { getSession } from '../../util'
 
 function Login () {
+  let active
+  const session = getSession()
+  if (session) {
+    active = session.active
+  }
+
   const [values, setValues] = useState({})
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -13,23 +20,9 @@ function Login () {
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
-      checkUserDetails(`${obj.url}/login`, values)
+      checkUserDetails(`${url}/login`, values)
     }
   }, [errors])
-
-  async function checkUserLogout () {
-   // console.log('jbvkjnh')
-    // const response = await window.fetch(`${obj.url}/checkAccount/?sid=${obj.sid}`)
-    // const data = await response.json()
-    // if (data) {
-      const response = await window.fetch(`${obj.url}/logout/?sid=${obj.sid}`)
-      console.log(response)
-    // }
-  }
-
-  useEffect(() => {
-    if (obj.sid) checkUserLogout()
-  }, [])
 
   const checkUserDetails = async (url, data) => {
     const res = await window.fetch(url, {
@@ -41,9 +34,11 @@ function Login () {
     })
     const response = await res.json()
     if (response.sid) {
-      setIsLogin(true)
       window.localStorage.setItem('session', JSON.stringify(response))
-    } else setErrMsg(response)
+      setIsLogin(true)
+    } else {
+      setErrMsg(response)
+    }
   }
 
   const handleChange = e => {
@@ -59,9 +54,11 @@ function Login () {
 
   const validate = values => {
     const errors = {}
-    if (!values.user_email) errors.user_email = 'User Email is required'
-    else if (!/\S+@\S+\.\S+/.test(values.user_email)) {
+    if (!/\S+@\S+\.\S+/.test(values.user_email)) {
       errors.user_email = 'Email address is invalid'
+    }
+    if (!values.user_email) {
+      errors.user_email = 'User Email is required'
     }
     if (!values.pswd) errors.pswd = 'Password is required'
     return errors
@@ -69,6 +66,7 @@ function Login () {
 
   return (
     <>
+      {active && <Redirect to='/decks' />}
       <Navbar signup='signUp' />
       <section className='login-box'>
         <h1 className='heading'>Login</h1>

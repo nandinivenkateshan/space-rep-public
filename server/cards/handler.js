@@ -12,7 +12,7 @@ async function addCard (req, res) {
 
 async function updateCard (req, res) {
   const response = await query.updateCard(req.body)
-  return response
+  return res.send(response)
 }
 
 module.exports = {

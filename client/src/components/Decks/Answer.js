@@ -1,9 +1,13 @@
 import React from 'react'
 import parse from 'html-react-parser'
-import obj from '../config'
+import url from '../../url/config'
+import { getSession } from '../../util'
+import { fetchPost } from '../../fetch'
 
-function Answer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
-  function ConvertSec (n) {
+function Answer ({ cards, onAgainAns, onEasyOrGood, onEdit, onNetErr }) {
+  const sid = getSession().sid
+
+  const ConvertSec = n => {
     const time = []
     const day = parseInt(n / (24 * 3600))
     if (day) time.push(` ${day} d`)
@@ -19,60 +23,59 @@ function Answer ({ cards, onAgainAns, onEasyOrGood, onEdit }) {
     return time
   }
 
-  async function modifyTimeStamp (url, data) {
-    const sid = obj.sid
-    const value = { ...data, sid }
-    await window.fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(value),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+  const fetchReq = async (url, card) => {
+    const response = await fetchPost(url, card)
+    if (response.err) {
+      onNetErr(true)
     }
-    )
   }
 
-  function handleAgain (array) {
+  const handleAgain = array => {
     let { id, status, again, easy, good } = array
     status = 'learning'
     easy = 86400 // 1 day
     good = 259200 // 3 day
 
     const timeStamp = parseInt(Date.now() / 1000)
-    modifyTimeStamp(`${obj.url}/updateTimeStamp`,
-      { id, again, easy, good, timeStamp, status }
-    )
+
+    fetchReq(`${url}/updateTimeStamp`,
+      { id, again, easy, good, timeStamp, status, sid })
+
     onAgainAns({ type: 'againAnswer', newArr: [...cards.slice(1), cards[0]] })
   }
 
-  function handleEasyOrGood (data, e) {
+  const handleEasyOrGood = (data, e) => {
     const answerType = e.target.innerText.toLowerCase()
     let { id, status, easy, good, again } = data
     const timeToDelay = data[answerType]
     const oldStatus = status
+
     if (oldStatus === 'new') {
       status = 'learning'
       easy = 86400 // 1 day
       good = 259200 // 3 days
     }
+
     if (oldStatus === 'learning') {
       status = 'review'
       easy = 172800 // 2 days
       good = 345600 // 4 days
     }
+
     if (oldStatus === 'review') {
       easy = Number(easy) + 172800
       good = Number(good) + 345600
     }
 
     const timeStamp = parseInt(Date.now() / 1000) + Number(timeToDelay)
-    modifyTimeStamp(`${obj.url}/updateTimeStamp`,
-      { id, easy, good, again, timeStamp, status }
-    )
+
+    fetchReq(`${url}/updateTimeStamp`,
+      { id, again, easy, good, timeStamp, status, sid })
+
     onEasyOrGood({ type: `${answerType}Answer`, newArr: cards.slice(1) })
   }
 
-  function handleEdit (id) {
+  const handleEdit = id => {
     onEdit(id)
   }
 

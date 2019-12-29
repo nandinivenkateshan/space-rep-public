@@ -3,21 +3,21 @@ import './signUp.css'
 import useForm from './useForm'
 import validate from './SignUPFormValidation'
 import Navbar from '../About/Navbar'
-import obj from '../config.js'
+import url from '../../url/config'
 import NetworkErr from '../NetworkError'
 import { Redirect } from 'react-router-dom'
 
 function SignUp () {
   const [status, setStatus] = useState('')
   const [resMsg, setResMsg] = useState({})
-  const [userDetails, setUserDetails] = useState([])
+  const [userAcc, setAcc] = useState([])
   const [netErr, setNetErr] = useState(false)
   const { handleChange, handleSubmit, values, errors } = useForm(
     login,
     validate
   )
 
-  const addUserDetails = async (url, data) => {
+  const createAccount = async (url, data) => {
     try {
       const response = await window.fetch(url, {
         method: 'POST',
@@ -35,8 +35,8 @@ function SignUp () {
   }
 
   function login () {
-    addUserDetails(`${obj.url}/createAccount`, values)
-    setUserDetails([...userDetails, values])
+    createAccount(`${url}/createAccount`, values)
+    setAcc([...userAcc, values])
   }
 
   return (

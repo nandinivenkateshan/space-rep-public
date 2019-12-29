@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react'
 import './addcard.css'
 import showdown from 'showdown'
-import obj from '../config'
+import url from '../../url/config'
 import { Redirect } from 'react-router-dom'
+import { getSession } from '../../util'
+import { fetchPost } from '../../fetch'
 
-function AddCard ({ heading, id, editCard }) {
-  const session = JSON.parse(window.localStorage.getItem('session'))
-  const sid = session.sid
+function AddCard ({ heading, id, editCard, onNetErr }) {
+  const converter = new showdown.Converter()
   let editQuestion, editDeck, editAns, saveBtn, updateBtn
+  const sid = getSession().sid
+
+  const makeHtml = value => {
+    const html = converter.makeHtml(value)
+    return html
+  }
+
+  const makeMarkdown = value => {
+    const markDown = converter.makeMarkdown(value)
+    return markDown
+  }
 
   if (id) {
-    const converter = new showdown.Converter()
     editDeck = editCard[0].deck
-    editQuestion = converter.makeMarkdown(editCard[0].question)
-    editAns = converter.makeMarkdown(editCard[0].answer)
+    editQuestion = makeMarkdown(editCard[0].question)
+    editAns = makeMarkdown(editCard[0].answer)
     updateBtn = <button className='save-btn'>Update</button>
   } else {
     saveBtn = <button className='save-btn'>Save</button>
@@ -21,18 +32,17 @@ function AddCard ({ heading, id, editCard }) {
 
   const [isSubmit, setIssubmit] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
-  const [markQ, setMarkQ] = useState('')
-  const [markAns, setMarkAns] = useState('')
   const [cards, setCards] = useState([])
   const [question, setQuestion] = useState(editQuestion || '')
   const [answer, setAnswer] = useState(editAns || '')
   const [deck, setDeck] = useState(editDeck || '')
-  const [decksOpt, setDecksForOpt] = useState([])
+  const [decksOpt, setDecksOpt] = useState([])
 
   setTimeout(() => setIssubmit(false), 4000)
 
   const handleDeck = e => {
-    return setDeck(e.target.value)
+    const value = e.target.value
+    setDeck(value)
   }
 
   const handleQuestion = e => {
@@ -45,27 +55,14 @@ function AddCard ({ heading, id, editCard }) {
     setAnswer(value)
   }
 
-  async function addToDb (url, data) {
-    const value = { ...data, sid }
-    await window.fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(value),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  }
-
-  async function updateCard (url, card) {
-    const value = { ...card, sid }
-    const response = await window.fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(value),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    setIsUpdate(response.ok)
+  const fetchReq = async (url, card, data) => {
+    const response = await fetchPost(url, card)
+    if (data) {
+      setIsUpdate(response.ok)
+    }
+    if (response.err) {
+      onNetErr(true)
+    }
   }
 
   const handleSubmit = e => {
@@ -73,21 +70,21 @@ function AddCard ({ heading, id, editCard }) {
       const card = {
         id: Number(id),
         deck: deck.toLowerCase() || editDeck,
-        question: markQ || editQuestion,
-        answer: markAns || editAns
+        question: makeHtml(question) || editQuestion,
+        answer: makeHtml(answer) || editAns
       }
-      updateCard(`${obj.url}/updateCard`, card)
+      fetchReq(`${url}/updateCard`, { ...card, sid }, 'update')
     } else {
       const card = {
         deck: deck.toLowerCase(),
-        question: markQ,
-        answer: markAns,
+        question: makeHtml(question),
+        answer: makeHtml(answer),
         status: 'new',
-        again: '60', // 1min
-        easy: '900', // 15 min
-        good: '86400' // 1 day
+        again: 60, // 1min
+        easy: 900, // 15 min
+        good: 86400 // 1 day
       }
-      addToDb(`${obj.url}/addCard`, card)
+      fetchReq(`${url}/addCard`, { ...card, sid })
       setCards([card, ...cards])
       setAnswer('')
       setQuestion('')
@@ -97,66 +94,57 @@ function AddCard ({ heading, id, editCard }) {
     e.preventDefault()
   }
 
-  const handleQuestionBlur = () => {
-    const converter = new showdown.Converter()
-    const html = converter.makeHtml(question)
-    setMarkQ(html)
-  }
-
-  const handleAnswerBlur = () => {
-    const converter = new showdown.Converter()
-    const html = converter.makeHtml(answer)
-    setMarkAns(html)
-  }
-
-  async function getDataFromDb () {
-    let data = await window.fetch(`${obj.url}/getDecknames/?sid=${sid}`)
+  const deckNames = async () => {
+    let data = await window.fetch(`${url}/getDecknames/?sid=${sid}`)
     data = await data.json()
-    setDecksForOpt(data)
+    setDecksOpt(data)
   }
 
   useEffect(() => {
-    getDataFromDb()
+    deckNames()
   }, [isSubmit])
 
   return (
-    <form onSubmit={e => handleSubmit(e)}>
-      <section className='field'>
-        <h1 className='heading'>{heading}</h1>
-        <input
-          className='input-box'
-          type='text'
-          placeholder='Enter the deck'
-          onChange={(e) => handleDeck(e)}
-          value={deck}
-          list='deck-list'
-          required
-          autoFocus
-        />
-        <datalist id='deck-list'>
-          {decksOpt.map(item => {
-            return <option key={item.id}>{item.deck}</option>
-          })}
-        </datalist>
-        <textarea
-          className='qa-box'
-          placeholder='Enter the Question'
-          value={question}
-          onChange={(event) => handleQuestion(event)}
-          onBlur={() => handleQuestionBlur()}
-        />
-        <textarea
-          className='qa-box'
-          placeholder='Enter the Answer'
-          value={answer} onChange={(event) => handleAnswer(event)}
-          onBlur={() => handleAnswerBlur()}
-        />
-        {saveBtn || updateBtn}
-        {isSubmit &&
-          <p className='isSubmit-para'>Added Successfully</p>}
-        {isUpdate && <Redirect to='/decks' />}
-      </section>
-    </form>
+    <>
+      <form onSubmit={e => handleSubmit(e)}>
+        <section className='field'>
+          <h1 className='heading'>{heading}</h1>
+          <input
+            className='input-box'
+            type='text'
+            placeholder='Enter the deck'
+            onChange={(e) => handleDeck(e)}
+            value={deck}
+            list='deck-list'
+            required
+            autoFocus
+          />
+          <datalist id='deck-list'>
+            {decksOpt.map(item => {
+              return <option key={item.id}>{item.deck}</option>
+            })}
+          </datalist>
+          <textarea
+            className='qa-box'
+            placeholder='Enter the Question'
+            value={question}
+            onChange={(event) => handleQuestion(event)}
+            required
+          />
+          <textarea
+            className='qa-box'
+            placeholder='Enter the Answer'
+            value={answer}
+            onChange={(event) => handleAnswer(event)}
+            required
+          />
+          {saveBtn || updateBtn}
+          {isSubmit &&
+            <p className='isSubmit-para'>Added Successfully</p>}
+          {isUpdate && <Redirect to='/decks' />}
+        </section>
+      </form>
+    </>
   )
 }
 

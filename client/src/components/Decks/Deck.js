@@ -1,9 +1,11 @@
 import React, { useEffect, useReducer } from 'react'
 import { useParams, Redirect } from 'react-router-dom'
 import NavBar from '../Navbar/Navbar'
-import obj from '../config'
+import url from '../../url/config'
 import Question from './Question'
 import Answer from './Answer'
+import { getSession } from '../../util'
+import NetworkErr from '../NetworkError'
 
 const initialState = {
   arr: [],
@@ -15,7 +17,7 @@ const initialState = {
   newCards: [],
   learningCards: [],
   reviewCards: [],
-  study: false
+  netErr: false
 }
 
 function reducer (state, action) {
@@ -29,7 +31,7 @@ function reducer (state, action) {
         reviewCards: [...action.reviewCards]
       }
     case 'study':
-      return { ...state, showStudy: false, showQuestion: true, study: true }
+      return { ...state, showStudy: false, showQuestion: true }
     case 'question':
       return { ...state, showQuestion: false, showAnswer: true }
     case 'answer' :
@@ -42,6 +44,8 @@ function reducer (state, action) {
       return { ...state, showQuestion: true, showAnswer: false, arr: [...action.newArr] }
     case 'edit' :
       return { ...state, edit: true, editId: action.editId }
+    case 'netErr' :
+      return { ...state, netErr: true }
     default: console.log('Unexpected action')
   }
 }
@@ -50,42 +54,35 @@ function Deck () {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { id: deckName } = useParams()
   let studyDiv, congratsMsg
-  const session = JSON.parse(window.localStorage.getItem('session'))
+  const session = getSession()
   const sid = session.sid
 
+  async function getDataFromDb () {
+    const data = await window.fetch(`${url}/getCards/?sid=${sid}`)
+    const res = await data.json()
+    const res1 = res.filter(item => item.deck === deckName)
+    const res2 = res1.reduce((acc, cv) => {
+      if (Number(cv.deckclicktime) >= Number(cv.timestamp)) {
+        acc.push(cv)
+      }
+      return acc
+    }, [])
+    const newCards = res2.filter(item => item.status === 'new')
+    const learningCards = res2.filter(item => item.status === 'learning')
+    const reviewCards = res2.filter(item => item.status === 'review')
+    dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learningCards: learningCards, reviewCards: reviewCards })
+  }
+
   useEffect(() => {
-    async function getDataFromDb () {
-      const data = await window.fetch(`${obj.url}/getCards/?sid=${sid}`)
-      const res = await data.json()
-      const res1 = res.filter(item => item.deck === deckName)
-      const res2 = res1.reduce((acc, cv) => {
-        if (Number(cv.deckclicktime) >= Number(cv.timestamp)) {
-          acc.push(cv)
-        }
-        return acc
-      }, [])
-      const newCards = res2.filter(item => item.status === 'new')
-      const learningCards = res2.filter(item => item.status === 'learning')
-      const reviewCards = res2.filter(item => item.status === 'review')
-      dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learningCards: learningCards, reviewCards: reviewCards })
-    }
     getDataFromDb()
   }, [])
 
-  function handleStudy () {
-    dispatch({ type: 'study' })
+  function handleStudy (value) {
+    dispatch(value)
   }
 
-  function handleQuestion () {
-    dispatch({ type: 'question' })
-  }
-
-  function handleAgain (card) {
-    dispatch(card)
-  }
-
-  function handleEasyOrGood (card) {
-    dispatch(card)
+  function handleNetErr (value) {
+    dispatch(value)
   }
 
   if (state.showStudy) {
@@ -106,12 +103,8 @@ function Deck () {
             <label>{state.reviewCards.length}</label>
           </div>
         </section>
-        <button onClick={() => handleStudy()} className='study-btn'>Study Now</button>
+        <button onClick={() => handleStudy({ type: 'study' })} className='study-btn'>Study Now</button>
       </main>)
-  }
-
-  function handleEdit (id) {
-    dispatch({ type: 'edit', editId: id })
   }
 
   if (!state.arr.length) {
@@ -119,29 +112,36 @@ function Deck () {
   }
 
   return (
-    <main className='main'>
-      <NavBar />
-      {congratsMsg || studyDiv }
-      {state.edit &&
-        <Redirect to={`/edit/${state.editId}`} />}
+    <>
+      {state.netErr && <NetworkErr />}
+      {!state.netErr &&
+        <main className='main'>
+          <NavBar />
 
-      {state.showQuestion && state.arr.length &&
-        <Question
-          question={state.arr[0].question}
-          id={state.arr[0].id}
-          onQuestion={() => handleQuestion()}
-          onEdit={id => handleEdit(id)}
-        />}
+          {studyDiv || congratsMsg}
 
-      {state.showAnswer && state.arr.length &&
-        <Answer
-          cards={state.arr}
-          onAgainAns={card => handleAgain(card)}
-          onEasyOrGood={card => handleEasyOrGood(card)}
-          onEdit={id => handleEdit(id)}
-        />}
+          {state.edit &&
+            <Redirect to={`/edit/${state.editId}`} />}
 
-    </main>
+          {state.showQuestion && state.arr.length &&
+            <Question
+              question={state.arr[0].question}
+              id={state.arr[0].id}
+              onQuestion={() => handleStudy({ type: 'question' })}
+              onEdit={id => handleStudy({ type: 'edit', editId: id })}
+            />}
+
+          {state.showAnswer && state.arr.length &&
+            <Answer
+              cards={state.arr}
+              onAgainAns={card => handleStudy(card)}
+              onEasyOrGood={card => handleStudy(card)}
+              onEdit={id => handleStudy({ type: 'edit', editId: id })}
+              onNetErr={val => handleNetErr({ type: 'netErr' })}
+            />}
+
+        </main>}
+    </>
   )
 }
 

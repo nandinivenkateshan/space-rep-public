@@ -38,12 +38,19 @@ async function getUsers () {
 
 async function login ({ user_email: mail, pswd }) {
   let result
+  if (!mail || !pswd) {
+    return { error: 'Please Enter the details' }
+  }
+
+  if (!/\S+@\S+\.\S+/.test(mail)) {
+    return { error: 'Email address is invalid' }
+  }
+
   try {
     result = await pool.query('SELECT * FROM signup WHERE user_email=$1', [mail])
   } catch (e) {
     return 'unable to fetch user details'
   }
-
   if (result.rows.length === 0) {
     return { res: 'No User with this Email' }
   }
@@ -69,8 +76,7 @@ async function login ({ user_email: mail, pswd }) {
 }
 
 async function logout (sid) {
-  console.log('logout')
-  let result1, result2
+  let result1
   try {
     result1 = await pool.query('SELECT email FROM authentication WHERE sid=$1', [sid])
   } catch {
@@ -78,13 +84,11 @@ async function logout (sid) {
   }
   if (result1.rows.length === 0) return 'Empty result'
   try {
-    result2 = await pool.query('UPDATE authentication SET active=false WHERE email=$1', [result1.rows[0].email])
-    console.log('response', result2)
+    await pool.query('UPDATE authentication SET active=false WHERE email=$1', [result1.rows[0].email])
+    return { active: false, sid: sid }
   } catch {
     return 'Unable to update'
   }
-  if (result2.rows.length === 0) return 'Empty result'
-  
 }
 
 async function checkAccount (sid) {

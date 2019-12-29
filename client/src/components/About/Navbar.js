@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import logo from '../../img/logo.jpeg'
 import styled from 'styled-components'
 import media from 'styled-media-query'
-import obj from '../config'
 import { Link } from 'react-router-dom'
 
 const StyledNav = styled.nav`

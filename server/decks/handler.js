@@ -20,7 +20,6 @@ async function deleteDeck (req, res) {
 
 async function getDeckNames (req, res) {
   const response = await query.getDeckNames(req.query.sid)
-  console.log(response)
   res.send(response)
 }
 
