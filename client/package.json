@@ -2,6 +2,7 @@
   "name": "space-rep",
   "version": "1.0.0",
   "description": "Space Repetition",
+  "homepage": "https://dry-wildwood-81140.herokuapp.com/",
   "main": "index.js",
   "scripts": {
     "dev": "npx parcel public/index.html --open",
