@@ -1,18 +1,51 @@
 {
-  "name": "back-end",
+  "name": "space-rep",
   "version": "1.0.0",
-  "description": "",
+  "description": "Space Repetition",
+  "private": true,
+  "engines": {
+    "npm": "6.11.3",
+    "node": "v10.15.3"
+  },
   "main": "index.js",
   "scripts": {
-    "start": "nodemon bin/www.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx parcel client/public/index.html --open",
+    "watch": "npx parcel watch client/public/index.html",
+    "build": "npx parcel build client/public/index.html --no-content-hash --no-source-maps",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon --exec  node-env-run bin/www.js ",
+    "dev": "run-p server start"
   },
+  "proxy": "http://localhost:3000",
   "author": "",
-  "license": "ISC",
   "dependencies": {
+    "@babel/runtime": "^7.7.6",
+    "bulma": "^0.8.0",
+    "html-react-parser": "^0.10.0",
+    "index": "^0.4.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-router-dom": "^5.1.2",
+    "showdown": "^1.9.1",
+    "sty": "^0.6.1",
+    "styled": "^1.0.0",
+    "styled-components": "^4.4.1",
+    "styled-media-query": "^2.1.2",
     "bcrypt": "^3.0.7",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pg": "^7.12.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "parcel-bundler": "^1.12.4",
+    "node-env-run": "^3.0.2",
+    "npm-run-all": "^4.1.5"
   }
 }
