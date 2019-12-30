@@ -2,12 +2,11 @@
   "name": "space-rep",
   "version": "1.0.0",
   "description": "Space Repetition",
-  "homepage": "https://dry-wildwood-81140.herokuapp.com/",
   "main": "index.js",
   "scripts": {
     "dev": "npx parcel public/index.html --open",
     "watch": "npx parcel watch public/index.html",
-    "build": "react-scripts build"
+    "build": "npx parcel build public/index.html --no-content-hash --no-source-maps"
   },
   "author": "",
   "license": "MIT",
@@ -20,9 +19,9 @@
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "showdown": "^1.9.1",
+    "sty": "^0.6.1",
     "styled": "^1.0.0",
     "styled-components": "^4.4.1",
-    "react-scripts": "3.0.1",
     "styled-media-query": "^2.1.2"
   },
   "devDependencies": {
@@ -34,17 +33,5 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "parcel-bundler": "^1.12.4"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
