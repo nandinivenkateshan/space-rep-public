@@ -22,7 +22,6 @@ function Login () {
 
   useEffect(() => {
     if (isSubmitting) {
-      console.log('val', values)
       fetchReq(`${url}/login`, values)
     }
   }, [isSubmitting])

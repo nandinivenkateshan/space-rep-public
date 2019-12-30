@@ -1,13 +1,6 @@
 * {
   margin: 0px;
 }
-.input-tag {
-  border: 1px solid black;
-  padding: 10px 40px 10px 10px;
-  width: 300px;
-  font-size: 15px;
-}
-
 
 .signup-page .heading {
   font-weight: bold;
@@ -15,6 +8,7 @@
   text-align: center;
   margin-bottom: 7px;
 }
+
 .signup-page .sub-heading {
   text-align: center;
   margin-bottom: 50px;
@@ -40,8 +34,7 @@
   box-shadow: 5px 5px 2px grey;
 }
 
-
-@media (min-width:768px) {
+@media (min-width: 768px) {
   .signup-form {
     margin: 20px;
     display: grid;
@@ -49,7 +42,7 @@
     grid-row-gap: 15px;
     justify-content: center;
   }
-  .signup-form .inputundefined {
+  .signup-form .input {
     grid-column: 2 / 4;
     padding: 5px;
     border-radius: 5px;
@@ -58,20 +51,20 @@
   }
 }
 
-@media (max-width:375px) {
-  .signup-form .inputundefined {
+@media (max-width: 375px) {
+  .signup-form .input {
     padding: 3px;
     border-radius: 5px;
     border: 1px solid black;
     margin-bottom: 20px;
     width: 160px;
   }
-  .signup-page .heading{
+  .signup-page .heading {
     font-size: 15px;
   }
   .signup-page .sub-heading {
     font-size: 12px;
-}
+  }
 }
 
 @media (min-width: 1024px) {
@@ -95,7 +88,7 @@
   .signup-form .label {
     font-size: 13px;
   }
-  .signup-form .inputundefined {
+  .signup-form .input {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid black;
@@ -124,37 +117,6 @@
   color: rgb(36, 73, 36);
   background-color: rgb(134, 134, 184);
   box-shadow: 5px 5px 2px green;
-}
-
-.signup-nav .signIn {
-  text-decoration: none;
-  align-self: center;
-  font-weight: bold;
-}
-
-.signup-form .inputinvalid {
-  border: 1px solid red;
-  grid-column: 2 / 4;
-  padding: 5px;
-  border-radius: 5px;
-  align-self: start;
-}
-
-.invalid-para {
-  color: red;
-  grid-column: 2 / 4;
-  font-size: 14px;
-}
-
-.reset-pswd {
-  display: block;
-  text-align: center;
-}
-
-.signup-box .acc-success {
-  text-align: center;
-  font-size: 16px;
-  color: green;
 }
 
 .signup-box .acc-exist-already {

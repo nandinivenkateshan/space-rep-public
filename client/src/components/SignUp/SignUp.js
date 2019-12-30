@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './signUp.css'
-import useForm from './useForm'
-import validate from './SignUPFormValidation'
 import Navbar from '../About/Navbar'
 import url from '../../url/config'
 import NetworkErr from '../NetworkError'
@@ -9,14 +7,17 @@ import { Redirect } from 'react-router-dom'
 import { fetchPost } from '../../fetch'
 
 function SignUp () {
+  const [values, setValues] = useState({})
   const [status, setStatus] = useState('')
   const [resMsg, setResMsg] = useState({})
-  const [userAcc, setAcc] = useState([])
   const [netErr, setNetErr] = useState(false)
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    login,
-    validate
-  )
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (isSubmitting) {
+      fetchReq(`${url}/createAccount`, values)
+    }
+  }, [isSubmitting])
 
   const fetchReq = async (url, card) => {
     const response = await fetchPost(url, card)
@@ -29,9 +30,17 @@ function SignUp () {
     }
   }
 
-  function login () {
-    fetchReq(`${url}/createAccount`, values)
-    setAcc([...userAcc, values])
+  const handleChange = e => {
+    e.persist()
+    setValues(values => ({
+      ...values,
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    setIsSubmitting(true)
   }
 
   return (
@@ -51,13 +60,12 @@ function SignUp () {
                 placeholder='Enter your name'
                 id='username'
                 name='user_name'
-                className={`input${errors.user_name && 'invalid'}`}
+                className='input'
                 onChange={e => handleChange(e)}
                 value={values.user_name || ''}
+                pattern='^[a-zA-Z][a-zA-Z0-9_]{3,29}$'
+                required
               />
-              {errors.user_name && (
-                <p className='invalid-para'>{errors.user_name}</p>
-              )}
               <label htmlFor='email' className='label'>
             Your Email
               </label>
@@ -66,13 +74,11 @@ function SignUp () {
                 placeholder='Enter your Email'
                 id='email'
                 name='user_email'
-                className={`input${errors.user_email && 'invalid'}`}
+                className='input'
                 onChange={e => handleChange(e)}
                 value={values.user_email || ''}
+                required
               />
-              {errors.user_email && (
-                <p className='invalid-para'>{errors.user_email}</p>
-              )}
               <label htmlFor='pswd' className='label'>
             New Password
               </label>
@@ -80,13 +86,13 @@ function SignUp () {
                 type='password'
                 id='pswd'
                 name='pswd'
-                className={`input${errors.pswd && 'invalid'}`}
+                className='input'
                 placeholder='Enter the password'
                 onChange={e => handleChange(e)}
                 value={values.pswd || ''}
                 minLength='6'
+                required
               />
-              {errors.pswd && <p className='invalid-para'>{errors.pswd}</p>}
               <button className='signup-btn'>Sign Up </button>
             </form>
             {status && resMsg.error && (
