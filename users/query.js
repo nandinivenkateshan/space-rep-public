@@ -1,12 +1,5 @@
-const Pool = require('pg').Pool
+const pool = require('../dbLog')
 const bcrypt = require('bcrypt')
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT
-})
 
 async function createAccount ({ user_name: name, user_email: mail, pswd }) {
   if (!name || !mail || !pswd) {
