@@ -4,17 +4,17 @@
   "description": "Space Repetition",
   "private": true,
   "engines": {
-    "npm": "6.11.3",
     "node": "v10.15.3"
   },
   "main": "index.js",
   "scripts": {
-    "start": "npx parcel client/public/index.html --open",
+    "start": "run-p server build",
+    "start-client": "npx parcel client/public/index.html --open",
     "watch": "npx parcel watch client/public/index.html",
     "build": "npx parcel build client/public/index.html --no-content-hash --no-source-maps",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon --exec  node-env-run bin/www.js ",
-    "dev": "run-p server start"
+    "dev": "run-p server start-client"
   },
   "proxy": "http://localhost:3000",
   "author": "",
