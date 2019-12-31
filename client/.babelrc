@@ -1,9 +1,11 @@
 
 {
-  "presets": [["@babel/preset-react"],["@babel/preset-env"]],
+  "presets": ["@babel/preset-react"],
   "env": {
     "development": {
-      "presets": [["@babel/preset-react", { "development": true }]],
+      "presets": [["@babel/preset-react", { "development": true }]]
+    },
+    "production": {
       "plugins": [["transform-es2015-modules-commonjs"],  ["@babel/plugin-transform-runtime",
         {
           "regenerator": true
