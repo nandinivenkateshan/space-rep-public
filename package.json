@@ -9,13 +9,12 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "run-p server build",
-    "start-client": "npx parcel client/public/index.html --open",
+    "start": "npx parcel client/public/index.html --open",
     "watch": "npx parcel watch client/public/index.html",
     "build": "npx parcel build client/public/index.html --no-content-hash --no-source-maps",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon --exec  node-env-run bin/www.js ",
-    "dev": "run-p server start-client"
+    "dev": "run-p server start"
   },
   "browserslist": {
     "production": [
