@@ -7,5 +7,6 @@ router.get('/getUsers', handler.getUsers)
 router.post('/login', handler.login)
 router.get('/logout', handler.logout)
 router.get('/checkAccount', handler.checkAccount)
+router.post('/resetPswd', handler.resetPswd)
 
 module.exports = router

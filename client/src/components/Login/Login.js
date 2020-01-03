@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './login.css'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import Navbar from '../About/Navbar'
 import url from '../../url/config'
 import { getSession, setSession } from '../../util'
@@ -86,6 +86,7 @@ function Login () {
               {isLogin &&
                 <Redirect to='/decks' />}
             </form>
+            <Link className='reset-pswd' to='/resetPswd'>Reset Password</Link>
           </section>
         </>}
     </>

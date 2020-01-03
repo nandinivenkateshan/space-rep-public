@@ -1,4 +1,5 @@
 export async function fetchPost (url, value) {
+  console.log(url, value)
   try {
     const response = await window.fetch(url, {
       method: 'POST',

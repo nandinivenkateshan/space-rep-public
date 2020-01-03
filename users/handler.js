@@ -25,10 +25,16 @@ async function checkAccount (req, res) {
   res.send(response)
 }
 
+async function resetPswd (req, res) {
+  const response = await query.resetPswd(req.body.email)
+  res.send(response)
+}
+
 module.exports = {
   createAccount,
   getUsers,
   login,
   logout,
-  checkAccount
+  checkAccount,
+  resetPswd
 }

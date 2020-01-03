@@ -6,6 +6,7 @@ import Question from './Question'
 import Answer from './Answer'
 import { getSession } from '../../util'
 import NetworkErr from '../NetworkError'
+import { fetchGet } from '../../fetch'
 
 const initialState = {
   arr: [],
@@ -57,24 +58,28 @@ function Deck () {
   const session = getSession()
   const sid = session.sid
 
-  async function getDataFromDb () {
-    const data = await window.fetch(`${url}/getCards/?sid=${sid}`)
-    const res = await data.json()
-    const res1 = res.filter(item => item.deck === deckName)
-    const res2 = res1.reduce((acc, cv) => {
-      if (Number(cv.deckclicktime) >= Number(cv.timestamp)) {
-        acc.push(cv)
-      }
-      return acc
-    }, [])
-    const newCards = res2.filter(item => item.status === 'new')
-    const learningCards = res2.filter(item => item.status === 'learning')
-    const reviewCards = res2.filter(item => item.status === 'review')
-    dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learningCards: learningCards, reviewCards: reviewCards })
+  async function getData () {
+    const response = await fetchGet(`${url}/getCards/?sid=${sid}`)
+    if (response.err) {
+      dispatch({ type: 'netErr' })
+    } else {
+      const res = await response.json()
+      const res1 = res.filter(item => item.deck === deckName)
+      const res2 = res1.reduce((acc, cv) => {
+        if (Number(cv.deckclicktime) >= Number(cv.timestamp)) {
+          acc.push(cv)
+        }
+        return acc
+      }, [])
+      const newCards = res2.filter(item => item.status === 'new')
+      const learningCards = res2.filter(item => item.status === 'learning')
+      const reviewCards = res2.filter(item => item.status === 'review')
+      dispatch({ type: 'setArr', newArr: res2, newCards: newCards, learningCards: learningCards, reviewCards: reviewCards })
+    }
   }
 
   useEffect(() => {
-    getDataFromDb()
+    getData()
   }, [])
 
   function handleStudy (value) {

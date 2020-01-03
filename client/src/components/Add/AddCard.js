@@ -4,7 +4,7 @@ import showdown from 'showdown'
 import url from '../../url/config'
 import { Redirect } from 'react-router-dom'
 import { getSession } from '../../util'
-import { fetchPost } from '../../fetch'
+import { fetchPost, fetchGet } from '../../fetch'
 
 function AddCard ({ heading, id, editCard, onNetErr }) {
   const converter = new showdown.Converter()
@@ -95,9 +95,13 @@ function AddCard ({ heading, id, editCard, onNetErr }) {
   }
 
   const deckNames = async () => {
-    let data = await window.fetch(`${url}/getDecknames/?sid=${sid}`)
-    data = await data.json()
-    setDecksOpt(data)
+    const response = await fetchGet(`${url}/getDecknames/?sid=${sid}`)
+    if (response.err) {
+      onNetErr(true)
+    } else {
+      const data = await response.json()
+      setDecksOpt(data)
+    }
   }
 
   useEffect(() => {

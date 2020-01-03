@@ -1,5 +1,6 @@
 const pool = require('../dbLog')
 const bcrypt = require('bcrypt')
+const nodemailer = require('nodemailer')
 
 async function createAccount ({ user_name: name, user_email: mail, pswd }) {
   if (!name || !mail || !pswd) {
@@ -54,7 +55,8 @@ async function login ({ user_email: mail, pswd }) {
 
   const sessionObj = {
     active: true,
-    sid: mail + Math.random()
+    sid: mail + Math.random(),
+    name: result.rows[0].user_name
   }
 
   try {
@@ -103,10 +105,62 @@ async function checkAccount (sid) {
   }
 }
 
+async function resetPswd (email) {
+  let result
+  if (!email) {
+    return { res: 'Please Enter the details' }
+  }
+
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    return { res: 'Email address is invalid' }
+  }
+
+  try {
+    result = await pool.query('SELECT * FROM signup WHERE user_email=$1', [email])
+  } catch (e) {
+    return { res: 'unable to fetch user details' }
+  }
+  if (result.rows.length === 0) {
+    return { res: 'No User with this Email' }
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD
+    }
+  })
+
+  const mailOptions = {
+    from: '',
+    to: 'nandinivenkatesan809@gmail.com',
+    subject: 'Link to reset password',
+    text:
+    `Someone has requested that your password be reset. 
+     If this was you, please click the link below to reset your password.
+     If this was not you, someone may have accidentally typed the wrong email address, 
+     and it is safe to ignore this email.
+
+     http://localhost:1234/resetPswd
+
+     If you did not request this, please ignore this email and your password will remain unchanged.
+    `
+  }
+
+  try {
+    const result = await transporter.sendMail(mailOptions)
+    return {res: 'Email sent'}
+  } catch {
+    return { res: 'Error while sending email' }
+  }
+}
+
 module.exports = {
   createAccount,
   getUsers,
   login,
   logout,
-  checkAccount
+  checkAccount,
+  resetPswd
 }
