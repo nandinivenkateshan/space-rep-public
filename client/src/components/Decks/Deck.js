@@ -128,7 +128,7 @@ function Deck () {
           {state.edit &&
             <Redirect to={`/edit/${state.editId}`} />}
 
-          {state.showQuestion && state.arr.length &&
+          {state.showQuestion && state.arr.length > 0 &&
             <Question
               question={state.arr[0].question}
               id={state.arr[0].id}
@@ -136,7 +136,7 @@ function Deck () {
               onEdit={id => handleStudy({ type: 'edit', editId: id })}
             />}
 
-          {state.showAnswer && state.arr.length &&
+          {state.showAnswer && state.arr.length > 0 &&
             <Answer
               cards={state.arr}
               onAgainAns={card => handleStudy(card)}

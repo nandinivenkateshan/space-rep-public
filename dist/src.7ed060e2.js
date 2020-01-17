@@ -39214,7 +39214,7 @@ var _taggedTemplateLiteral2 = require("@babel/runtime/helpers/taggedTemplateLite
 
 var _taggedTemplateLiteral3 = (0, _interopRequireDefault2.default)(_taggedTemplateLiteral2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/About/Navbar.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/About/Navbar.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39401,7 +39401,7 @@ var _taggedTemplateLiteral2 = require("@babel/runtime/helpers/taggedTemplateLite
 
 var _taggedTemplateLiteral3 = (0, _interopRequireDefault2.default)(_taggedTemplateLiteral2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/About/About.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/About/About.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40446,7 +40446,7 @@ var _taggedTemplateLiteral2 = require("@babel/runtime/helpers/taggedTemplateLite
 
 var _taggedTemplateLiteral3 = (0, _interopRequireDefault2.default)(_taggedTemplateLiteral2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/NetworkError.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/NetworkError.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40616,7 +40616,7 @@ var _slicedToArray2 = require("@babel/runtime/helpers/slicedToArray");
 
 var _slicedToArray3 = (0, _interopRequireDefault2.default)(_slicedToArray2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/SignUp/SignUp.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/SignUp/SignUp.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40920,7 +40920,7 @@ var _slicedToArray2 = require("@babel/runtime/helpers/slicedToArray");
 
 var _slicedToArray3 = (0, _interopRequireDefault2.default)(_slicedToArray2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Login/Login.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Login/Login.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41059,49 +41059,49 @@ function Login() {
   return _react2.default.createElement(_react2.default.Fragment, null, netErr && _react2.default.createElement(_NetworkError2.default, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 58
+      lineNumber: 57
     },
     __self: this
   }), active && _react2.default.createElement(_reactRouterDom.Redirect, {
     to: "/decks",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 59
+      lineNumber: 58
     },
     __self: this
   }), !netErr && _react2.default.createElement(_react2.default.Fragment, null, _react2.default.createElement(_Navbar2.default, {
     signup: "signUp",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 62
+      lineNumber: 61
     },
     __self: this
   }), _react2.default.createElement("section", {
     className: "login-box",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 63
+      lineNumber: 62
     },
     __self: this
   }, _react2.default.createElement("h1", {
     className: "heading",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 64
+      lineNumber: 63
     },
     __self: this
   }, "Login"), _react2.default.createElement("p", {
     className: "sub-heading",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 65
+      lineNumber: 64
     },
     __self: this
   }, "Log in to an existing account."), errMsg && _react2.default.createElement("p", {
     className: "err-msg",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 67
+      lineNumber: 66
     },
     __self: this
   }, " ", errMsg.res), _react2.default.createElement("form", {
@@ -41111,7 +41111,7 @@ function Login() {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 69
+      lineNumber: 68
     },
     __self: this
   }, _react2.default.createElement("label", {
@@ -41119,7 +41119,7 @@ function Login() {
     className: "label",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 70
+      lineNumber: 69
     },
     __self: this
   }, "Email"), _react2.default.createElement("input", {
@@ -41135,7 +41135,7 @@ function Login() {
     required: true,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 71
+      lineNumber: 70
     },
     __self: this
   }), _react2.default.createElement("label", {
@@ -41143,7 +41143,7 @@ function Login() {
     className: "label",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 78
+      lineNumber: 77
     },
     __self: this
   }, "Password"), _react2.default.createElement("input", {
@@ -41159,21 +41159,21 @@ function Login() {
     required: true,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 79
+      lineNumber: 78
     },
     __self: this
   }), _react2.default.createElement("button", {
     className: "login-btn",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 86
+      lineNumber: 85
     },
     __self: this
   }, "Login"), isLogin && _react2.default.createElement(_reactRouterDom.Redirect, {
     to: "/decks",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 88
+      lineNumber: 87
     },
     __self: this
   })), _react2.default.createElement(_reactRouterDom.Link, {
@@ -41181,7 +41181,7 @@ function Login() {
     to: "/resetPswd",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 90
+      lineNumber: 89
     },
     __self: this
   }, "Reset Password"))));
@@ -41213,7 +41213,7 @@ var _slicedToArray2 = require("@babel/runtime/helpers/slicedToArray");
 
 var _slicedToArray3 = (0, _interopRequireDefault2.default)(_slicedToArray2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Login/ResetPswd.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Login/ResetPswd.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41441,7 +41441,7 @@ var _taggedTemplateLiteral2 = require("@babel/runtime/helpers/taggedTemplateLite
 
 var _taggedTemplateLiteral3 = (0, _interopRequireDefault2.default)(_taggedTemplateLiteral2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Navbar/Navbar.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Navbar/Navbar.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41673,7 +41673,7 @@ var _slicedToArray2 = require("@babel/runtime/helpers/slicedToArray");
 
 var _slicedToArray3 = (0, _interopRequireDefault2.default)(_slicedToArray2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Decks/Decks.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Decks/Decks.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47196,7 +47196,7 @@ var _slicedToArray2 = require("@babel/runtime/helpers/slicedToArray");
 
 var _slicedToArray3 = (0, _interopRequireDefault2.default)(_slicedToArray2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Add/AddCard.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Add/AddCard.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47557,7 +47557,7 @@ var _slicedToArray2 = require("@babel/runtime/helpers/slicedToArray");
 
 var _slicedToArray3 = (0, _interopRequireDefault2.default)(_slicedToArray2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Add/Add.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Add/Add.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49339,7 +49339,7 @@ var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/he
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Decks/Question.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Decks/Question.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49430,7 +49430,7 @@ var _asyncToGenerator2 = require("@babel/runtime/helpers/asyncToGenerator");
 
 var _asyncToGenerator3 = (0, _interopRequireDefault2.default)(_asyncToGenerator2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Decks/Answer.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Decks/Answer.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49709,7 +49709,7 @@ var _defineProperty2 = require("@babel/runtime/helpers/defineProperty");
 
 var _defineProperty3 = (0, _interopRequireDefault2.default)(_defineProperty2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Decks/Deck.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Decks/Deck.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50054,7 +50054,7 @@ function Deck() {
       lineNumber: 129
     },
     __self: this
-  }), state.showQuestion && state.arr.length && _react2.default.createElement(_Question2.default, {
+  }), state.showQuestion && state.arr.length > 0 && _react2.default.createElement(_Question2.default, {
     question: state.arr[0].question,
     id: state.arr[0].id,
     onQuestion: function onQuestion() {
@@ -50073,7 +50073,7 @@ function Deck() {
       lineNumber: 132
     },
     __self: this
-  }), state.showAnswer && state.arr.length && _react2.default.createElement(_Answer2.default, {
+  }), state.showAnswer && state.arr.length > 0 && _react2.default.createElement(_Answer2.default, {
     cards: state.arr,
     onAgainAns: function onAgainAns(card) {
       return handleStudy(card);
@@ -50122,7 +50122,7 @@ var _slicedToArray2 = require("@babel/runtime/helpers/slicedToArray");
 
 var _slicedToArray3 = (0, _interopRequireDefault2.default)(_slicedToArray2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Edit/Edit.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Edit/Edit.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50265,7 +50265,7 @@ var _taggedTemplateLiteral2 = require("@babel/runtime/helpers/taggedTemplateLite
 
 var _taggedTemplateLiteral3 = (0, _interopRequireDefault2.default)(_taggedTemplateLiteral2);
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/NotFound.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/NotFound.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50308,7 +50308,7 @@ var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/he
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/components/Routes.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/components/Routes.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50462,7 +50462,7 @@ module.hot.accept(reloadCSS);
 
 var _interopRequireDefault2 = _interopRequireDefault3(require("@babel/runtime/helpers/interopRequireDefault"));
 
-var _jsxFileName = "/home/admi/work/space-rep-public/client/src/index.js";
+var _jsxFileName = "/home/admi/work/spaceRep/client/src/index.js";
 
 function _interopRequireDefault3(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50515,7 +50515,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41211" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34587" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
